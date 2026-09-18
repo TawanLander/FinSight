@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinSight | Dashboard</title>
+  <link rel="icon" href="../assets/ico/logo-transparente.png">
+  <link rel="stylesheet" href="../css/style-geral.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <script src="../js/tema.js"></script>
+</head>
+
+<body>
+
+  <div class="estrutura-painel">
+
+    <aside class="barra-lateral">
+      <div>
+        <a href="index.html" class="marca-painel">
+          <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
+          <span>FinSight</span>
+        </a>
+
+        <div class="usuario-painel">
+          <div class="avatar-usuario">F</div>
+          <div class="dados-usuario">
+            <div class="nome-usuario">Fernanda</div>
+            <div class="cargo-usuario">Leitor</div>
+          </div>
+        </div>
+
+        <nav class="navegacao-painel">
+          <a href="dashboard.html" class="link-painel ativo">
+            <span class="ponto-indicador"></span>
+            Dashboard
+          </a>
+          <a href="envio.html" class="link-painel">
+            <span class="ponto-indicador"></span>
+            Envio de arquivos
+          </a>
+          <a href="historico.html" class="link-painel">
+            <span class="ponto-indicador"></span>
+            Histórico
+          </a>
+          <a href="perfil.html" class="link-painel">
+            <span class="ponto-indicador"></span>
+            Perfil
+          </a>
+        </nav>
+      </div>
+
+      <div class="rodape-barra-lateral">
+        <a href="index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
+          aria-label="Alternar tema claro e escuro">
+          <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+          </svg>
+          <svg class="icone-lua bi bi-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286" />
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <main class="conteudo-principal">
+
+      <div class="barra-superior">
+        <div>
+          <h1 class="titulo-pagina">Bem-vindo(a), <span id="user-name">Usuário(a)</span></h1>
+          <p class="subtitulo-pagina">Projeções e indicadores da carteira analisada.</p>
+        </div>
+        <a href="envio.html" class="btn btn-primario btn-pequeno">Enviar novo arquivo</a>
+      </div>
+
+      <div class="barra-filtros">
+        <div class="item-filtro">
+          <label for="ticker" class="rotulo-filtro">Ticker</label>
+          <select id="ticker" class="seletor-filtro">
+            <option value="all">Todos os ativos</option>
+          </select>
+        </div>
+
+        <div class="item-filtro">
+          <label for="periodo" class="rotulo-filtro">Período</label>
+          <select id="periodo" class="seletor-filtro">
+            <option>Últimos 30 dias</option>
+            <option>Últimos 90 dias</option>
+            <option>12 meses</option>
+          </select>
+        </div>
+
+        <div class="item-filtro">
+          <label for="categoria" class="rotulo-filtro">Categoria</label>
+          <select id="categoria" class="seletor-filtro">
+            <option>Todas</option>
+            <option>Ações</option>
+            <option>FIIs</option>
+          </select>
+        </div>
+
+        <div class="item-filtro item-filtro-busca">
+          <label for="campo-busca-ativo" class="rotulo-filtro">Buscar ativo</label>
+          <input type="text" id="campo-busca-ativo" class="campo-busca" placeholder="Digite o código ou nome…">
+        </div>
+      </div>
+
+      <div class="grade-indicadores" id="kpi-grid">
+        <div class="cartao-indicador indicador-perigo" data-kpi="maior-risco">
+          <div class="titulo-indicador">Maior risco</div>
+          <div class="valor-indicador" data-field="value">—</div>
+          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+        </div>
+
+        <div class="cartao-indicador indicador-sucesso" data-kpi="menor-risco">
+          <div class="titulo-indicador">Menor risco</div>
+          <div class="valor-indicador" data-field="value">—</div>
+          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+        </div>
+
+        <div class="cartao-indicador" data-kpi="volatilidade-media">
+          <div class="titulo-indicador">Volatilidade média</div>
+          <div class="valor-indicador" data-field="value">—</div>
+          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+        </div>
+
+        <div class="cartao-indicador" data-kpi="drawdown-maximo">
+          <div class="titulo-indicador">Drawdown máximo</div>
+          <div class="valor-indicador" data-field="value">—</div>
+          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+        </div>
+      </div>
+
+      <div class="painel-conteudo">
+        <div class="cabecalho-painel">
+          <h2 class="titulo-painel">Ranking de risco da carteira</h2>
+          <span class="dica-painel">Ordenado por volatilidade</span>
+        </div>
+
+        <div class="conteiner-tabela">
+          <table class="tabela-dados">
+            <thead>
+              <tr>
+                <th>Ativo</th>
+                <th>Categoria</th>
+                <th>Volatilidade</th>
+                <th>Drawdown</th>
+                <th>Retorno</th>
+              </tr>
+            </thead>
+            <tbody id="risk-table-body">
+              <tr class="linha-vazia">
+                <td colspan="5">Nenhum dado carregado ainda.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grade-graficos">
+        <div class="painel-conteudo">
+          <div class="cabecalho-painel">
+            <h2 class="titulo-painel">Rentabilidade acumulada</h2>
+          </div>
+          <div class="espaco-grafico" id="chart-rentabilidade">
+            <span>Gráfico será exibido aqui quando houver dados</span>
+          </div>
+        </div>
+
+        <div class="painel-conteudo">
+          <div class="cabecalho-painel">
+            <h2 class="titulo-painel">Comparativo com Ibovespa</h2>
+          </div>
+          <div class="espaco-grafico" id="chart-ibovespa">
+            <span>Gráfico será exibido aqui quando houver dados</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+</body>
+
+</html>
