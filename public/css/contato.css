@@ -1,26 +1,27 @@
+/* CABEÇALHO DA PÁGINA */
 .secao-contato {
-  padding: 56px 0 80px;
+  padding: 3.5rem 0 5rem;
 }
 
 .conteiner-contato,
 .secao-contato-conteiner {
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1.25rem;
 }
 
 .cabecalho-contato {
-  margin-bottom: 32px;
+  margin-bottom: 2rem;
 }
 
 .cabecalho-contato .subtitulo-destaque {
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .cabecalho-contato h1 {
   font-size: 2.4rem;
   letter-spacing: -0.02em;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .cabecalho-contato .texto-destaque {
@@ -30,13 +31,17 @@
   margin-bottom: 0;
 }
 
+
+
+/* CARTÃO DO FORMULÁRIO */
+
 .painel-formulario {
   width: 100%;
   background-color: var(--fundo-cartao);
-  border: 1px solid var(--cor-borda);
+  border: 0.0625rem solid var(--cor-borda);
   border-radius: var(--arredondamento-medio);
-  padding: 32px;
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.35);
+  padding: 2rem;
+  box-shadow: 0 1rem 2.25rem -0.625rem rgba(0, 0, 0, 0.35);
   transition: var(--transicao-suave);
 }
 
@@ -45,12 +50,12 @@
 }
 
 .cabecalho-formulario {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .cabecalho-formulario h3 {
   font-size: 1.35rem;
-  margin-bottom: 6px;
+  margin-bottom: 0.375rem;
   color: var(--texto-principal);
 }
 
@@ -60,15 +65,17 @@
   margin-bottom: 0;
 }
 
+
+/* CAMPOS DO FORMULÁRIO */
 .campo-formulario {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .rotulo {
   display: block;
   font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   color: var(--texto-principal);
 }
 
@@ -76,10 +83,10 @@
 .campo-area {
   width: 100%;
   background-color: var(--fundo-campo);
-  border: 1px solid var(--cor-borda);
+  border: 0.0625rem solid var(--cor-borda);
   color: var(--texto-principal);
   border-radius: var(--arredondamento-pequeno);
-  padding: 12px 14px;
+  padding: 0.75rem 0.875rem;
   font-family: inherit;
   font-size: 0.95rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -89,11 +96,11 @@
 .campo-area:focus {
   outline: none;
   border-color: var(--cor-secundaria);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+  box-shadow: 0 0 0 0.1875rem rgba(6, 182, 212, 0.15);
 }
 
 .campo-area {
-  min-height: 120px;
+  min-height: 7.5rem;
   resize: vertical;
 }
 
@@ -101,9 +108,11 @@
   width: 100%;
 }
 
-@media (max-width: 600px) {
+/* RESPONSIVO (telas pequenas, celular) */
+
+@media (max-width: 37.5rem) {
   .secao-contato {
-    padding: 36px 0 48px;
+    padding: 2.25rem 0 3rem;
   }
 
   .cabecalho-contato h1 {
@@ -111,6 +120,6 @@
   }
 
   .painel-formulario {
-    padding: 24px 18px;
+    padding: 1.5rem 1.125rem;
   }
 }

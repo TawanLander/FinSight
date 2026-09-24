@@ -1,3 +1,4 @@
+/* HERO (seção de destaque com vídeo de fundo) */
 .secao-destaque {
   position: relative;
   overflow: hidden;
@@ -25,12 +26,10 @@
 .video-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(11, 19, 32, 0.78) 0%,
-    rgba(11, 19, 32, 0.5) 60%,
-    rgba(11, 19, 32, 0.15) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(11, 19, 32, 0.78) 0%,
+      rgba(11, 19, 32, 0.5) 60%,
+      rgba(11, 19, 32, 0.15) 100%);
 }
 
 .secao-destaque .conteiner {
@@ -43,12 +42,10 @@
 }
 
 [data-tema="claro"] .video-overlay {
-  background: linear-gradient(
-    90deg,
-    rgba(244, 246, 251, 0.82) 0%,
-    rgba(244, 246, 251, 0.5) 45%,
-    rgba(244, 246, 251, 0.2) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(244, 246, 251, 0.82) 0%,
+      rgba(244, 246, 251, 0.5) 45%,
+      rgba(244, 246, 251, 0.2) 100%);
 }
 
 [data-tema="claro"] .secao-destaque h1 {
@@ -78,6 +75,8 @@
   gap: 1rem;
 }
 
+/* CARDS "COMO FUNCIONA" (grade de 3 colunas) */
+
 .grade-tres-colunas {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -86,7 +85,7 @@
 
 .cartao {
   background-color: var(--fundo-cartao);
-  border: 1px solid var(--cor-borda);
+  border: 0.0625rem solid var(--cor-borda);
   border-radius: var(--arredondamento-medio);
   padding: 1.75rem;
   transition: var(--transicao-suave);
@@ -94,12 +93,12 @@
 
 .cartao:hover {
   border-color: var(--cor-secundaria);
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 
 .icone-cartao {
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: var(--arredondamento-pequeno);
   background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
   color: #ffffff;
@@ -120,13 +119,15 @@
   margin-bottom: 0;
 }
 
+/* PRÉVIA DO DASHBOARD (bloco com foto de fundo) */
+
 .secao-previa-dashboard {
   position: relative;
   overflow: hidden;
   border-radius: var(--arredondamento-grande);
-  border: 1px solid var(--cor-borda);
+  border: 0.0625rem solid var(--cor-borda);
   padding: 4.5rem 3.5rem;
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1rem 2.25rem -0.625rem rgba(0, 0, 0, 0.4);
   background-color: var(--fundo-cartao);
 }
 
@@ -153,24 +154,22 @@
 .fundo-previa-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(11, 19, 32, 0.88) 0%,
-    rgba(11, 19, 32, 0.58) 50%,
-    rgba(11, 19, 32, 0.2) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(11, 19, 32, 0.88) 0%,
+      rgba(11, 19, 32, 0.58) 50%,
+      rgba(11, 19, 32, 0.2) 100%);
 }
 
 .conteudo-previa-dashboard {
   position: relative;
   z-index: 2;
-  max-width: 620px;
+  max-width: 38.75rem;
 }
 
 .conteudo-previa-dashboard h2 {
   font-size: 2.2rem;
   margin-bottom: 1.1rem;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 0.125rem 0.875rem rgba(0, 0, 0, 0.85);
 }
 
 .conteudo-previa-dashboard p {
@@ -178,20 +177,20 @@
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 1.75rem;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 0.0625rem 0.5rem rgba(0, 0, 0, 0.85);
 }
 
 .conteudo-previa-dashboard .subtitulo-destaque {
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 0.0625rem 0.375rem rgba(0, 0, 0, 0.9);
 }
 
 .conteudo-previa-dashboard .btn-vazado,
 .conteudo-previa-dashboard .botao-vazado {
   background-color: rgba(15, 30, 58, 0.75);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(0.375rem);
   border-color: rgba(255, 255, 255, 0.35);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0.25rem 0.875rem rgba(0, 0, 0, 0.35);
 }
 
 .conteudo-previa-dashboard .btn-vazado:hover,
@@ -206,12 +205,10 @@
 }
 
 [data-tema="claro"] .fundo-previa-overlay {
-  background: linear-gradient(
-    90deg,
-    rgba(244, 246, 251, 0.9) 0%,
-    rgba(244, 246, 251, 0.6) 50%,
-    rgba(244, 246, 251, 0.2) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(244, 246, 251, 0.9) 0%,
+      rgba(244, 246, 251, 0.6) 50%,
+      rgba(244, 246, 251, 0.2) 100%);
 }
 
 [data-tema="claro"] .conteudo-previa-dashboard h2 {
