@@ -87,6 +87,6 @@ function userDelete(req, res) {
 module.exports = {
   list: userList,
   put: userPut,
-  patch: userPatch,
+//   patch: userPatch,
   delete: userDelete
 };

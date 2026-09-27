@@ -38,6 +38,6 @@ function userDelete(id) {
 module.exports = {
   list: userList,
   put: userPut,
-  patch: userPatch,
-  delete: userDelete,
+  // patch: userPatch,
+  delete: userDelete
 };
