@@ -13,10 +13,6 @@ router.put('/update/:id', (req, res) => {
     usuariosControler.put(req, res);
 });
 
-router.patch('/update/:id', (req, res) => {
-    usuariosControler.patch(req, res);
-});
-
 router.delete('/delete/:id', (req, res) => {
     usuariosControler.delete(req, res);
 });

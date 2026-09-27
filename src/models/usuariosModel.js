@@ -10,34 +10,25 @@ function userList() {
 
 function userPut(id, nome, email, perfil) {
   const instrucaoSql = `
-    UPDATE usuario SET nome = '${nome}', email = '${email}', perfil = '${perfil}' WHERE id = ${id};
+    UPDATE usuario SET nome = ?, email = ?, perfil = ? WHERE id = ?;
     `;
 
-  return db.executar(instrucaoSql);
+  return db.executar(instrucaoSql, [nome, email, perfil, id]);
 }
-
-// function userPatch(id, nome, email, perfil) {
-// // atualiza um campo específico(???)
-
-//     const instrucaoSql = `
-//         UPDATE usuario SET nome = '${nome}', email = '${email}', perfil = '${perfil}' 
-//         WHERE id = ${id};
-//     `;
-
-//     return db.executar(instrucaoSql);
-// }
 
 function userDelete(id) {
   const instrucaoSql = `
-    DELETE FROM usuario WHERE id = ${id};
+    DELETE FROM usuario WHERE id = ?;
     `;
 
-  return db.executar(instrucaoSql);
+  return db.executar(instrucaoSql, [id]);
 }
 
 module.exports = {
   list: userList,
   put: userPut,
-  // patch: userPatch,
-  delete: userDelete
+  delete: userDelete,
+  userList,
+  userPut,
+  userDelete
 };
