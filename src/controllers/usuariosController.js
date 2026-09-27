@@ -33,7 +33,7 @@ function userPut(req, res) {
                 res.status(200).json(resultado);
             })
             .catch(function (err) {
-                console.log("Erro ao tentar atualizar o user: ", sqlMessage);
+                console.log("Erro ao tentar atualizar o user: ", err.sqlMessage);
                 res.status(500).json(err.sqlMessage);
             })
     }
@@ -75,18 +75,18 @@ function userDelete(req, res) {
         res.status(400).send("O id do user ta undefined");
     } else {
         usuariosModel.userDelete(id).then(function (resultado) {
-            res.staus(200).json(resultado);
+            res.status(200).json(resultado);
         })
         .catch (function (err) {
-            console.log("Erro ao deletar o user: ", sqlMessage);
+            console.log("Erro ao deletar o user: ", err.sqlMessage);
             res.status(500).json(err.sqlMessage);
         })
     }
 }
 
 module.exports = {
-  userList,
-  userPut,
-  userPatch,
-  delete: userDelete,
+  list: userList,
+  put: userPut,
+  patch: userPatch,
+  delete: userDelete
 };

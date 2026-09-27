@@ -36,8 +36,8 @@ function userDelete(id) {
 }
 
 module.exports = {
-  userList,
-  userPut,
-  userPatch,
-  userDelete,
+  list: userList,
+  put: userPut,
+  patch: userPatch,
+  delete: userDelete,
 };
