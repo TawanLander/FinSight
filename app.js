@@ -24,5 +24,5 @@ app.use('/usuarios', usuariosRouter);
 app.use('/auth', require('./src/routes/authRouter'));
 
 app.listen(PORTA_APP, () => {
-    console.log("LIGOU");
+    console.log(`LIGOU e ta rodando em: http://localhost:${PORTA_APP}`);
 });

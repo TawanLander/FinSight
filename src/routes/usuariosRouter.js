@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const usuariosControler = require('../controllers/usuariosController');
+const autenticarToken = require('../middlewares/authMiddleware');
+
+router.use(autenticarToken);
 
 router.get('/list', (req, res) => {
     usuariosControler.list(req, res);
@@ -8,10 +11,6 @@ router.get('/list', (req, res) => {
 
 router.put('/update/:id', (req, res) => {
     usuariosControler.put(req, res);
-});
-
-router.patch('/update/:id', (req, res) => {
-    usuariosControler.patch(req, res);
 });
 
 router.delete('/delete/:id', (req, res) => {

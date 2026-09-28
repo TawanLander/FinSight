@@ -208,5 +208,28 @@
 .cartao-membro p {
   font-size: 0.85rem;
   color: var(--texto-suave);
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
+}
+
+.link-linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--cor-secundaria);
+  text-decoration: none;
+  transition: var(--transicao-suave);
+}
+
+.link-linkedin:hover {
+  color: var(--cor-primaria);
+  text-decoration: underline;
+}
+
+.link-linkedin svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
 }

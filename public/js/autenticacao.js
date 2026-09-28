@@ -91,7 +91,7 @@ async function logar(usuario) {
 
         const dados = await resposta.json();
         alert('Login efetuado com sucesso!');
-        window.location.href = '../index.html';
+        window.location.href = 'dashboard.html';
         return dados;
     } catch (erro) {
         console.error('Erro na requisição:', erro);
