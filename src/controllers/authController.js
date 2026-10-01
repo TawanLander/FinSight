@@ -12,40 +12,42 @@ const cookieBase = {
   sameSite: "lax",
 };
 
-function isEmailAndPasswordValid(email, senha) {
+function isEmailAndPasswordValid(email, password) {
   let emailValido = EMAIL_REGEX.test(email);
-  let senhaValida = SENHA_REGEX.test(senha);
+  let senhaValida = SENHA_REGEX.test(password);
 
   return emailValido && senhaValida;
 }
 
 async function login(req, res) {
   try {
-    const { email, senha } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !senha) {
-      return res.status(400).json({ error: "Email e senha são obrigatórios" });
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email e password são obrigatórios" });
     }
 
-    if (!isEmailAndPasswordValid(email, senha)) {
-      return res.status(400).json({ error: "Email ou senha inválidos" });
+    if (!isEmailAndPasswordValid(email, password)) {
+      return res.status(400).json({ error: "Email ou password inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "Email ou senha incorretos" });
+      return res.status(401).json({ error: "Email ou password incorretos" });
     }
 
-    const isMatch = await bcrypt.compare(senha, user.senha);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: "Email ou senha incorretos" });
+      return res.status(401).json({ error: "Email ou password incorretos" });
     }
 
-    const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id }, 
+      process.env.JWT_SECRET, {
       expiresIn: "15m",
     });
     const refreshToken = jwt.sign(
-      { id: user.id },
+      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id },
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: "7d", jwtid: crypto.randomUUID() },
     );
@@ -71,7 +73,7 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ user: { id: user.id, nome: user.nome, email: user.email } });
+    res.json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao fazer login" });
@@ -80,16 +82,16 @@ async function login(req, res) {
 
 async function register(req, res) {
   try {
-    const { nome, email, senha } = req.body;
+    const { name, email, password, enterprise_id } = req.body;
 
-    if (!email || !senha || !nome) {
+    if (!email || !password || !name || !enterprise_id) {
       return res
         .status(400)
-        .json({ error: "Nome, email e senha são obrigatórios" });
+        .json({ error: "Nome, email, password e enterprise_id são obrigatórios" });
     }
 
-    if (!isEmailAndPasswordValid(email, senha)) {
-      return res.status(400).json({ error: "Email ou senha inválidos" });
+    if (!isEmailAndPasswordValid(email, password)) {
+      return res.status(400).json({ error: "Email ou password inválidos" });
     }
 
     const existingUser = await authModel.findByEmail(email);
@@ -97,9 +99,9 @@ async function register(req, res) {
       return res.status(409).json({ error: "Erro ao registrar usuário" });
     }
 
-    const hashedPassword = await bcrypt.hash(senha, 10);
-    const user = await authModel.create({ nome, email, senha: hashedPassword });
-    res.status(201).json({ id: user.id, nome: user.nome, email: user.email });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await authModel.create({ name, email, password: hashedPassword, enterprise_id});
+    res.status(201).json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao registrar usuário" });
@@ -180,9 +182,9 @@ async function refreshToken(req, res) {
 
 async function forgotPassword(req, res) {
   try {
-    const { email, senha, codigo } = req.body;
-    if (!isEmailAndPasswordValid(email, senha)) {
-      return res.status(400).json({ error: "Email ou senha inválidos" });
+    const { email, password, code } = req.body;
+    if (!isEmailAndPasswordValid(email, password)) {
+      return res.status(400).json({ error: "Email ou password inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
@@ -190,24 +192,24 @@ async function forgotPassword(req, res) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    if (codigo != 123456) {
+    if (code != 123456) {
       return res.status(400).json({ error: "Código de verificação inválido" });
     }
 
-    const hashedPassword = await bcrypt.hash(senha, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const ok = await authModel.resetPasswordAndSessions(
       user.id,
       hashedPassword,
     );
     if (!ok) {
-      return res.status(500).json({ error: "Erro ao redefinir senha" });
+      return res.status(500).json({ error: "Erro ao redefinir password" });
     }
 
     res.status(200).json({ message: "Senha redefinida com sucesso" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao solicitar redefinição de senha" });
+    res.status(500).json({ error: "Erro ao solicitar redefinição de password" });
   }
 }
 
