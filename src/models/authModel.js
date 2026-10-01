@@ -1,7 +1,7 @@
 const db = require('../database/config');
 
 async function findByEmail(email) {
-    const rows = await db.executar('SELECT * FROM users WHERE email = ?', [email]);
+    const rows = await db.executar('SELECT * FROM usuario WHERE email = ?', [email]);
     if (!rows || rows.length === 0) {
         return false;
     }
@@ -10,12 +10,12 @@ async function findByEmail(email) {
 
 async function create(user) {
     const { nome, email, senha } = user;
-    const result = await db.executar('INSERT INTO users (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senha]);
+    const result = await db.executar('INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senha]);
     return { id: result.insertId, nome, email };
 }
 
 async function updatePassword(email, newPassword) {
-    const result = await db.executar('UPDATE users SET senha = ? WHERE email = ?', [newPassword, email]);
+    const result = await db.executar('UPDATE usuario SET senha = ? WHERE email = ?', [newPassword, email]);
     return result.affectedRows > 0;
 }
 
