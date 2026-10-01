@@ -9,11 +9,11 @@ router.get('/list', (req, res) => {
     usuariosControler.list(req, res);
 });
 
-router.put('/update/:id', (req, res) => {
+router.put('/:id', (req, res) => {
     usuariosControler.put(req, res);
 });
 
-router.delete('/delete/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     usuariosControler.delete(req, res);
 });
 

@@ -2,7 +2,7 @@ const db = require("../database/config");
 
 function userList() {
   const instrucaoSql = `
-    SELECT id, nome, email, perfil, fk_empresa FROM usuario;
+    SELECT id, nome, email, perfil_acesso, id_empresa FROM usuario;
     `;
 
   return db.executar(instrucaoSql);
@@ -10,18 +10,17 @@ function userList() {
 
 function userPut(id, nome, email, perfil) {
   const instrucaoSql = `
-    UPDATE usuario SET nome = ?, email = ?, perfil = ? WHERE id = ?;
+    UPDATE usuario SET nome = ?, email = ?, perfil_acesso = ? WHERE id = ?;
     `;
 
   return db.executar(instrucaoSql, [nome, email, perfil, id]);
 }
 
-function userDelete(id) {
-  const instrucaoSql = `
-    DELETE FROM usuario WHERE id = ?;
-    `;
-
-  return db.executar(instrucaoSql, [id]);
+async function userDelete(id) {
+  return db.executarTransacao(async function (query) {
+    await query("DELETE FROM token WHERE id_usuario = ?", [id]);
+    return query("DELETE FROM usuario WHERE id = ?", [id]);
+  });
 }
 
 module.exports = {

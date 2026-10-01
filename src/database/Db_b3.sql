@@ -22,6 +22,17 @@ CREATE TABLE usuario (
         REFERENCES empresa(id)
 ) ;
 
+CREATE TABLE token (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    token VARCHAR(1000),
+    data_expiracao DATETIME,
+
+    CONSTRAINT fk_token_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES usuario(id)
+);
+
 CREATE TABLE preferencias_usuario (
     id_usuario INT PRIMARY KEY,
     tema_preferencia TINYINT(1),
@@ -93,3 +104,4 @@ CREATE TABLE cotacao_historico (
         FOREIGN KEY (id_tickets)
         REFERENCES tickets(id)
 );
+

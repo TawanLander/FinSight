@@ -36,21 +36,13 @@ async function login(req, res) {
       return res.status(401).json({ error: "Email ou password incorretos" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.senha);
     if (!isMatch) {
       return res.status(401).json({ error: "Email ou password incorretos" });
     }
 
-    const accessToken = jwt.sign(
-      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id }, 
-      process.env.JWT_SECRET, {
-      expiresIn: "15m",
-    });
-    const refreshToken = jwt.sign(
-      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d", jwtid: crypto.randomUUID() },
-    );
+    const accessToken = signAccessToken(user);
+    const refreshToken = signRefreshToken(user);
 
     const setupToken = await authModel.saveToken(
       refreshToken,
@@ -58,9 +50,7 @@ async function login(req, res) {
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
     if (!setupToken) {
-      return res
-        .status(500)
-        .json({ error: "Erro ao salvar token de atualização" });
+      return res.status(500).json({ error: "Erro ao salvar token de atualização" });
     }
 
     res.cookie("accessToken", accessToken, {
@@ -73,7 +63,7 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ id: user.id, name: user.name, email: user.email });
+    res.json({ id: user.id, name: user.nome, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao fazer login" });
@@ -145,19 +135,18 @@ async function refreshToken(req, res) {
       return res.status(401).json({ error: "Token inválido ou expirado" });
     }
 
-    const accessToken = jwt.sign({ id: payload.id }, process.env.JWT_SECRET, {
-      expiresIn: "15m",
-    });
-    const newRefreshToken = jwt.sign(
-      { id: payload.id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d", jwtid: crypto.randomUUID() },
-    );
+    const user = await authModel.findById(payload.id);
+    if (!user) {
+      return res.status(401).json({ error: "Token inválido ou expirado" });
+    }
+
+    const accessToken = signAccessToken(user);
+    const newRefreshToken = signRefreshToken(user);
 
     const rotated = await authModel.rotateToken(
       token,
       newRefreshToken,
-      payload.id,
+      user.id,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
     if (!rotated) {
@@ -211,6 +200,22 @@ async function forgotPassword(req, res) {
     console.error(error);
     res.status(500).json({ error: "Erro ao solicitar redefinição de password" });
   }
+}
+
+function signAccessToken(user) {
+  return jwt.sign(
+    { id: user.id, name: user.nome, email: user.email, enterprise_id: user.id_empresa },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" },
+  );
+}
+
+function signRefreshToken(user) {
+  return jwt.sign(
+    { id: user.id },
+    process.env.JWT_REFRESH_SECRET,
+    { expiresIn: "7d", jwtid: crypto.randomUUID() },
+  );
 }
 
 module.exports = {
