@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "migrate": "flyway -c flyway.json migrate",
     "dev": "nodemon --exec node app.js"
   },
   "author": "Feito pelos desenvolvedores @ São Paulo Tech School / Bandtec Digital School",
@@ -15,8 +16,10 @@
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.17.1",
+    "flyway": "^0.1.9",
     "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.9.4",
+    "mysql2": "^3.24.4",
+    "node-flywaydb": "^3.0.7",
     "nodemon": "^2.0.7",
     "path": "^0.12.7"
   }

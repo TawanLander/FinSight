@@ -9,13 +9,13 @@ async function findByEmail(email) {
 }
 
 async function create(user) {
-    const { nome, email, senha } = user;
-    const result = await db.executar('INSERT INTO users (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senha]);
-    return { id: result.insertId, nome, email };
+    const { name, email, password, enterprise_id } = user;
+    const result = await db.executar('INSERT INTO users (name, email, password, enterprise_id) VALUES (?, ?, ?, ?)', [name, email, password, enterprise_id]);
+    return { id: result.insertId, name, email, enterprise_id };
 }
 
 async function updatePassword(email, newPassword) {
-    const result = await db.executar('UPDATE users SET senha = ? WHERE email = ?', [newPassword, email]);
+    const result = await db.executar('UPDATE users SET password = ? WHERE email = ?', [newPassword, email]);
     return result.affectedRows > 0;
 }
 
@@ -57,7 +57,7 @@ async function deleteToken(token) {
 async function resetPasswordAndSessions(userId, hashedPassword) {
     try {
         await db.executarTransacao(async function (query) {
-            var resultado = await query('UPDATE users SET senha = ? WHERE id = ?', [hashedPassword, userId]);
+            var resultado = await query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId]);
             if (resultado.affectedRows !== 1) {
                 throw new Error('Usuário não encontrado');
             }
@@ -66,7 +66,7 @@ async function resetPasswordAndSessions(userId, hashedPassword) {
         });
         return true;
     } catch (error) {
-        console.error('Erro ao redefinir senha:', error);
+        console.error('Erro ao redefinir password:', error);
         return false;
     }
 }

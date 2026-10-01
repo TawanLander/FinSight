@@ -35,4 +35,22 @@ router.get("/perfil", function (req, res) {
     res.sendFile(path.join(__dirname, "../../public/html/perfil.html"));
 });
 
+
+
+// Rotas para verificar a vida do node! Retirar em produção
+router.get("/vida", function (req, res) {
+   res.send({mensagem: "Hello World"})
+});
+
+router.get("/vida-banco", function (req, res) {
+    const bd = require("../database/config");
+    const instrucao = "SELECT * FROM usuarios";
+    bd.executar(instrucao).then((resultados) => {
+        res.json(resultados);
+    }).catch((erro) => {
+        console.error(erro);
+        res.status(500).json({ erro: 'Erro ao listar empresas' });
+    });
+});
+
 module.exports = router;
