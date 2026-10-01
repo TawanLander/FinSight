@@ -1,7 +1,7 @@
 const db = require('../database/config');
 
 async function findByEmail(email) {
-    const rows = await db.executar('SELECT * FROM users WHERE email = ?', [email]);
+    const rows = await db.executar('SELECT * FROM usuario WHERE email = ?', [email]);
     if (!rows || rows.length === 0) {
         return false;
     }
