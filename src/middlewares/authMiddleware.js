@@ -17,4 +17,26 @@ function autenticarToken(req, res, next) {
   }
 }
 
-module.exports = autenticarToken;
+function autenticarRefreshToken(req, res, next) {
+  const token = req.cookies?.refreshToken;
+
+  if (!token) {
+    return res.status(400).json({ error: "Token é obrigatório" });
+  }
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET, {
+      algorithms: ["HS256"],
+    });
+    req.refreshToken = token;
+    req.refreshPayload = payload;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Token inválido ou expirado" });
+  }
+}
+
+module.exports = {
+  autenticarToken,
+  autenticarRefreshToken,
+};
