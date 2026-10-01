@@ -44,7 +44,7 @@ router.get("/vida", function (req, res) {
 
 router.get("/vida-banco", function (req, res) {
     const bd = require("../database/config");
-    const instrucao = "SELECT * FROM usuarios";
+    const instrucao = "SELECT * FROM usuario";
     bd.executar(instrucao).then((resultados) => {
         res.json(resultados);
     }).catch((erro) => {

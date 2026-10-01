@@ -29,8 +29,8 @@ function userPut(req, res) {
         res.status(400).send("O perfil está undefined!");
     } else {
         usuariosModel.userPut(id, nome, email, perfil)
-            .then(function (resultado) {
-                res.status(200).json(resultado);
+            .then(function (x) {
+                res.status(204).send();
             })
             .catch(function (err) {
                 console.log("Erro ao tentar atualizar o user: ", err.sqlMessage || err.message);
@@ -47,7 +47,7 @@ function userDelete(req, res) {
         res.status(400).send("O id do user ta undefined");
     } else {
         usuariosModel.userDelete(id).then(function (resultado) {
-            res.status(200).json(resultado);
+            res.status(204).send();
         })
         .catch (function (err) {
             console.log("Erro ao deletar o user: ", err.sqlMessage || err.message);

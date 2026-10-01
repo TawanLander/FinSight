@@ -25,5 +25,5 @@ app.use('/auth', require('./src/routes/authRouter'));
 app.use('/empresa', require('./src/routes/empresaRouter'));
 
 app.listen(PORTA_APP, () => {
-    console.log(`LIGOU e ta rodando em: http://localhost:${PORTA_APP}`);
+    console.log(`LIGÔ i tah rodanu ein: http://localhost:${PORTA_APP}`);
 });
