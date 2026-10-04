@@ -104,10 +104,6 @@
   resize: vertical;
 }
 
-.btn-bloco {
-  width: 100%;
-}
-
 /* RESPONSIVO (telas pequenas, celular) */
 
 @media (max-width: 37.5rem) {
