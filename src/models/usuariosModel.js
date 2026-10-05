@@ -1,34 +1,38 @@
-const db = require("../database/config");
+const bd = require('../database/config');
 
-function userList() {
-  const instrucaoSql = `
-    SELECT id, nome, email, perfil, fk_empresa FROM usuario;
-    `;
-
-  return db.executar(instrucaoSql);
+async function listar(idEmpresa) {
+    const instrucao = 'SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular, salario FROM usuario WHERE id_empresa = ?;';
+    return await bd.executar(instrucao, [idEmpresa]);
 }
 
-function userPut(id, nome, email, perfil) {
-  const instrucaoSql = `
-    UPDATE usuario SET nome = ?, email = ?, perfil = ? WHERE id = ?;
+async function cadastrar({ nome, email, senha, cargo, cpf, celular, salario, idEmpresa }) {
+    const instrucao = `
+        INSERT INTO usuario (nome, email, senha, perfil_acesso, cpf, celular, salario, id_empresa) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     `;
-
-  return db.executar(instrucaoSql, [nome, email, perfil, id]);
+    const resultado = await bd.executar(instrucao, [nome, email, senha, cargo, cpf, celular, salario, idEmpresa]);
+    return resultado.insertId;
 }
 
-function userDelete(id) {
-  const instrucaoSql = `
-    DELETE FROM usuario WHERE id = ?;
+async function atualizar(id, { nome, email, cargo, cpf, celular, salario }) {
+    const instrucao = `
+        UPDATE usuario 
+        SET nome = ?, email = ?, perfil_acesso = ?, cpf = ?, celular = ?, salario = ? 
+        WHERE id = ?;
     `;
+    const resultado = await bd.executar(instrucao, [nome, email, cargo, cpf, celular, salario, id]);
+    return resultado.affectedRows;
+}
 
-  return db.executar(instrucaoSql, [id]);
+async function deletar(id) {
+    const instrucao = 'DELETE FROM usuario WHERE id = ?;';
+    const resultado = await bd.executar(instrucao, [id]);
+    return resultado.affectedRows;
 }
 
 module.exports = {
-  list: userList,
-  put: userPut,
-  delete: userDelete,
-  userList,
-  userPut,
-  userDelete
+    listar,
+    cadastrar,
+    atualizar,
+    deletar
 };

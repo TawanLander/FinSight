@@ -1,38 +1,3 @@
-.conteudo-principal {
-  flex: 1;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 32px 40px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.barra-superior {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.titulo-pagina {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-  color: var(--texto-principal);
-}
-
-.subtitulo-pagina {
-  font-size: 0.92rem;
-  color: var(--texto-secundario);
-  margin: 0;
-}
-
-/* ============================================================
-   PAINEL DE CADASTRO DE NOVO COLABORADOR
-   ============================================================ */
 .painel-conteudo {
   background-color: var(--fundo-cartao);
   border: 1px solid var(--cor-borda);
@@ -40,7 +5,6 @@
   padding: 24px 28px;
   margin-bottom: 28px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: var(--transicao-suave);
 }
 
 .cabecalho-painel {
@@ -54,14 +18,27 @@
 
 .titulo-painel {
   font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--texto-principal);
   margin: 0;
+}
+
+.btn-fechar-painel {
+  background: none;
+  border: none;
+  color: var(--texto-suave);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: var(--transicao-suave);
+}
+
+.btn-fechar-painel:hover {
+  color: var(--texto-principal);
 }
 
 .grade-campos {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -75,31 +52,29 @@
 .rotulo-campo {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--texto-principal);
 }
 
-.campo-texto {
+.campo-texto,
+.campo-busca-colaborador {
   width: 100%;
   background-color: var(--fundo-campo);
   border: 1px solid var(--cor-borda);
   color: var(--texto-principal);
   border-radius: var(--arredondamento-pequeno);
   padding: 10px 12px;
-  font-family: inherit;
   font-size: 0.9rem;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.campo-texto:focus {
+.campo-texto:focus,
+.campo-busca-colaborador:focus {
   outline: none;
   border-color: var(--cor-secundaria);
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
 }
 
-.campo-texto::placeholder {
+.campo-texto::placeholder,
+.campo-busca-colaborador::placeholder {
   color: var(--texto-suave);
 }
 
@@ -142,31 +117,14 @@
 }
 
 .campo-busca-colaborador {
-  width: 100%;
-  background-color: var(--fundo-campo);
-  border: 1px solid var(--cor-borda);
-  color: var(--texto-principal);
-  border-radius: var(--arredondamento-pequeno);
-  padding: 10px 14px 10px 40px;
-  font-family: inherit;
-  font-size: 0.92rem;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-  box-sizing: border-box;
-
-  .campo-busca-colaborador::placeholder,
-  .campo-busca-colaborador:focus {
-    color: var(--texto-suave);
-    border-color: var(--cor-secundaria);
-  }
+  padding-left: 40px;
 }
 
 .emblema-contador {
   color: var(--cor-secundaria);
   font-weight: 700;
   padding: 4px 12px;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
 }
 
 .lista-colaboradores {
@@ -187,40 +145,32 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  transition: var(--transicao-suave);
-  width: 100%;
-  box-sizing: border-box;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .cartao-colaborador:hover {
   border-color: rgba(6, 182, 212, 0.45);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
-/* Bloco 1: Avatar + Nome + Cargo + Setor */
 .bloco-perfil {
   display: flex;
   align-items: center;
   gap: 16px;
-  min-width: 280px;
+  min-width: 240px;
 }
 
 .avatar-colaborador {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--cor-primaria),
-    var(--cor-secundaria)
-  );
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
   box-shadow: 0 4px 10px rgba(6, 182, 212, 0.25);
 }
@@ -228,22 +178,12 @@
 .dados-colaborador {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .nome-colaborador {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--texto-principal);
+  font-size: 1.05rem;
   margin: 0;
-  line-height: 1.2;
-}
-
-.cargos-tags {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 
 .cargo-colaborador {
@@ -252,26 +192,26 @@
   font-weight: 600;
 }
 
-/* Bloco 2: Informações de contato e data distribuídas */
 .bloco-informacoes {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 20px;
   flex: 1;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .rotulo-info {
   font-size: 0.72rem;
   color: var(--texto-suave);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   font-weight: 600;
 }
 
@@ -282,33 +222,16 @@
   white-space: nowrap;
 }
 
-/* Bloco 3: Status e Ações */
 .bloco-acoes {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
+  gap: 10px;
 }
 
-.emblema-status {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-.status-sucesso {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: var(--cor-sucesso);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
+.btn-editar-card,
 .btn-remover-card {
   background-color: transparent;
   border: 1px solid var(--cor-borda);
-  color: var(--texto-secundario);
   padding: 6px 12px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -317,8 +240,30 @@
   transition: var(--transicao-suave);
 }
 
+.btn-editar-card {
+  color: var(--cor-secundaria);
+}
+
+.btn-editar-card:hover {
+  border-color: var(--cor-secundaria);
+  background-color: rgba(6, 182, 212, 0.1);
+}
+
+.btn-remover-card {
+  color: var(--texto-secundario);
+}
+
 .btn-remover-card:hover {
   border-color: var(--cor-perigo);
   color: var(--cor-perigo);
   background-color: rgba(239, 68, 68, 0.1);
+}
+
+.estado-vazio {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--texto-secundario);
+  background-color: var(--fundo-cartao);
+  border: 1px dashed var(--cor-borda);
+  border-radius: var(--arredondamento-pequeno);
 }

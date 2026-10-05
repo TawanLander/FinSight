@@ -7,9 +7,10 @@
   <title>FinSight | Colaboradores</title>
   <link rel="icon" href="../assets/ico/logo-transparente.png">
   <link rel="stylesheet" href="../css/style-geral.css">
-  <link rel="stylesheet" href="../css/nav-lateral-geral.css">
   <link rel="stylesheet" href="../css/pos-login/colaboradores.css">
   <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="../js/colaboradores.js"></script>
 </head>
 
 <body>
@@ -78,8 +79,56 @@
           <h1 class="titulo-pagina">Colaboradores</h1>
           <p class="subtitulo-pagina">Consulte e gerencie os colaboradores cadastrados no banco de dados da empresa.</p>
         </div>
-        <a href="envio.html" class="btn btn-primario btn-pequeno">Cadastrar colaborador</a>
+        <button type="button" class="btn btn-primario btn-pequeno" onclick="abrirCadastro()">+ Cadastrar colaborador</button>
       </div>
+
+      <section id="painel-cadastro" class="painel-conteudo" style="display: none;">
+        <div class="cabecalho-painel">
+          <h2 id="titulo-painel-form" class="titulo-painel">Novo Colaborador</h2>
+          <button type="button" class="btn-fechar-painel" onclick="fecharPainelCadastro()" title="Fechar">✕</button>
+        </div>
+        <form id="form-colaborador" onsubmit="event.preventDefault(); salvarColaborador();">
+          <input type="hidden" id="colab-id">
+          <div class="grade-campos">
+            <div class="grupo-campo">
+              <label for="colab-nome" class="rotulo-campo">Nome Completo</label>
+              <input type="text" id="colab-nome" class="campo-texto" placeholder="Ex: Carlos Silva" required>
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-email" class="rotulo-campo">E-mail</label>
+              <input type="email" id="colab-email" class="campo-texto" placeholder="carlos@empresa.com" required>
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-cargo" class="rotulo-campo">Cargo / Perfil</label>
+              <select id="colab-cargo" class="campo-texto" required>
+                <option value="Leitor">Leitor</option>
+                <option value="Analista">Analista</option>
+                <option value="Administrador">Administrador</option>
+              </select>
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-cpf" class="rotulo-campo">CPF</label>
+              <input type="text" id="colab-cpf" class="campo-texto" placeholder="000.000.000-00">
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-celular" class="rotulo-campo">Celular</label>
+              <input type="tel" id="colab-celular" class="campo-texto" placeholder="(11) 90000-0000">
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-nascimento" class="rotulo-campo">Data de Nascimento</label>
+              <input type="date" id="colab-nascimento" class="campo-texto">
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-salario" class="rotulo-campo">Salário (R$)</label>
+              <input type="number" id="colab-salario" class="campo-texto" placeholder="Ex: 4500.00" step="0.01" min="0">
+            </div>
+          </div>
+          <div class="acoes-formulario">
+            <button type="button" class="btn btn-vazado" onclick="fecharPainelCadastro()">Cancelar</button>
+            <button type="submit" id="btn-submit-colaborador" class="btn btn-primario">Salvar Colaborador</button>
+          </div>
+        </form>
+      </section>
 
       <section class="barra-filtros">
         <div class="campo-busca-conteiner">
@@ -101,8 +150,6 @@
 
     </main>
   </div>
-
-  </main>
 
 </body>
 
