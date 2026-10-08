@@ -21,10 +21,10 @@
   overflow: hidden;
   box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.4);
   transition: var(--transicao-suave);
+}
 
-  .cartao-autenticacao:hover {
-    border-color: rgba(6, 182, 212, 0.35);
-  }
+.cartao-autenticacao:hover {
+  border-color: rgba(6, 182, 212, 0.35);
 }
 
 .lado-institucional {
@@ -40,36 +40,36 @@
   );
   border-right: 1px solid var(--cor-borda);
   position: relative;
+}
 
-  .frase-destaque-institucional {
-    font-size: 1.65rem;
-    line-height: 1.35;
-    font-weight: 700;
-    color: var(--texto-principal);
-    margin-bottom: 16px;
-    letter-spacing: -0.01em;
-  }
+.frase-destaque-institucional {
+  font-size: 1.65rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
 
-  .small-voltar-content {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-  }
+.small-voltar-content {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
 
-  .small-voltar a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--texto-secundario);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: opacity 0.2s ease;
-  }
+.small-voltar a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--texto-secundario);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.2s ease;
+}
 
-  .small-voltar a:hover {
-    opacity: 0.7;
-  }
+.small-voltar a:hover {
+  opacity: 0.7;
 }
 
 [data-tema="claro"] .lado-institucional {
@@ -85,10 +85,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
 
-  .caixa-formulario {
-    transition: var(--transicao-suave);
-  }
+.caixa-formulario {
+  transition: var(--transicao-suave);
 }
 
 .cabecalho-formulario {
@@ -149,10 +149,7 @@
   padding: 12px 14px;
   font-family: inherit;
   font-size: 0.95rem;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .campo-texto:focus {
@@ -184,4 +181,18 @@
 
 .link-alternar:hover {
   color: var(--cor-primaria);
+}
+
+@media (max-width: 768px) {
+  .cartao-autenticacao {
+    grid-template-columns: 1fr;
+  }
+
+  .lado-institucional {
+    display: none;
+  }
+
+  .lado-formulario {
+    padding: 32px 24px;
+  }
 }
