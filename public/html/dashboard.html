@@ -7,15 +7,16 @@
   <title>FinSight | Dashboard</title>
   <link rel="icon" href="../assets/ico/logo-transparente.png">
   <link rel="stylesheet" href="../css/style-geral.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/pos-login/dashboard.css">
   <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
 </head>
 
 <body>
 
   <div class="estrutura-painel">
 
-  <section class="barra-lateral">
+    <section class="barra-lateral">
       <div>
         <a href="../index.html" class="marca-painel">
           <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
@@ -31,25 +32,25 @@
         </div>
 
         <nav class="navegacao-painel">
-          <a href="dashboard.html" class="link-painel">
+          <a href="dashboard.html" class="link-painel ativo">
             <span></span>
-           Dashboard
+            Dashboard
           </a>
           <a href="envio.html" class="link-painel">
             <span></span>
-           Enviar planilhas
+            Enviar planilhas
           </a>
           <a href="historico.html" class="link-painel">
             <span></span>
-           Histórico
+            Histórico
           </a>
-          <a href="colaboradores.html" class="link-painel ativo">
+          <a href="colaboradores.html" class="link-painel">
             <span></span>
-           Colaboradores
+            Colaboradores
           </a>
           <a href="perfil.html" class="link-painel">
             <span></span>
-           Perfil
+            Perfil
           </a>
         </nav>
       </div>
@@ -138,31 +139,6 @@
         </div>
       </div>
 
-      <div class="painel-conteudo">
-        <div class="cabecalho-painel">
-          <h2 class="titulo-painel">Ranking de risco da carteira</h2>
-          <span class="dica-painel">Ordenado por volatilidade</span>
-        </div>
-
-        <div class="conteiner-tabela">
-          <table class="tabela-dados">
-            <thead>
-              <tr>
-                <th>Ativo</th>
-                <th>Categoria</th>
-                <th>Volatilidade</th>
-                <th>Drawdown</th>
-                <th>Retorno</th>
-              </tr>
-            </thead>
-            <tbody id="risk-table-body">
-              <tr class="linha-vazia">
-                <td colspan="5">Nenhum dado carregado ainda.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
 
       <div class="grade-graficos">
         <div class="painel-conteudo">
