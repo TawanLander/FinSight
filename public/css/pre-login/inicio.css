@@ -1,4 +1,3 @@
-/* HERO (seção de destaque com vídeo de fundo) */
 .secao-destaque {
   position: relative;
   overflow: hidden;
@@ -75,8 +74,6 @@
   gap: 1rem;
 }
 
-/* CARDS "COMO FUNCIONA" (grade de 3 colunas) */
-
 .grade-tres-colunas {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -118,8 +115,6 @@
   font-size: 0.95rem;
   margin-bottom: 0;
 }
-
-/* PRÉVIA DO DASHBOARD (bloco com foto de fundo) */
 
 .secao-previa-dashboard {
   position: relative;

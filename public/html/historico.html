@@ -7,15 +7,17 @@
   <title>FinSight | Histórico</title>
   <link rel="icon" href="../assets/ico/logo-transparente.png">
   <link rel="stylesheet" href="../css/style-geral.css">
-  <link rel="stylesheet" href="../css/historico.css">
+  <link rel="stylesheet" href="../css/pos-login/historico.css">
   <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="../js/historico.js"></script>
 </head>
 
 <body>
 
   <div class="estrutura-painel">
 
-    <aside class="barra-lateral">
+    <section class="barra-lateral">
       <div>
         <a href="../index.html" class="marca-painel">
           <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
@@ -32,19 +34,23 @@
 
         <nav class="navegacao-painel">
           <a href="dashboard.html" class="link-painel">
-            <span class="ponto-indicador"></span>
+            <span></span>
             Dashboard
           </a>
           <a href="envio.html" class="link-painel">
-            <span class="ponto-indicador"></span>
-            Envio de arquivos
+            <span></span>
+            Enviar planilhas
           </a>
           <a href="historico.html" class="link-painel ativo">
-            <span class="ponto-indicador"></span>
+            <span></span>
             Histórico
           </a>
+          <a href="colaboradores.html" class="link-painel">
+            <span></span>
+            Colaboradores
+          </a>
           <a href="perfil.html" class="link-painel">
-            <span class="ponto-indicador"></span>
+            <span></span>
             Perfil
           </a>
         </nav>
@@ -64,146 +70,41 @@
           </svg>
         </button>
       </div>
-    </aside>
+    </section>
 
     <main class="conteudo-principal">
 
       <div class="barra-superior">
         <div>
-          <h1 class="titulo-pagina">Histórico consolidado de arquivos</h1>
-          <p class="subtitulo-pagina">Todos os envios realizados pela sua empresa.</p>
+          <h1 class="titulo-pagina">Histórico de arquivos</h1>
+          <p class="subtitulo-pagina">Consulte os arquivos enviados por você.</p>
         </div>
       </div>
 
       <div class="barra-filtros">
-        <div class="item-filtro">
-          <label for="status" class="rotulo-filtro">Status</label>
-          <select id="status" class="seletor-filtro">
-            <option>Todos</option>
-            <option>Ativo</option>
-            <option>Pendente</option>
-          </select>
-        </div>
-
-        <div class="item-filtro">
-          <label for="enviado-por" class="rotulo-filtro">Enviado por</label>
-          <select id="enviado-por" class="seletor-filtro">
-            <option>Todos</option>
-            <option>Paola</option>
-            <option>Filgueiras</option>
-          </select>
-        </div>
-
-        <div class="item-filtro item-filtro-busca">
+        <div class="item-filtro-busca">
           <label for="campo-busca" class="rotulo-filtro">Buscar arquivo</label>
-          <input type="text" id="campo-busca" class="campo-busca" placeholder="Digite o nome do arquivo…">
+          <div class="grupo-busca">
+            <input type="text" id="campo-busca" class="campo-busca" placeholder="Digite o nome do arquivo…" onkeyup="if(event.key === 'Enter') buscarArquivo()">
+            <button type="button" class="btn btn-primario" onclick="buscarArquivo()">Buscar</button>
+          </div>
         </div>
       </div>
 
       <div class="painel-conteudo">
         <div class="conteiner-tabela">
-          <table class="tabela-dados">
+          <table class="tabela-dados" id="tabela-historico">
             <thead>
               <tr>
                 <th>Nome</th>
                 <th>Data</th>
-                <th>Enviado por</th>
-                <th>Status</th>
                 <th>Ações</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="item-arquivo">
-                    <span class="icone-extensao">XLS</span>
-                    <span>asdasd.xlsx</span>
-                  </div>
-                </td>
-                <td>26/03/2026</td>
-                <td>Paola</td>
-                <td><span class="emblema-status status-sucesso">Ativo</span></td>
-                <td>
-                  <div class="acoes-linha">
-                    <a href="#" class="link-acao">Baixar</a>
-                    <a href="#" class="link-acao">Editar</a>
-                    <a href="#" class="link-acao link-perigo">Remover</a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="item-arquivo">
-                    <span class="icone-extensao">XLS</span>
-                    <span>brwiona.xls</span>
-                  </div>
-                </td>
-                <td>25/05/2026</td>
-                <td>Filgueiras</td>
-                <td><span class="emblema-status status-alerta">Pendente</span></td>
-                <td>
-                  <div class="acoes-linha">
-                    <a href="#" class="link-acao">Baixar</a>
-                    <a href="#" class="link-acao">Editar</a>
-                    <a href="#" class="link-acao link-perigo">Remover</a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="item-arquivo">
-                    <span class="icone-extensao">CSV</span>
-                    <span>carteira_junho.csv</span>
-                  </div>
-                </td>
-                <td>02/06/2026</td>
-                <td>Nicoly</td>
-                <td><span class="emblema-status status-sucesso">Ativo</span></td>
-                <td>
-                  <div class="acoes-linha">
-                    <a href="#" class="link-acao">Baixar</a>
-                    <a href="#" class="link-acao">Editar</a>
-                    <a href="#" class="link-acao link-perigo">Remover</a>
-                  </div>
-                </td>
-              </tr>
+            <tbody id="corpo-tabela-historico">
             </tbody>
           </table>
         </div>
-      </div>
-
-      <div class="painel-conteudo">
-        <div class="cabecalho-painel">
-          <h2 class="titulo-painel">Editar arquivo</h2>
-          <span class="destaque-painel">asdasd.xlsx</span>
-        </div>
-        <form action="#" method="post">
-          <div class="grade-campos">
-            <div class="grupo-campo">
-              <label for="e-nome" class="rotulo-campo">Nome</label>
-              <input type="text" id="e-nome" class="campo-texto" value="asdasd.xlsx">
-            </div>
-            <div class="grupo-campo">
-              <label for="e-data" class="rotulo-campo">Data</label>
-              <input type="text" id="e-data" class="campo-texto" value="26/03/2026">
-            </div>
-            <div class="grupo-campo">
-              <label for="e-enviado" class="rotulo-campo">Enviado por</label>
-              <input type="text" id="e-enviado" class="campo-texto" value="Paola">
-            </div>
-            <div class="grupo-campo">
-              <label for="e-status" class="rotulo-campo">Status</label>
-              <select id="e-status" class="campo-texto">
-                <option selected>Ativo</option>
-                <option>Pendente</option>
-              </select>
-            </div>
-          </div>
-          <div class="acoes-formulario">
-            <button type="submit" class="btn btn-primario">Salvar alterações</button>
-            <button type="button" class="btn btn-vazado">Cancelar</button>
-          </div>
-        </form>
       </div>
 
     </main>

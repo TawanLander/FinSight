@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinSight | Colaboradores</title>
+  <link rel="icon" href="../assets/ico/logo-transparente.png">
+  <link rel="stylesheet" href="../css/style-geral.css">
+  <link rel="stylesheet" href="../css/pos-login/colaboradores.css">
+  <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="../js/colaboradores.js"></script>
+</head>
+
+<body>
+
+  <div class="estrutura-painel">
+
+    <section class="barra-lateral">
+      <div>
+        <a href="../index.html" class="marca-painel">
+          <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
+          <span>FinSight</span>
+        </a>
+
+        <div class="usuario-painel">
+          <div class="avatar-usuario">F</div>
+          <div class="dados-usuario">
+            <div class="nome-usuario">Fernanda</div>
+            <div class="cargo-usuario">Leitor</div>
+          </div>
+        </div>
+
+        <nav class="navegacao-painel">
+          <a href="dashboard.html" class="link-painel">
+            <span></span>
+           Dashboard
+          </a>
+          <a href="envio.html" class="link-painel">
+            <span></span>
+           Enviar planilhas
+          </a>
+          <a href="historico.html" class="link-painel">
+            <span></span>
+           Histórico
+          </a>
+          <a href="colaboradores.html" class="link-painel ativo">
+            <span></span>
+           Colaboradores
+          </a>
+          <a href="perfil.html" class="link-painel">
+            <span></span>
+           Perfil
+          </a>
+        </nav>
+      </div>
+
+      <div class="rodape-barra-lateral">
+        <a href="../index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
+          aria-label="Alternar tema claro e escuro">
+          <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+          </svg>
+          <svg class="icone-lua bi bi-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <main class="conteudo-principal">
+
+      <div class="barra-superior">
+        <div>
+          <h1 class="titulo-pagina">Colaboradores</h1>
+          <p class="subtitulo-pagina">Consulte e gerencie os colaboradores cadastrados no banco de dados da empresa.</p>
+        </div>
+        <button type="button" id="btn-adicionar-colaborador" class="btn btn-primario btn-pequeno" onclick="abrirCadastro()" style="display: none;">+ Cadastrar colaborador</button>
+      </div>
+
+      <section id="painel-cadastro" class="painel-conteudo" style="display: none;">
+        <div class="cabecalho-painel">
+          <h2 id="titulo-painel-form" class="titulo-painel">Novo Colaborador</h2>
+          <button type="button" class="btn-fechar-painel" onclick="fecharPainelCadastro()" title="Fechar">✕</button>
+        </div>
+        <form id="form-colaborador" onsubmit="event.preventDefault(); salvarColaborador();">
+          <input type="hidden" id="colab-id">
+          <div class="grade-campos">
+            <div class="grupo-campo">
+              <label for="colab-nome" class="rotulo-campo">Nome Completo</label>
+              <input type="text" id="colab-nome" class="campo-texto" placeholder="Ex: Carlos Silva" required>
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-email" class="rotulo-campo">E-mail</label>
+              <input type="email" id="colab-email" class="campo-texto" placeholder="carlos@empresa.com" required>
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-cargo" class="rotulo-campo">Cargo / Perfil</label>
+              <select id="colab-cargo" class="campo-texto" required>
+                <option value="Leitor">Leitor</option>
+                <option value="Analista">Analista</option>
+                <option value="Administrador">Administrador</option>
+              </select>
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-cpf" class="rotulo-campo">CPF</label>
+              <input type="text" id="colab-cpf" class="campo-texto" placeholder="000.000.000-00">
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-celular" class="rotulo-campo">Celular</label>
+              <input type="tel" id="colab-celular" class="campo-texto" placeholder="(11) 90000-0000">
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-nascimento" class="rotulo-campo">Data de Nascimento</label>
+              <input type="date" id="colab-nascimento" class="campo-texto">
+            </div>
+            <div class="grupo-campo">
+              <label for="colab-salario" class="rotulo-campo">Salário (R$)</label>
+              <input type="number" id="colab-salario" class="campo-texto" placeholder="Ex: 4500.00" step="0.01" min="0">
+            </div>
+          </div>
+          <div class="acoes-formulario">
+            <button type="button" class="btn btn-vazado" onclick="fecharPainelCadastro()">Cancelar</button>
+            <button type="submit" id="btn-submit-colaborador" class="btn btn-primario">Salvar Colaborador</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="barra-filtros">
+        <div class="campo-busca-conteiner">
+          <svg class="icone-busca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+          </svg>
+          <input type="search" id="campo-busca" class="campo-busca-colaborador"
+            placeholder="Buscar colaborador por nome…" oninput="buscarColaborador()" autocomplete="off">
+        </div>
+
+        <span>Total cadastrados:</span>
+        <span id="contador-colaboradores" class="emblema-contador">0 colaboradores</span>
+      </section>
+
+      <div id="lista-colaboradores" class="lista-colaboradores"></div>
+
+    </main>
+  </div>
+
+</body>
+
+</html>

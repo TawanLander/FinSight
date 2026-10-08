@@ -7,15 +7,17 @@
   <title>FinSight | Perfil</title>
   <link rel="icon" href="../assets/ico/logo-transparente.png">
   <link rel="stylesheet" href="../css/style-geral.css">
-  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../css/pos-login/perfil.css">
   <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="../js/perfil.js"></script>
 </head>
 
 <body>
 
   <div class="estrutura-painel">
 
-    <aside class="barra-lateral">
+    <section class="barra-lateral">
       <div>
         <a href="../index.html" class="marca-painel">
           <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
@@ -32,19 +34,23 @@
 
         <nav class="navegacao-painel">
           <a href="dashboard.html" class="link-painel">
-            <span class="ponto-indicador"></span>
+            <span></span>
             Dashboard
           </a>
           <a href="envio.html" class="link-painel">
-            <span class="ponto-indicador"></span>
-            Envio de arquivos
+            <span></span>
+            Enviar planilhas
           </a>
           <a href="historico.html" class="link-painel">
-            <span class="ponto-indicador"></span>
+            <span></span>
             Histórico
           </a>
+          <a href="colaboradores.html" class="link-painel">
+            <span></span>
+            Colaboradores
+          </a>
           <a href="perfil.html" class="link-painel ativo">
-            <span class="ponto-indicador"></span>
+            <span></span>
             Perfil
           </a>
         </nav>
@@ -64,68 +70,90 @@
           </svg>
         </button>
       </div>
-    </aside>
+    </section>
 
     <main class="conteudo-principal">
 
       <div class="barra-superior">
         <div>
           <h1 class="titulo-pagina">Perfil</h1>
-          <p class="subtitulo-pagina">Gerencie seus dados de acesso e preferências.</p>
+          <p class="subtitulo-pagina">Gerencie seus dados de acesso e informações pessoais.</p>
         </div>
-      </div>
-
-      <div class="cartao-perfil-resumo">
-        <div class="avatar-perfil-grande">F</div>
-        <div class="detalhes-perfil">
-          <h2 class="nome-perfil">Fernanda</h2>
-          <p class="email-perfil">fernanda@gmail.com</p>
-        </div>
-        <button type="button" class="btn btn-vazado btn-pequeno">Alterar imagem</button>
       </div>
 
       <div class="painel-conteudo">
-        <div class="cabecalho-painel">
-          <h2 class="titulo-painel">Dados cadastrais</h2>
+        <div class="cabecalho-perfil">
+          <div class="avatar-perfil-grande">F</div>
+          <div class="detalhes-perfil">
+            <h2 class="nome-perfil">Fernanda</h2>
+            <p class="cargo-perfil">Analista</p>
+          </div>
         </div>
-        <form action="#" method="post">
-          <div class="grade-campos">
-            <div class="grupo-campo">
-              <label for="nome" class="rotulo-campo">Nome completo</label>
-              <input type="text" id="nome" class="campo-texto" value="Fernanda">
-            </div>
-            <div class="grupo-campo">
-              <label for="email" class="rotulo-campo">E-mail</label>
-              <input type="email" id="email" class="campo-texto" value="fernanda@gmail.com">
-            </div>
-          </div>
-          <div class="acoes-formulario">
-            <button type="submit" class="btn btn-primario">Salvar alterações</button>
-          </div>
-        </form>
-      </div>
 
-      <div class="painel-conteudo">
-        <div class="cabecalho-painel">
-          <h2 class="titulo-painel">Alterar senha</h2>
-        </div>
-        <form action="#" method="post">
+        <h2 class="titulo-painel">Dados cadastrais</h2>
+
+        <form id="form-perfil" onsubmit="event.preventDefault(); salvarAlteracoes();">
           <div class="grade-campos">
-            <div class="grupo-campo grupo-campo-completo">
-              <label for="senha-antiga" class="rotulo-campo">Senha atual</label>
-              <input type="password" id="senha-antiga" class="campo-texto" placeholder="••••••••">
-            </div>
             <div class="grupo-campo">
-              <label for="senha-nova" class="rotulo-campo">Nova senha</label>
-              <input type="password" id="senha-nova" class="campo-texto" placeholder="••••••••">
+              <label for="perfil-nome" class="rotulo-campo">Nome completo</label>
+              <input type="text" id="perfil-nome" class="campo-texto" value="Fernanda" disabled required>
             </div>
+
             <div class="grupo-campo">
-              <label for="senha-confirma" class="rotulo-campo">Confirme a nova senha</label>
-              <input type="password" id="senha-confirma" class="campo-texto" placeholder="••••••••">
+              <label for="perfil-nascimento" class="rotulo-campo">Data de nascimento</label>
+              <input type="date" id="perfil-nascimento" class="campo-texto" value="1995-05-15" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-email" class="rotulo-campo">E-mail</label>
+              <input type="email" id="perfil-email" class="campo-texto" value="fernanda@gmail.com" disabled required>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-senha" class="rotulo-campo">Senha</label>
+              <input type="password" id="perfil-senha" class="campo-texto" value="••••••••" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-celular" class="rotulo-campo">Celular</label>
+              <input type="tel" id="perfil-celular" class="campo-texto" value="(11) 98765-4321" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-cpf" class="rotulo-campo">CPF</label>
+              <input type="text" id="perfil-cpf" class="campo-texto" value="123.456.789-00" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-rg" class="rotulo-campo">RG</label>
+              <input type="text" id="perfil-rg" class="campo-texto" value="12.345.678-9" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-estado-civil" class="rotulo-campo">Estado civil</label>
+              <select id="perfil-estado-civil" class="campo-texto" disabled>
+                <option value="Solteiro(a)" selected>Solteiro(a)</option>
+                <option value="Casado(a)">Casado(a)</option>
+                <option value="Divorciado(a)">Divorciado(a)</option>
+                <option value="Viúvo(a)">Viúvo(a)</option>
+                <option value="União Estável">União Estável</option>
+              </select>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-genero" class="rotulo-campo">Gênero</label>
+              <select id="perfil-genero" class="campo-texto" disabled>
+                <option value="Feminino" selected>Feminino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Outro">Outro</option>
+                <option value="Prefiro não informar">Prefiro não informar</option>
+              </select>
             </div>
           </div>
+
           <div class="acoes-formulario">
-            <button type="submit" class="btn btn-primario">Atualizar senha</button>
+            <button type="button" id="btn-editar-perfil" class="btn btn-primario" onclick="editarInformacoes()">Editar informações</button>
+            <button type="submit" id="btn-salvar-perfil" class="btn btn-primario" style="display: none;">Salvar alterações</button>
           </div>
         </form>
       </div>

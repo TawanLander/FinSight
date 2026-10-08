@@ -1,20 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const usuariosControler = require('../controllers/usuariosController');
-const {autenticarToken} = require('../middlewares/authMiddleware');
+const usuariosController = require("../controllers/usuariosController");
+const { autenticarToken } = require("../middlewares/authMiddleware");
 
 router.use(autenticarToken);
 
-router.get('/list', (req, res) => {
-    usuariosControler.list(req, res);
-});
-
-router.put('/:id', (req, res) => {
-    usuariosControler.put(req, res);
-});
-
-router.delete('/:id', (req, res) => {
-    usuariosControler.delete(req, res);
-});
+router.get("/list", (req, res) => usuariosController.listar(req, res));
+router.post("/cadastrar", (req, res) => usuariosController.cadastrar(req, res));
+router.put("/update/:id", (req, res) => usuariosController.atualizar(req, res));
+router.put("/:id", (req, res) => usuariosController.atualizar(req, res));
+router.delete("/delete/:id", (req, res) => usuariosController.deletar(req, res));
+router.delete("/:id", (req, res) => usuariosController.deletar(req, res));
 
 module.exports = router;

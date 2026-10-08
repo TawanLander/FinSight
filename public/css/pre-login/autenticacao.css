@@ -33,17 +33,13 @@
   justify-content: center;
   gap: 36px;
   padding: 48px 40px;
-  background: linear-gradient(145deg, rgba(15, 30, 58, 0.95), rgba(11, 19, 32, 0.9));
+  background: linear-gradient(
+    145deg,
+    rgba(15, 30, 58, 0.95),
+    rgba(11, 19, 32, 0.9)
+  );
   border-right: 1px solid var(--cor-borda);
   position: relative;
-}
-
-[data-tema="claro"] .lado-institucional {
-  background: linear-gradient(145deg, rgba(238, 242, 250, 0.95), rgba(244, 246, 251, 0.9));
-}
-
-.conteudo-institucional {
-  margin: 0;
 }
 
 .frase-destaque-institucional {
@@ -55,11 +51,33 @@
   letter-spacing: -0.01em;
 }
 
-.legenda-institucional {
-  font-size: 0.95rem;
-  line-height: 1.6;
+.small-voltar-content {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+
+.small-voltar a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--texto-secundario);
-  margin-bottom: 0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.2s ease;
+}
+
+.small-voltar a:hover {
+  opacity: 0.7;
+}
+
+[data-tema="claro"] .lado-institucional {
+  background: linear-gradient(
+    145deg,
+    rgba(238, 242, 250, 0.95),
+    rgba(244, 246, 251, 0.9)
+  );
 }
 
 .lado-formulario {
@@ -144,23 +162,9 @@
   color: var(--texto-suave);
 }
 
-.botao-submeter {
-  margin-top: 8px;
-  margin-bottom: 18px;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
 .rodape-formulario {
   text-align: center;
   margin-top: 12px;
-}
-
-.texto-alternar {
-  display: block;
-  font-size: 0.88rem;
-  color: var(--texto-secundario);
-  margin-bottom: 10px;
 }
 
 .link-alternar {
@@ -177,4 +181,18 @@
 
 .link-alternar:hover {
   color: var(--cor-primaria);
+}
+
+@media (max-width: 768px) {
+  .cartao-autenticacao {
+    grid-template-columns: 1fr;
+  }
+
+  .lado-institucional {
+    display: none;
+  }
+
+  .lado-formulario {
+    padding: 32px 24px;
+  }
 }

@@ -21,24 +21,26 @@ function isEmailAndPasswordValid(email, password) {
 
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const email = req.body.email;
+    const password = req.body.password || req.body.senha;
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Email e password são obrigatórios" });
+      return res.status(400).json({ error: "Email e senha são obrigatórios" });
     }
 
     if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "Email ou password incorretos" });
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.senha);
+    const hashNoBanco = user.senha || user.password;
+    const isMatch = hashNoBanco ? await bcrypt.compare(password, hashNoBanco) : false;
     if (!isMatch) {
-      return res.status(401).json({ error: "Email ou password incorretos" });
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
     const accessToken = signAccessToken(user);
@@ -63,7 +65,8 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ id: user.id, name: user.nome, email: user.email });
+    const userName = user.nome || user.name;
+    res.json({ id: user.id, name: userName, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao fazer login" });
@@ -72,26 +75,29 @@ async function login(req, res) {
 
 async function register(req, res) {
   try {
-    const { name, email, password, enterprise_id } = req.body;
+    const name = req.body.name || req.body.nome;
+    const email = req.body.email;
+    const password = req.body.password || req.body.senha;
+    const enterprise_id = req.body.enterprise_id || req.body.id_empresa;
 
     if (!email || !password || !name || !enterprise_id) {
       return res
         .status(400)
-        .json({ error: "Nome, email, password e enterprise_id são obrigatórios" });
+        .json({ error: "Nome, email, senha e código da empresa são obrigatórios" });
     }
 
     if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const existingUser = await authModel.findByEmail(email);
     if (existingUser) {
-      return res.status(409).json({ error: "Erro ao registrar usuário" });
+      return res.status(409).json({ error: "Erro ao registrar usuário: email já cadastrado" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await authModel.create({ name, email, password: hashedPassword, enterprise_id});
-    res.status(201).json({ id: user.id, name: user.name, email: user.email });
+    res.status(201).json({ id: user.id, name: user.name || name, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao registrar usuário" });
@@ -203,8 +209,10 @@ async function forgotPassword(req, res) {
 }
 
 function signAccessToken(user) {
+  const userName = user.nome || user.name;
+  const enterpriseId = user.id_empresa || user.enterprise_id;
   return jwt.sign(
-    { id: user.id, name: user.nome, email: user.email, enterprise_id: user.id_empresa },
+    { id: user.id, name: userName, email: user.email, enterprise_id: enterpriseId },
     process.env.JWT_SECRET,
     { expiresIn: "15m" },
   );
