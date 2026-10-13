@@ -14,7 +14,7 @@ CREATE TABLE usuario (
     id_empresa INT,
     nome VARCHAR(50),
     email VARCHAR(60),
-    senha VARCHAR(50),
+    senha VARCHAR(100),
     perfil_acesso TINYINT,
 
     CONSTRAINT fk_usuario_empresa

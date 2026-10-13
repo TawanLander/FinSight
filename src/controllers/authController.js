@@ -12,33 +12,33 @@ const cookieBase = {
   sameSite: "lax",
 };
 
-function isEmailAndPasswordValid(email, password) {
+function isEmailAndsenhaValid(email, senha) {
   let emailValido = EMAIL_REGEX.test(email);
-  let senhaValida = SENHA_REGEX.test(password);
+  let senhaValida = SENHA_REGEX.test(senha);
 
   return emailValido && senhaValida;
 }
 
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, senha } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email e password são obrigatórios" });
+    if (!email || !senha) {
+      return res.status(400).json({ error: "Email e senha são obrigatórios" });
     }
 
-    if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+    if (!isEmailAndsenhaValid(email, senha)) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "Email ou password incorretos" });
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(senha, user.senha);
     if (!isMatch) {
-      return res.status(401).json({ error: "Email ou password incorretos" });
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
     const accessToken = jwt.sign(
@@ -83,16 +83,16 @@ async function login(req, res) {
 async function register(req, res) {
   try {
     const name = req.body.name || req.body.nome;
-    const { email, password, enterprise_id } = req.body;
+    const { email, senha, enterprise_id } = req.body;
 
-    if (!email || !password || !name || !enterprise_id) {
+    if (!email || !senha || !name) { // removi a validação do "enterprise_id" 
       return res
         .status(400)
-        .json({ error: "Nome, email, password e enterprise_id são obrigatórios" });
+        .json({ error: "Nome, email, senha e enterprise_id são obrigatórios" });
     }
 
-    if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+    if (!isEmailAndsenhaValid(email, senha)) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const existingUser = await authModel.findByEmail(email);
@@ -100,8 +100,8 @@ async function register(req, res) {
       return res.status(409).json({ error: "Erro ao registrar usuário" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await authModel.create({ name, email, password: hashedPassword, enterprise_id});
+    const hashedsenha = await bcrypt.hash(senha, 10);
+    const user = await authModel.create({ name, email, senha: hashedsenha, enterprise_id});
     res.status(201).json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
@@ -181,11 +181,11 @@ async function refreshToken(req, res) {
   }
 }
 
-async function forgotPassword(req, res) {
+async function forgotsenha(req, res) {
   try {
-    const { email, password, code } = req.body;
-    if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+    const { email, senha, code } = req.body;
+    if (!isEmailAndsenhaValid(email, senha)) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
@@ -197,20 +197,20 @@ async function forgotPassword(req, res) {
       return res.status(400).json({ error: "Código de verificação inválido" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedsenha = await bcrypt.hash(senha, 10);
 
-    const ok = await authModel.resetPasswordAndSessions(
+    const ok = await authModel.resetsenhaAndSessions(
       user.id,
-      hashedPassword,
+      hashedsenha,
     );
     if (!ok) {
-      return res.status(500).json({ error: "Erro ao redefinir password" });
+      return res.status(500).json({ error: "Erro ao redefinir senha" });
     }
 
     res.status(200).json({ message: "Senha redefinida com sucesso" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao solicitar redefinição de password" });
+    res.status(500).json({ error: "Erro ao solicitar redefinição de senha" });
   }
 }
 
@@ -219,5 +219,5 @@ module.exports = {
   register,
   logout,
   refreshToken,
-  forgotPassword,
+  forgotsenha,
 };

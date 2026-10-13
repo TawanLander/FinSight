@@ -9,16 +9,16 @@ async function findByEmail(email) {
 }
 
 async function create(user) {
-    const { name, email, password, enterprise_id, access_profile = null } = user;
+    const { name, email, senha, enterprise_id, access_profile = null } = user;
     const result = await db.executar(
         'INSERT INTO usuario (nome, email, senha, id_empresa, perfil_acesso) VALUES (?, ?, ?, ?, ?)',
-        [name, email, password, enterprise_id, access_profile]
+        [name, email, senha, enterprise_id, access_profile]
     );
     return { id: result.insertId, name, email, enterprise_id };
 }
 
-async function updatePassword(email, newPassword) {
-    const result = await db.executar('UPDATE usuario SET senha = ? WHERE email = ?', [newPassword, email]);
+async function updatesenha(email, newsenha) {
+    const result = await db.executar('UPDATE usuario SET senha = ? WHERE email = ?', [newsenha, email]);
     return result.affectedRows > 0;
 }
 
@@ -57,10 +57,10 @@ async function deleteToken(token) {
     return result.affectedRows > 0;
 }
 
-async function resetPasswordAndSessions(userId, hashedPassword) {
+async function resetsenhaAndSessions(userId, hashedsenha) {
     try {
         await db.executarTransacao(async function (query) {
-            var resultado = await query('UPDATE usuario SET senha = ? WHERE id = ?', [hashedPassword, userId]);
+            var resultado = await query('UPDATE usuario SET senha = ? WHERE id = ?', [hashedsenha, userId]);
             if (resultado.affectedRows !== 1) {
                 throw new Error('Usuário não encontrado');
             }
@@ -69,7 +69,7 @@ async function resetPasswordAndSessions(userId, hashedPassword) {
         });
         return true;
     } catch (error) {
-        console.error('Erro ao redefinir password:', error);
+        console.error('Erro ao redefinir senha:', error);
         return false;
     }
 }
@@ -86,10 +86,10 @@ module.exports = {
     findByEmail,
     findById,
     create,
-    updatePassword,
+    updatesenha,
     verifyToken,
     saveToken,
     rotateToken,
     deleteToken,
-    resetPasswordAndSessions
+    resetsenhaAndSessions
 };
