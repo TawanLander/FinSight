@@ -21,30 +21,36 @@ function isEmailAndPasswordValid(email, password) {
 
 async function login(req, res) {
   try {
-    const email = req.body.email;
-    const password = req.body.password || req.body.senha;
+    const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Email e senha são obrigatórios" });
+      return res.status(400).json({ error: "Email e password são obrigatórios" });
     }
 
     if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou senha inválidos" });
+      return res.status(400).json({ error: "Email ou password inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "Email ou senha incorretos" });
+      return res.status(401).json({ error: "Email ou password incorretos" });
     }
 
-    const hashNoBanco = user.senha || user.password;
-    const isMatch = hashNoBanco ? await bcrypt.compare(password, hashNoBanco) : false;
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: "Email ou senha incorretos" });
+      return res.status(401).json({ error: "Email ou password incorretos" });
     }
 
-    const accessToken = signAccessToken(user);
-    const refreshToken = signRefreshToken(user);
+    const accessToken = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id }, 
+      process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+    const refreshToken = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d", jwtid: crypto.randomUUID() },
+    );
 
     const setupToken = await authModel.saveToken(
       refreshToken,
@@ -52,7 +58,9 @@ async function login(req, res) {
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
     if (!setupToken) {
-      return res.status(500).json({ error: "Erro ao salvar token de atualização" });
+      return res
+        .status(500)
+        .json({ error: "Erro ao salvar token de atualização" });
     }
 
     res.cookie("accessToken", accessToken, {
@@ -65,8 +73,7 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    const userName = user.nome || user.name;
-    res.json({ id: user.id, name: userName, email: user.email });
+    res.json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao fazer login" });
@@ -76,28 +83,26 @@ async function login(req, res) {
 async function register(req, res) {
   try {
     const name = req.body.name || req.body.nome;
-    const email = req.body.email;
-    const password = req.body.password || req.body.senha;
-    const enterprise_id = req.body.enterprise_id || req.body.id_empresa;
+    const { email, password, enterprise_id } = req.body;
 
     if (!email || !password || !name || !enterprise_id) {
       return res
         .status(400)
-        .json({ error: "Nome, email, senha e código da empresa são obrigatórios" });
+        .json({ error: "Nome, email, password e enterprise_id são obrigatórios" });
     }
 
     if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou senha inválidos" });
+      return res.status(400).json({ error: "Email ou password inválidos" });
     }
 
     const existingUser = await authModel.findByEmail(email);
     if (existingUser) {
-      return res.status(409).json({ error: "Erro ao registrar usuário: email já cadastrado" });
+      return res.status(409).json({ error: "Erro ao registrar usuário" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await authModel.create({ name, email, password: hashedPassword, enterprise_id});
-    res.status(201).json({ id: user.id, name: user.name || name, email: user.email });
+    res.status(201).json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao registrar usuário" });
@@ -141,18 +146,19 @@ async function refreshToken(req, res) {
       return res.status(401).json({ error: "Token inválido ou expirado" });
     }
 
-    const user = await authModel.findById(payload.id);
-    if (!user) {
-      return res.status(401).json({ error: "Token inválido ou expirado" });
-    }
-
-    const accessToken = signAccessToken(user);
-    const newRefreshToken = signRefreshToken(user);
+    const accessToken = jwt.sign({ id: payload.id }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+    const newRefreshToken = jwt.sign(
+      { id: payload.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d", jwtid: crypto.randomUUID() },
+    );
 
     const rotated = await authModel.rotateToken(
       token,
       newRefreshToken,
-      user.id,
+      payload.id,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
     if (!rotated) {
@@ -206,24 +212,6 @@ async function forgotPassword(req, res) {
     console.error(error);
     res.status(500).json({ error: "Erro ao solicitar redefinição de password" });
   }
-}
-
-function signAccessToken(user) {
-  const userName = user.nome || user.name;
-  const enterpriseId = user.id_empresa || user.enterprise_id;
-  return jwt.sign(
-    { id: user.id, name: userName, email: user.email, enterprise_id: enterpriseId },
-    process.env.JWT_SECRET,
-    { expiresIn: "15m" },
-  );
-}
-
-function signRefreshToken(user) {
-  return jwt.sign(
-    { id: user.id },
-    process.env.JWT_REFRESH_SECRET,
-    { expiresIn: "7d", jwtid: crypto.randomUUID() },
-  );
 }
 
 module.exports = {
