@@ -16,11 +16,16 @@ CREATE TABLE usuario (
     email VARCHAR(60),
     senha VARCHAR(100),
     perfil_acesso TINYINT,
+    cpf VARCHAR(50),
+    rg VARCHAR(50),
+    genero VARCHAR(50),
+    dtNascimento DATE,
+    celular VARCHAR(25),
 
     CONSTRAINT fk_usuario_empresa
         FOREIGN KEY (id_empresa)
         REFERENCES empresa(id)
-) ;
+);
 
 CREATE TABLE token (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -104,4 +109,3 @@ CREATE TABLE cotacao_historico (
         FOREIGN KEY (id_tickets)
         REFERENCES tickets(id)
 );
-
