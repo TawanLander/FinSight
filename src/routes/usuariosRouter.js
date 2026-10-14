@@ -5,6 +5,7 @@ const { autenticarToken } = require("../middlewares/authMiddleware");
 
 router.use(autenticarToken);
 
+router.get("/:id", (req, res) => usuariosController.carregar(req, res));
 router.get("/list", (req, res) => usuariosController.listar(req, res));
 router.post("/cadastrar", (req, res) => usuariosController.cadastrar(req, res));
 router.put("/update/:id", (req, res) => usuariosController.atualizar(req, res));

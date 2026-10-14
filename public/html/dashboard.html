@@ -10,9 +10,10 @@
   <link rel="stylesheet" href="../css/pos-login/dashboard.css">
   <script src="../js/tema.js"></script>
   <script src="../js/sessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body onload="carregarTela()">
 
   <div class="estrutura-painel">
 
@@ -24,10 +25,9 @@
         </a>
 
         <div class="usuario-painel">
-          <div class="avatar-usuario">F</div>
+          <div class="avatar-usuario" id="avatarUsuario"></div>
           <div class="dados-usuario">
-            <div class="nome-usuario">Fernanda</div>
-            <div class="cargo-usuario">Leitor</div>
+            <div class="nome-usuario" id="nomeUsuario"></div>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
 
       <div class="barra-superior">
         <div>
-          <h1 class="titulo-pagina">Bem-vindo(a), <span id="user-name">Usuário(a)</span></h1>
+          <h1 class="titulo-pagina">Bem-vindo(a), <span id="userName">Usuário(a)</span></h1>
           <p class="subtitulo-pagina">Projeções e indicadores da carteira analisada.</p>
         </div>
         <a href="envio.html" class="btn btn-primario btn-pequeno">Enviar novo arquivo</a>
@@ -146,7 +146,7 @@
             <h2 class="titulo-painel">Rentabilidade acumulada</h2>
           </div>
           <div class="espaco-grafico" id="chart-rentabilidade">
-            <span>Gráfico será exibido aqui quando houver dados</span>
+            <canvas id="grafRentabilidade"></canvas>
           </div>
         </div>
 
@@ -155,7 +155,7 @@
             <h2 class="titulo-painel">Comparativo com Ibovespa</h2>
           </div>
           <div class="espaco-grafico" id="chart-ibovespa">
-            <span>Gráfico será exibido aqui quando houver dados</span>
+            <canvas id="grafIBOVESPA"></canvas>
           </div>
         </div>
       </div>
@@ -163,6 +163,8 @@
     </main>
 
   </div>
+
+  <script src="../js/dashboard.js"></script>
 
 </body>
 

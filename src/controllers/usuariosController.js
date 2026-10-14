@@ -1,5 +1,17 @@
 const usuariosModel = require('../models/usuariosModel');
 
+async function carregar(req, res) {
+    try {
+        const idUsuario = req.usuario.id;
+        const data = await usuariosModel.carregar(idUsuario);
+        const usuario = data[0];
+        return res.status(200).json(usuario);
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).json({ erro: "Erro ao buscar as informações" });
+    }
+}
+
 async function listar(req, res) {
     try {
         const idEmpresa = req.usuario?.enterprise_id || req.usuario?.id_empresa || 1;
@@ -63,14 +75,9 @@ async function deletar(req, res) {
 }
 
 module.exports = {
+    carregar,
     listar,
     cadastrar,
     atualizar,
-    deletar,
-    list: listar,
-    put: atualizar,
-    delete: deletar,
-    userList: listar,
-    userPut: atualizar,
-    userDelete: deletar
+    deletar
 };

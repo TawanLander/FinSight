@@ -45,15 +45,16 @@ async function deletar(id) {
     });
 }
 
+async function carregar(idUsuario) {
+  const instrucao =
+    `SELECT id, nome, id_empresa FROM usuario WHERE id = ?;`
+  return await bd.executar(instrucao, [idUsuario]);
+}
+
 module.exports = {
     listar,
     cadastrar,
     atualizar,
     deletar,
-    list: listar,
-    put: atualizar,
-    delete: deletar,
-    userList: listar,
-    userPut: atualizar,
-    userDelete: deletar
+    carregar
 };

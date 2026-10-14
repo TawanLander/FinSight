@@ -23,6 +23,7 @@ app.use("/", indexRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/auth', require('./src/routes/authRouter'));
 app.use('/empresa', require('./src/routes/empresaRouter'));
+app.use('/dashboard', require('./src/routes/dashRouter'));
 
 app.listen(PORTA_APP, () => {
     console.log(`LIGÔ i tah rodanu ein: http://localhost:${PORTA_APP}`);
