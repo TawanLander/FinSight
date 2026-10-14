@@ -1,19 +1,21 @@
 let listaColaboradores = [];
 
-let usuarioLogado = JSON.parse(sessionStorage.getItem("USUARIO_LOGADO"));
 let ehAdmin = false;
 
-if (usuarioLogado && (usuarioLogado.perfil_acesso == 1 || usuarioLogado.cargo == "Administrador")) {
-    ehAdmin = true;
-}
+window.onload = async function () {
+    const usuario = await carregarUsuario();
 
-window.onload = function () {
+    if (usuario && usuario.perfil_acesso == 1) {
+        ehAdmin = true;
+    }
+
     if (ehAdmin) {
         let btn = document.getElementById("btn-adicionar-colaborador");
         if (btn) {
             btn.style.display = "inline-flex";
         }
     }
+
 
     listarColaboradores();
 };
@@ -111,10 +113,8 @@ function editar(id) {
             document.getElementById("colab-id").value = colab.id;
             document.getElementById("colab-nome").value = colab.nome;
             document.getElementById("colab-email").value = colab.email;
-            document.getElementById("colab-cargo").value = colab.cargo;
             document.getElementById("colab-cpf").value = colab.cpf || "";
             document.getElementById("colab-celular").value = colab.celular || "";
-            document.getElementById("colab-salario").value = colab.salario || "";
 
             document.getElementById("titulo-painel-form").innerHTML = "Editar Colaborador";
             document.getElementById("painel-cadastro").style.display = "block";
@@ -129,10 +129,8 @@ function salvarColaborador() {
     let dados = {
         nome: document.getElementById("colab-nome").value,
         email: document.getElementById("colab-email").value,
-        cargo: document.getElementById("colab-cargo").value,
         cpf: document.getElementById("colab-cpf").value,
-        celular: document.getElementById("colab-celular").value,
-        salario: document.getElementById("colab-salario").value
+        celular: document.getElementById("colab-celular").value
     };
 
     if (id == "") {

@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="../css/pos-login/envio.css">
   <script src="../js/tema.js"></script>
   <script src="../js/sessao.js"></script>
+  <script src="../js/usuario.js"></script>
 </head>
 
-<body>
+<body onload="carregarUsuario()">
 
   <div class="estrutura-painel">
 
-  <section class="barra-lateral">
+    <section class="barra-lateral">
       <div>
         <a href="../index.html" class="marca-painel">
           <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
@@ -24,10 +25,9 @@
         </a>
 
         <div class="usuario-painel">
-          <div class="avatar-usuario">F</div>
+          <div class="avatar-usuario" id="avatarUsuario"></div>
           <div class="dados-usuario">
-            <div class="nome-usuario">Fernanda</div>
-            <div class="cargo-usuario">Leitor</div>
+            <div class="nome-usuario" id="nomeUsuario"></div>
           </div>
         </div>
 

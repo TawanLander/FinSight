@@ -2,31 +2,31 @@ const bd = require('../database/config');
 
 async function listar(idEmpresa) {
     if (idEmpresa) {
-        const instrucao = 'SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular, salario FROM usuario WHERE id_empresa = ?;';
+        const instrucao = 'SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular FROM usuario WHERE id_empresa = ?;';
         return await bd.executar(instrucao, [idEmpresa]);
     }
-    const instrucao = 'SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular, salario, id_empresa FROM usuario;';
+    const instrucao = 'SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular, id_empresa FROM usuario;';
     return await bd.executar(instrucao);
 }
 
-async function cadastrar({ nome, email, senha, cargo, cpf, celular, salario, idEmpresa }) {
+async function cadastrar({ nome, email, senha, cargo, cpf, celular, idEmpresa }) {
     const instrucao = `
-        INSERT INTO usuario (nome, email, senha, perfil_acesso, cpf, celular, salario, id_empresa) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO usuario (nome, email, senha, perfil_acesso, cpf, celular, id_empresa) 
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
-    const resultado = await bd.executar(instrucao, [nome, email, senha, cargo, cpf, celular, salario, idEmpresa]);
+    const resultado = await bd.executar(instrucao, [nome, email, senha, cargo, cpf, celular, idEmpresa]);
     return resultado.insertId;
 }
 
 async function atualizar(id, dados, email, perfil) {
     if (typeof dados === 'object' && dados !== null) {
-        const { nome, email: emailObj, cargo, cpf, celular, salario } = dados;
+        const { nome, email: emailObj, cargo, cpf, celular } = dados;
         const instrucao = `
             UPDATE usuario 
-            SET nome = ?, email = ?, perfil_acesso = ?, cpf = ?, celular = ?, salario = ? 
+            SET nome = ?, email = ?, perfil_acesso = ?, cpf = ?, celular = ? = ? 
             WHERE id = ?;
         `;
-        const resultado = await bd.executar(instrucao, [nome, emailObj, cargo, cpf, celular, salario, id]);
+        const resultado = await bd.executar(instrucao, [nome, emailObj, cargo, cpf, celular, id]);
         return resultado.affectedRows;
     } else {
         const nome = dados;
@@ -47,7 +47,7 @@ async function deletar(id) {
 
 async function carregar(idUsuario) {
   const instrucao =
-    `SELECT id, nome, id_empresa FROM usuario WHERE id = ?;`
+    `SELECT id, nome, id_empresa, perfil_acesso FROM usuario WHERE id = ?;`
   return await bd.executar(instrucao, [idUsuario]);
 }
 
