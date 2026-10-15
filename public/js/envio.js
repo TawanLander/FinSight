@@ -5,18 +5,9 @@ function obterElementosEnvio() {
     return {
         campoArquivo: document.getElementById("campo-arquivo"),
         nomeArquivo: document.getElementById("nome-arquivo-selecionado"),
-        mensagem: document.getElementById("mensagem-envio"),
         botaoSubstituir: document.getElementById("btn-substituir-arquivo"),
         botaoEnviar: document.getElementById("btn-enviar-arquivo")
     };
-}
-
-function mostrarMensagemEnvio(mensagem, sucesso) {
-    const elementos = obterElementosEnvio();
-    elementos.mensagem.textContent = mensagem;
-    elementos.mensagem.className = sucesso
-        ? "mensagem-envio sucesso"
-        : "mensagem-envio erro";
 }
 
 function validarArquivo(arquivo) {
@@ -49,12 +40,11 @@ function atualizarArquivoSelecionado() {
     if (erro) {
         elementos.campoArquivo.value = "";
         elementos.nomeArquivo.textContent = "Nenhum arquivo selecionado.";
-        mostrarMensagemEnvio(erro, false);
+        mostrarPopup(erro, false);
         return;
     }
 
     elementos.nomeArquivo.textContent = arquivo.name;
-    mostrarMensagemEnvio("", true);
 }
 
 function limparArquivoSelecionado() {
@@ -68,13 +58,13 @@ async function enviarArquivo() {
     const arquivo = elementos.campoArquivo.files[0];
 
     if (!arquivo) {
-        mostrarMensagemEnvio("Selecione um arquivo antes de enviar.", false);
+        mostrarPopup("Selecione um arquivo antes de enviar.", false);
         return;
     }
 
     const erro = validarArquivo(arquivo);
     if (erro) {
-        mostrarMensagemEnvio(erro, false);
+        mostrarPopup(erro, false);
         return;
     }
 
@@ -98,13 +88,11 @@ async function enviarArquivo() {
         }
 
         limparArquivoSelecionado();
-        mostrarMensagemEnvio("Arquivo registrado com sucesso.", true);
+        mostrarPopup("Seu arquivo foi enviado para processamento.", true, "Envio concluído");
     } catch (erroEnvio) {
         console.error("Erro ao registrar arquivo:", erroEnvio);
-        mostrarMensagemEnvio(
-            erroEnvio.message || "Erro ao conectar com o servidor.",
-            false
-        );
+        const mensagemErro = erroEnvio.message || "Erro ao conectar com o servidor.";
+        mostrarPopup(mensagemErro, false);
     } finally {
         elementos.botaoEnviar.disabled = false;
     }
