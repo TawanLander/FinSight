@@ -1,4 +1,6 @@
 const usuariosModel = require("../models/usuariosModel");
+const bcrypt = require("bcrypt");
+const authModel = require("../models/authModel");
 
 async function carregar(req, res) {
   try {
@@ -163,6 +165,49 @@ async function atualizarPerfil(req, res) {
   }
 }
 
+async function alterarSenha(req, res) {
+  try {
+    const idUsuario = req.usuario.id;
+    const { senhaAtual, novaSenha } = req.body;
+
+    if (!senhaAtual || !novaSenha) {
+      return res.status(400).json({
+        erro: "Informe a senha atual e a nova senha.",
+      });
+    }
+
+    const usuario = await authModel.findById(idUsuario);
+
+    if (!usuario) {
+      return res.status(404).json({
+        erro: "Usuário não encontrado.",
+      });
+    }
+
+    const senhaCorreta = await bcrypt.compare(senhaAtual, usuario.senha);
+
+    if (!senhaCorreta) {
+      return res.status(400).json({
+        erro: "A senha atual está incorreta.",
+      });
+    }
+
+    const senhaHash = await bcrypt.hash(novaSenha, 10);
+
+    await usuariosModel.alterarSenha(idUsuario, senhaHash);
+
+    return res.status(200).json({
+      mensagem: "Senha alterada com sucesso!",
+    });
+  } catch (erro) {
+    console.error("Erro ao alterar senha:", erro);
+
+    return res.status(500).json({
+      erro: "Erro ao alterar a senha.",
+    });
+  }
+}
+
 module.exports = {
   carregar,
   listar,
@@ -171,4 +216,5 @@ module.exports = {
   deletar,
   obterPerfil,
   atualizarPerfil,
+  alterarSenha,
 };
