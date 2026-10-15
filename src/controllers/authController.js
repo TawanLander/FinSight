@@ -41,16 +41,8 @@ async function login(req, res) {
       return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
-    const accessToken = jwt.sign(
-      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id }, 
-      process.env.JWT_SECRET, {
-      expiresIn: "15m",
-    });
-    const refreshToken = jwt.sign(
-      { id: user.id, name: user.name, email: user.email, enterprise_id: user.enterprise_id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d", jwtid: crypto.randomUUID() },
-    );
+    const accessToken = signAccessToken(user);
+    const refreshToken = signRefreshToken(user);
 
     const setupToken = await authModel.saveToken(
       refreshToken,
@@ -73,7 +65,7 @@ async function login(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ id: user.id, name: user.name, email: user.email });
+    res.json({ id: user.id, name: user.nome, email: user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao fazer login" });
@@ -83,9 +75,9 @@ async function login(req, res) {
 async function register(req, res) {
   try {
     const name = req.body.name || req.body.nome;
-    const { email, senha, enterprise_id } = req.body;
+    const { email, senha, id_empresa } = req.body;
 
-    if (!email || !senha || !name) { // removi a validação do "enterprise_id" 
+    if (!email || !senha || !name) { // removi a validação do "enterprise_id"
       return res
         .status(400)
         .json({ error: "Nome, email, senha e enterprise_id são obrigatórios" });
@@ -101,7 +93,12 @@ async function register(req, res) {
     }
 
     const hashedsenha = await bcrypt.hash(senha, 10);
-    const user = await authModel.create({ name, email, senha: hashedsenha, enterprise_id});
+    const user = await authModel.create({
+      name,
+      email,
+      senha: hashedsenha,
+      id_empresa,
+    });
     res.status(201).json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
@@ -146,19 +143,18 @@ async function refreshToken(req, res) {
       return res.status(401).json({ error: "Token inválido ou expirado" });
     }
 
-    const accessToken = jwt.sign({ id: payload.id }, process.env.JWT_SECRET, {
-      expiresIn: "15m",
-    });
-    const newRefreshToken = jwt.sign(
-      { id: payload.id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d", jwtid: crypto.randomUUID() },
-    );
+    const user = await authModel.findById(payload.id);
+    if (!user) {
+      return res.status(401).json({ error: "Token inválido ou expirado" });
+    }
+
+    const accessToken = signAccessToken(user);
+    const newRefreshToken = signRefreshToken(user);
 
     const rotated = await authModel.rotateToken(
       token,
       newRefreshToken,
-      payload.id,
+      user.id,
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
     if (!rotated) {
@@ -199,10 +195,7 @@ async function forgotsenha(req, res) {
 
     const hashedsenha = await bcrypt.hash(senha, 10);
 
-    const ok = await authModel.resetsenhaAndSessions(
-      user.id,
-      hashedsenha,
-    );
+    const ok = await authModel.resetsenhaAndSessions(user.id, hashedsenha);
     if (!ok) {
       return res.status(500).json({ error: "Erro ao redefinir senha" });
     }
@@ -212,6 +205,26 @@ async function forgotsenha(req, res) {
     console.error(error);
     res.status(500).json({ error: "Erro ao solicitar redefinição de senha" });
   }
+}
+
+function signAccessToken(user) {
+  return jwt.sign(
+    {
+      id: user.id,
+      name: user.nome,
+      email: user.email,
+      id_empresa: user.id_empresa,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" },
+  );
+}
+
+function signRefreshToken(user) {
+  return jwt.sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: "7d",
+    jwtid: crypto.randomUUID(),
+  });
 }
 
 module.exports = {
