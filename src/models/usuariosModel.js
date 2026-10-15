@@ -122,6 +122,16 @@ async function atualizarPerfil(id, dados) {
   ]);
 }
 
+async function alterarSenha(id, senhaHash) {
+  const instrucao = `
+    UPDATE usuario
+    SET senha = ?
+    WHERE id = ?;
+  `;
+
+  return await bd.executar(instrucao, [senhaHash, id]);
+}
+
 module.exports = {
   listar,
   cadastrar,
@@ -130,4 +140,5 @@ module.exports = {
   carregar,
   buscarPerfil,
   atualizarPerfil,
+  alterarSenha,
 };

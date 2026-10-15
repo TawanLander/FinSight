@@ -7,7 +7,7 @@ async function carregarPerfil() {
 
     if (resposta.status === 401) {
       alert("Sua sessão expirou. Faça login novamente.");
-      window.location.href = "/autenticacao";
+      window.location.href = "autenticacao.html";
       return;
     }
 
@@ -27,18 +27,22 @@ async function carregarPerfil() {
       ? String(usuario.dt_nascimento).substring(0, 10)
       : "";
 
-    document.getElementById("perfil-celular").value = usuario.celular || "";
+    document.getElementById("perfil-celular").value = formatarCelular(
+      usuario.celular || "",
+    );
 
-    document.getElementById("perfil-cpf").value = usuario.cpf || "";
+    document.getElementById("perfil-cpf").value = formatarCPF(
+      usuario.cpf || "",
+    );
 
-    document.getElementById("perfil-rg").value = usuario.rg || "";
+    document.getElementById("perfil-rg").value = formatarRG(usuario.rg || "");
 
     document.getElementById("perfil-estado-civil").value =
       usuario.estado_civil || "";
 
     document.getElementById("perfil-genero").value = usuario.genero || "";
 
-    document.getElementById("perfil-senha").value = "";
+    // document.getElementById("perfil-senha").value = "";
 
     atualizarCabecalho(usuario.nome);
 
@@ -104,8 +108,29 @@ async function salvarAlteracoes() {
 
   const genero = document.getElementById("perfil-genero").value;
 
+  const cpfSemFormatacao = cpf.replace(/\D/g, "");
+
+  const rgSemFormatacao = rg.toUpperCase().replace(/[^0-9X]/g, "");
+
+  const celularSemFormatacao = celular.replace(/\D/g, "");
+
   if (!nome || !email) {
     alert("Nome e e-mail são obrigatórios.");
+    return;
+  }
+
+  if (celular && !validarCelular(celular)) {
+    alert("O Celular deve conter 11 números. Ex (dd) 12345-6789");
+    return;
+  }
+
+  if (cpf && !validarCPF(cpf)) {
+    alert("O CPF deve conter 11 números.");
+    return;
+  }
+
+  if (rg && !validarRG(rg)) {
+    alert("O RG deve conter 9 ou 11 números.");
     return;
   }
 
@@ -113,9 +138,9 @@ async function salvarAlteracoes() {
     nome: nome,
     email: email,
     dt_nascimento: dtNascimento || null,
-    celular: celular || null,
-    cpf: cpf || null,
-    rg: rg || null,
+    celular: celularSemFormatacao || null,
+    cpf: cpfSemFormatacao || null,
+    rg: rgSemFormatacao || null,
     estado_civil: estadoCivil || null,
     genero: genero || null,
   };
@@ -134,7 +159,7 @@ async function salvarAlteracoes() {
 
     if (resposta.status === 401) {
       alert("Sua sessão expirou. Faça login novamente.");
-      window.location.href = "/autenticacao";
+      window.location.href = "autenticacao.html";
       return;
     }
 
@@ -160,4 +185,216 @@ async function salvarAlteracoes() {
   }
 }
 
+function formatarCelular(celular) {
+  const tel = celular.replace(/\D/g, "").slice(0, 11);
+
+  if (tel.length > 7) {
+    return `(${tel.slice(0, 2)}) ${tel.slice(2, 7)}-${tel.slice(7)}`;
+  } else if (tel.length > 2) {
+    return `(${tel.slice(0, 2)}) ${tel.slice(2)}`;
+  } else if (tel.length > 0) {
+    return `(${tel}`;
+  }
+
+  return tel;
+}
+
+function formatarCPF(valor) {
+  const numeros = valor.replace(/\D/g, "").slice(0, 11);
+
+  if (numeros.length > 9) {
+    return `${numeros.slice(0, 3)}.${numeros.slice(3, 6)}.${numeros.slice(6, 9)}-${numeros.slice(9)}`;
+  } else if (numeros.length > 6) {
+    return `${numeros.slice(0, 3)}.${numeros.slice(3, 6)}.${numeros.slice(6)}`;
+  } else if (numeros.length > 3) {
+    return `${numeros.slice(0, 3)}.${numeros.slice(3)}`;
+  }
+
+  return numeros;
+}
+
+function formatarRG(valor) {
+  const caracteres = valor
+    .toUpperCase()
+    .replace(/[^0-9X]/g, "")
+    .slice(0, 11);
+
+  if (caracteres.length > 9) {
+    return `${caracteres.slice(0, 3)}.${caracteres.slice(3, 6)}.${caracteres.slice(6, 9)}-${caracteres.slice(9)}`;
+  } else if (caracteres.length === 9) {
+    return `${caracteres.slice(0, 2)}.${caracteres.slice(2, 5)}.${caracteres.slice(5, 8)}-${caracteres.slice(8)}`;
+  } else if (caracteres.length > 5) {
+    return `${caracteres.slice(0, 2)}.${caracteres.slice(2, 5)}.${caracteres.slice(5)}`;
+  } else if (caracteres.length > 2) {
+    return `${caracteres.slice(0, 2)}.${caracteres.slice(2)}`;
+  }
+
+  return caracteres;
+}
+
+function validarCelular(celular) {
+  const tel = celular.replace(/\D/g, "");
+  const regex = /^\d{11}$/;
+
+  return regex.test(tel);
+}
+
+function validarCPF(cpf) {
+  const numeros = cpf.replace(/\D/g, "");
+  const regex = /^\d{11}$/;
+
+  return regex.test(numeros);
+}
+
+function validarRG(rg) {
+  const caracteres = rg.toUpperCase().replace(/[^0-9X]/g, "");
+  const regex = /^[0-9X]{9,11}$/;
+
+  return regex.test(caracteres);
+}
+
 document.addEventListener("DOMContentLoaded", carregarPerfil);
+
+document.addEventListener("DOMContentLoaded", function () {
+  const campoCPF = document.getElementById("perfil-cpf");
+  const campoRG = document.getElementById("perfil-rg");
+  const campoCelular = document.getElementById("perfil-celular");
+
+  campoCPF.addEventListener("input", function () {
+    campoCPF.value = formatarCPF(campoCPF.value);
+  });
+
+  campoRG.addEventListener("input", function () {
+    campoRG.value = formatarRG(campoRG.value);
+  });
+
+  campoCelular.addEventListener("input", function () {
+    campoCelular.value = formatarCelular(campoCelular.value);
+  });
+});
+
+function editarSenha() {
+  document.getElementById("senhaAtual").disabled = false;
+  document.getElementById("novaSenha").disabled = false;
+  document.getElementById("codVerificacao").disabled = false;
+  document.getElementById("btn-cod").disabled = false;
+
+  verificarSenha();
+
+  //   document.getElementById("minCar").style.color = "red";
+  //   document.getElementById("maiu").style.color = "red";
+  //   document.getElementById("minu").style.color = "red";
+  //   document.getElementById("num").style.color = "red";
+  //   document.getElementById("carEsp").style.color = "red";
+
+  document.getElementById("btn-editar-senha").style.display = "none";
+  document.getElementById("btn-salvar-senha").style.display = "inline-block";
+}
+
+function bloquearCamposSenha() {
+  document.getElementById("senhaAtual").disabled = true;
+  document.getElementById("novaSenha").disabled = true;
+  document.getElementById("codVerificacao").disabled = true;
+  document.getElementById("btn-cod").disabled = true;
+
+  document.getElementById("btn-editar-senha").style.display = "inline-block";
+  document.getElementById("btn-salvar-senha").style.display = "none";
+  document.getElementById("btn-salvar-senha").disabled = true;
+}
+
+function senhaValida() {
+  return verificarSenha();
+}
+
+function verificarSenha() {
+  const senha = document.getElementById("novaSenha").value;
+
+  const temMinimo = senha.length >= 8;
+  const temMaiuscula = /[A-Z]/.test(senha);
+  const temMinuscula = /[a-z]/.test(senha);
+  const temNumero = /[0-9]/.test(senha);
+  const temEspecial = /[^A-Za-z0-9]/.test(senha);
+
+  document.getElementById("minCar").style.color = temMinimo ? "green" : "red";
+
+  document.getElementById("maiu").style.color = temMaiuscula ? "green" : "red";
+
+  document.getElementById("minu").style.color = temMinuscula ? "green" : "red";
+
+  document.getElementById("num").style.color = temNumero ? "green" : "red";
+
+  document.getElementById("carEsp").style.color = temEspecial ? "green" : "red";
+
+  document.getElementById("btn-salvar-senha").disabled = !(
+    temMinimo &&
+    temMaiuscula &&
+    temMinuscula &&
+    temNumero &&
+    temEspecial
+  );
+
+  return temMinimo && temMaiuscula && temMinuscula && temNumero && temEspecial;
+}
+
+function reberCodVer() {
+  alert("Código de verificação enviado! - 123456");
+}
+
+async function salvarSenha() {
+  let senhaAtual = document.getElementById("senhaAtual").value;
+  let novaSenha = document.getElementById("novaSenha").value;
+  let codigo = document.getElementById("codVerificacao").value;
+
+  if (!senhaAtual || !novaSenha) {
+    alert("Preencha a senha atual e a nova senha.");
+    return;
+  }
+
+  if (!verificarSenha()) {
+    alert("A nova senha ainda não atende a todos os requisitos.");
+    return;
+  }
+
+  if (codigo !== "123456") {
+    alert("Código de verificação inválido.");
+    return;
+  }
+
+  try {
+    const resposta = await fetch("/usuarios/perfil/senha", {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        senhaAtual: senhaAtual,
+        novaSenha: novaSenha,
+      }),
+    });
+
+    const resultado = await resposta.json();
+
+    if (resposta.status === 401) {
+      alert("Sua sessão expirou. Faça login novamente.");
+      window.location.href = "autenticacao.html";
+      return;
+    }
+
+    if (!resposta.ok) {
+      throw new Error(resultado.erro || "Não foi possível alterar a senha.");
+    }
+
+    alert("Senha alterada com sucesso!");
+
+    document.getElementById("senhaAtual").value = "";
+    document.getElementById("novaSenha").value = "";
+    document.getElementById("codVerificacao").value = "";
+
+    verificarSenha();
+    bloquearCamposSenha();
+  } catch (erro) {
+    console.error("Erro ao alterar senha:", erro);
+    alert(erro.message || "Erro ao alterar a senha.");
+  }
+}

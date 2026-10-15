@@ -11,6 +11,7 @@ router.post("/cadastrar", (req, res) => usuariosController.cadastrar(req, res));
 router.put("/update/:id", (req, res) => usuariosController.atualizar(req, res));
 router.get("/perfil", (req, res) => usuariosController.obterPerfil(req, res));
 router.put("/perfil", (req, res) => usuariosController.atualizarPerfil(req, res));
+router.put("/perfil/senha", (req, res) => usuariosController.alterarSenha(req, res));
 router.put("/:id", (req, res) => usuariosController.atualizar(req, res));
 router.delete("/delete/:id", (req, res) => usuariosController.deletar(req, res));
 router.delete("/:id", (req, res) => usuariosController.deletar(req, res));
