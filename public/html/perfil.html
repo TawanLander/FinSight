@@ -96,37 +96,38 @@
           <div class="grade-campos">
             <div class="grupo-campo">
               <label for="perfil-nome" class="rotulo-campo">Nome completo</label>
-              <input type="text" id="perfil-nome" class="campo-texto" value="Fernanda" disabled required>
+              <input type="text" id="perfil-nome" class="campo-texto" disabled required>
             </div>
 
             <div class="grupo-campo">
               <label for="perfil-nascimento" class="rotulo-campo">Data de nascimento</label>
-              <input type="date" id="perfil-nascimento" class="campo-texto" value="1995-05-15" disabled>
+              <input type="date" id="perfil-nascimento" class="campo-texto" disabled>
             </div>
 
             <div class="grupo-campo">
               <label for="perfil-email" class="rotulo-campo">E-mail</label>
-              <input type="email" id="perfil-email" class="campo-texto" value="fernanda@gmail.com" disabled required>
+              <input type="email" id="perfil-email" class="campo-texto" disabled required>
             </div>
 
-            <div class="grupo-campo">
+            <!-- <div class="grupo-campo">
               <label for="perfil-senha" class="rotulo-campo">Senha</label>
               <input type="password" id="perfil-senha" class="campo-texto" value="••••••••" disabled>
-            </div>
+            </div> -->
 
             <div class="grupo-campo">
               <label for="perfil-celular" class="rotulo-campo">Celular</label>
-              <input type="tel" id="perfil-celular" class="campo-texto" value="(11) 98765-4321" disabled>
+              <input type="tel" id="perfil-celular" class="campo-texto" placeholder="(11) 98765-4321" disabled>
             </div>
 
             <div class="grupo-campo">
               <label for="perfil-cpf" class="rotulo-campo">CPF</label>
-              <input type="text" id="perfil-cpf" class="campo-texto" value="123.456.789-00" disabled>
+              <input type="text" id="perfil-cpf" class="campo-texto" placeholder="ex: 123.456.789-00" disabled>
             </div>
 
             <div class="grupo-campo">
               <label for="perfil-rg" class="rotulo-campo">RG</label>
-              <input type="text" id="perfil-rg" class="campo-texto" value="12.345.678-9" disabled>
+              <input type="text" id="perfil-rg" class="campo-texto" placeholder="ex: 123.456.789-00 ou 12.345.678-9"
+                disabled>
             </div>
 
             <div class="grupo-campo">
@@ -152,10 +153,65 @@
           </div>
 
           <div class="acoes-formulario">
-            <button type="button" id="btn-editar-perfil" class="btn btn-primario" onclick="editarInformacoes()">Editar informações</button>
-            <button type="submit" id="btn-salvar-perfil" class="btn btn-primario" style="display: none;">Salvar alterações</button>
+            <button type="button" id="btn-editar-perfil" class="btn btn-primario" onclick="editarInformacoes()">Editar
+              informações</button>
+            <button type="submit" id="btn-salvar-perfil" class="btn btn-primario" style="display: none;">Salvar
+              alterações</button>
           </div>
         </form>
+      </div>
+
+      <div class="painelSenha">
+        <div class="painel-conteudoSenha">
+
+          <h2 class="titulo-painel">Alterar Senha</h2>
+
+          <form id="form-senha" onsubmit="event.preventDefault(); salvarSenha();">
+
+            <div class="grupo-campo">
+              <label for="senhaAtual" class="rotulo-campo">Senha Atual</label>
+              <input type="password" id="senhaAtual" class="campo-texto" disabled>
+            </div>
+
+            <div class="grade-campos">
+
+
+              <div class="grupo-campo">
+                <label for="novaSenha" class="rotulo-campo">Nova Senha</label>
+                <input type="password" id="novaSenha" class="campo-texto" oninput="verificarSenha()" disabled>
+              </div>
+
+              <div class="grupo-campo">
+                <div class="veriSenha">
+                  <span id="minCar">- mín. 8 caracteres</span>
+                  <span id="maiu">- Caracter maiúsculo</span>
+                  <span id="minu">- Caracter minúsculo</span>
+                  <span id="num">- Número</span>
+                  <span id="carEsp">- Caractere especial (@,#,!,$,%,&)</span>
+                </div>
+              </div>
+
+
+
+              <div class="grupo-campo">
+                <label for="codVerificacao" class="rotulo-campo">Código de Verificação</label>
+                <input type="text" id="codVerificacao" class="campo-texto" disabled>
+              </div>
+
+              <button type="button" id="btn-cod" class="btn btn-primario" onclick="reberCodVer()" disabled>Receber Cód
+                de Verificação</button>
+
+            </div>
+            <div class="acoes-formulario">
+              <button type="button" id="btn-editar-senha" class="btn btn-primario" onclick="editarSenha()">Alterar
+                Senha</button>
+              <button type="submit" id="btn-salvar-senha" class="btn btn-primario" style="display: none;"
+                disabled>Salvar
+                Senha</button>
+            </div>
+
+          </form>
+        </div>
       </div>
 
     </main>
