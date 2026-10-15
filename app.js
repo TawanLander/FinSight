@@ -1,5 +1,16 @@
 require("dotenv").config({ path: ".env" });
 
+const requiredEnvironmentVariables = ["JWT_SECRET", "JWT_REFRESH_SECRET"];
+const missingEnvironmentVariables = requiredEnvironmentVariables.filter(
+    (variable) => !process.env[variable],
+);
+
+if (missingEnvironmentVariables.length > 0) {
+    throw new Error(
+        `Variáveis de ambiente obrigatórias ausentes: ${missingEnvironmentVariables.join(", ")}`,
+    );
+}
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -22,6 +33,7 @@ app.use(cookieParser());
 app.use("/", indexRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/auth', require('./src/routes/authRouter'));
+app.use('/historico', require('./src/routes/historicoRouter'));
 app.use('/empresa', require('./src/routes/empresaRouter'));
 app.use('/dashboard', require('./src/routes/dashRouter'));
 

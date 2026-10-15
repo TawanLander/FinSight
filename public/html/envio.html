@@ -11,6 +11,7 @@
   <script src="../js/tema.js"></script>
   <script src="../js/sessao.js"></script>
   <script src="../js/usuario.js"></script>
+  <script src="../js/envio.js"></script>
 </head>
 
 <body onload="carregarUsuario()">
@@ -93,14 +94,16 @@
           <p class="descricao-upload">ou selecione manualmente — formatos aceitos: .xlsx, .xls, .csv (até 10 MB)</p>
           <label class="btn btn-primario rotulo-arquivo">
             Selecionar arquivo
-            <input type="file" accept=".xlsx,.xls,.csv" style="display: none;">
+            <input type="file" id="campo-arquivo" accept=".xlsx,.xls,.csv" style="display: none;">
           </label>
+          <p id="nome-arquivo-selecionado" class="descricao-upload">Nenhum arquivo selecionado.</p>
         </div>
 
         <div class="acoes-envio">
-          <button type="button" class="btn btn-vazado">Substituir arquivo</button>
-          <button type="button" class="btn btn-primario">Enviar para processamento</button>
+          <button type="button" id="btn-substituir-arquivo" class="btn btn-vazado">Substituir arquivo</button>
+          <button type="button" id="btn-enviar-arquivo" class="btn btn-primario">Enviar para processamento</button>
         </div>
+        <p id="mensagem-envio" class="mensagem-envio" role="status"></p>
       </div>
 
     </main>

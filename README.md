@@ -169,7 +169,13 @@ Grupo10/
    # Porta do Servidor Web
    APP_PORT=8080
    APP_HOST=localhost
+
+   # Chaves para assinatura dos tokens JWT
+   JWT_SECRET=uma-chave-secreta-de-acesso
+   JWT_REFRESH_SECRET=uma-chave-secreta-de-atualizacao
    ```
+
+   Use valores longos e aleatórios para essas chaves, principalmente em produção. Elas são obrigatórias para o login e a renovação dos tokens.
 
 4. **Preparar a Base de Dados:**
    Execute o script SQL disponível em `src/database/script-tabelas.sql` em seu cliente MySQL (Workbench, DBeaver ou terminal) para provisionar as tabelas necessárias.
