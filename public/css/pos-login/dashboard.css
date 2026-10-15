@@ -19,11 +19,6 @@
   min-width: 150px;
 }
 
-.item-filtro-busca {
-  flex: 1.5;
-  min-width: 220px;
-}
-
 .rotulo-filtro {
   font-size: 0.8rem;
   font-weight: 600;
@@ -129,14 +124,13 @@
 }
 
 .grade-graficos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  display: flex;
+  width: 100%;
   margin-bottom: 28px;
 }
 
 .espaco-grafico {
-  height: 240px;
+  height: 380px;
   background-color: var(--fundo-campo);
   border: 1px dashed var(--cor-borda);
   border-radius: var(--arredondamento-pequeno);
@@ -148,10 +142,6 @@
   text-align: center;
   padding: 20px;
   box-sizing: border-box;
-}
-
-@media (max-width: 900px) {
-  .grade-graficos {
-    grid-template-columns: 1fr;
-  }
+  position: relative;
+  width: 100%;
 }

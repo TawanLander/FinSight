@@ -15,7 +15,7 @@
 
 <body onload="carregarTela()">
 
-  <div class="estrutura-painel">
+  <main class="estrutura-painel">
 
     <section class="barra-lateral">
       <div>
@@ -82,35 +82,30 @@
       </div>
 
       <div class="barra-filtros">
+
         <div class="item-filtro">
           <label for="ticker" class="rotulo-filtro">Ticker</label>
           <select id="ticker" class="seletor-filtro">
-            <option value="all">Todos os ativos</option>
+            <option value="#">Selecione um ativo...</option>
           </select>
         </div>
 
         <div class="item-filtro">
-          <label for="periodo" class="rotulo-filtro">Período</label>
-          <select id="periodo" class="seletor-filtro">
-            <option>Últimos 30 dias</option>
-            <option>Últimos 90 dias</option>
-            <option>12 meses</option>
+          <label for="benchmark" class="rotulo-filtro">Comparar Contra</label>
+          <select id="benchmark" class="seletor-filtro">
+            <option value="NENHUM">Sem Comparativo</option>
+            <option value="IBOV">Ibovespa (^BVSP)</option>
           </select>
         </div>
 
         <div class="item-filtro">
-          <label for="categoria" class="rotulo-filtro">Categoria</label>
-          <select id="categoria" class="seletor-filtro">
-            <option>Todas</option>
-            <option>Ações</option>
-            <option>FIIs</option>
+          <label for="escalaGrafico" class="rotulo-filtro">Escala / Visualização</label>
+          <select id="escalaGrafico" class="seletor-filtro">
+            <option value="PERCENTUAL">Variação Percentual (%)</option>
+            <option value="VALOR_NOMINAL">Preço Nominal (R$)</option>
           </select>
         </div>
 
-        <div class="item-filtro item-filtro-busca">
-          <label for="campo-busca-ativo" class="rotulo-filtro">Buscar ativo</label>
-          <input type="text" id="campo-busca-ativo" class="campo-busca" placeholder="Digite o código ou nome…">
-        </div>
       </div>
 
       <div class="grade-indicadores" id="kpi-grid">
@@ -140,23 +135,31 @@
       </div>
 
 
-      <div class="grade-graficos">
-        <div class="painel-conteudo">
-          <div class="cabecalho-painel">
-            <h2 class="titulo-painel">Rentabilidade acumulada</h2>
-          </div>
-          <div class="espaco-grafico" id="chart-rentabilidade">
-            <canvas id="grafRentabilidade"></canvas>
+      <div class="painel-conteudo">
+        <div class="cabecalho-painel">
+          <div>
+            <h2 class="titulo-painel">Volume Financeiro Negociado</h2>
+            <p class="subtitulo-painel" style="font-size: 0.82rem; color: var(--texto-suave); margin-top: 4px;">
+              Montante diário transacionado na B3 em conjunto com as alterações de preço para confirmação de tendências e liquidez.
+            </p>
           </div>
         </div>
+        <div class="espaco-grafico" id="chart-volume">
+          <canvas id="grafVolumeFinanceiro"></canvas>
+        </div>
+      </div>
 
-        <div class="painel-conteudo">
-          <div class="cabecalho-painel">
-            <h2 class="titulo-painel">Comparativo com Ibovespa</h2>
+      <div class="painel-conteudo">
+        <div class="cabecalho-painel">
+          <div>
+            <h2 class="titulo-painel">Rentabilidade acumulada</h2>
+            <p class="subtitulo-painel" style="font-size: 0.82rem; color: var(--texto-suave); margin-top: 4px;">
+              Evolução percentual do retorno dos ativos ao longo do tempo em relação ao benchmark de referência.
+            </p>
           </div>
-          <div class="espaco-grafico" id="chart-ibovespa">
-            <canvas id="grafIBOVESPA"></canvas>
-          </div>
+        </div>
+        <div class="espaco-grafico" id="chart-rentabilidade">
+          <canvas id="grafRentabilidade"></canvas>
         </div>
       </div>
 
