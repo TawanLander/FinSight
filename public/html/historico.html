@@ -77,17 +77,7 @@
       <div class="barra-superior">
         <div>
           <h1 class="titulo-pagina">Histórico de arquivos</h1>
-          <p class="subtitulo-pagina">Consulte os arquivos enviados por você.</p>
-        </div>
-      </div>
-
-      <div class="barra-filtros">
-        <div class="item-filtro-busca">
-          <label for="campo-busca" class="rotulo-filtro">Buscar arquivo</label>
-          <div class="grupo-busca">
-            <input type="text" id="campo-busca" class="campo-busca" placeholder="Digite o nome do arquivo…" onkeyup="if(event.key === 'Enter') buscarArquivo()">
-            <button type="button" class="btn btn-primario" onclick="buscarArquivo()">Buscar</button>
-          </div>
+          <p class="subtitulo-pagina">Consulte os arquivos enviados no sistema.</p>
         </div>
       </div>
 
@@ -98,10 +88,13 @@
               <tr>
                 <th>Nome</th>
                 <th>Data</th>
-                <th>Ações</th>
+                <th>Tamanho</th>
               </tr>
             </thead>
             <tbody id="corpo-tabela-historico">
+              <tr>
+                <td colspan="3">Carregando histórico...</td>
+              </tr>
             </tbody>
           </table>
         </div>

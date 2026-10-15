@@ -96,6 +96,16 @@
   border-bottom: none;
 }
 
+.mensagem-historico {
+  text-align: center;
+  padding: 32px 16px !important;
+}
+
+.mensagem-historico p {
+  margin: 0 0 16px;
+  color: var(--texto-secundario);
+}
+
 .coluna-data {
   font-size: 0.8rem;
   color: var(--texto-secundario);
