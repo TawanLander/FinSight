@@ -53,7 +53,7 @@ function analisarDados(json, quantity, modo = 'login') {
 }
 
 function informarErro(mensagem) {
-    alert(mensagem);
+    mostrarPopup(mensagem, false);
     console.error(mensagem);
 }
 
@@ -90,7 +90,7 @@ async function logar(usuario) {
         }
 
         const dados = await resposta.json();
-        alert('Login efetuado com sucesso!');
+        mostrarPopup('Login efetuado com sucesso!', true);
         window.location.href = 'dashboard.html';
         return dados;
     } catch (erro) {
@@ -153,7 +153,7 @@ async function cadastrar(usuario) {
         }
 
         const dados = await resposta.json();
-        alert('Cadastro realizado com sucesso! Faça seu login para continuar.');
+        mostrarPopup('Cadastro realizado com sucesso! Faça seu login para continuar.', true);
         mostrarLogin();
         return dados;
     } catch (erro) {
