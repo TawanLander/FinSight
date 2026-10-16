@@ -1,15 +1,51 @@
 const empresaModel = require('../models/empresaModel');
+const authModel = require('../models/authModel');
+const bcrypt = require('bcrypt');
+const { gerarCodigo } = require('../utils/generators');
+const { isEmailAndPasswordValid } = require('../utils/verifyers');
 
 async function cadastrar(req, res) {
-    const { nome, cnpj } = req.body;
+    const { nome: nomeEmpresa, cnpj: cnpjEmpresa } = req.body?.empresa ?? {};
+    const { nome: nomeDono, email: emailDono, senha: senhaDono } = req.body?.dono ?? {};
 
-    if (!nome || !cnpj) {
-        return res.status(400).json({ erro: 'nome e cnpj são obrigatórios' });
+    if (!nomeEmpresa || !cnpjEmpresa) {
+        return res.status(400).json({ erro: 'nome e cnpj da empresa são obrigatórios' });
+    }
+    if(!nomeDono || !emailDono || !senhaDono) {
+        return res.status(400).json({ erro: 'nome, email e senha do dono são obrigatórios' });
+    }
+    if(!isEmailAndPasswordValid(emailDono, senhaDono)) {
+        return res.status(400).json({ erro: 'erro ao cadastrar o dono' });
     }
 
-    try {
-        const id = await empresaModel.cadastrar({ nome, cnpj });
-        return res.status(201).json({ id, mensagem: 'Empresa cadastrada com sucesso!' });
+    try {    
+        if(await empresaModel.findByCnpj(cnpjEmpresa)) {
+            return res.status(409).json({ erro: 'CNPJ já cadastrado' });
+        }
+        if(await authModel.findByEmail(emailDono)) {
+            return res.status(409).json({ erro: 'erro ao cadastrar o dono' });
+        }
+
+        const senhaHash = await bcrypt.hash(senhaDono, 10);
+
+        let codigo = gerarCodigo();
+        while(await empresaModel.findByCodigo(codigo)) {
+            codigo = gerarCodigo();
+        }
+
+        const id = await empresaModel.cadastrar({
+            empresa: {
+                nome: nomeEmpresa,
+                cnpj: cnpjEmpresa,
+                codigo: codigo
+            },
+            dono: {
+                nome: nomeDono,
+                email: emailDono,
+                senha: senhaHash
+            }
+        });
+        return res.status(201).json({ id, codigo, mensagem: 'Empresa cadastrada com sucesso!' });
     } catch (erro) {
         if (erro.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ erro: 'Dados inválidos' });

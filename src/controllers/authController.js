@@ -1,23 +1,15 @@
 const authModel = require("../models/authModel");
+const empresaModel = require("../models/empresaModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+const { isEmailAndPasswordValid } = require("../utils/verificadores");
 
 const cookieBase = {
   httpOnly: true,
   secure: false, // true só com HTTPS
   sameSite: "lax",
 };
-
-function isEmailAndPasswordValid(email, password) {
-  let emailValido = EMAIL_REGEX.test(email);
-  let senhaValida = SENHA_REGEX.test(password);
-
-  return emailValido && senhaValida;
-}
 
 async function login(req, res) {
   try {
@@ -72,16 +64,16 @@ async function login(req, res) {
 
 async function register(req, res) {
   try {
-    const { name, email, password, enterprise_id } = req.body;
+    const { nome, email, senha, codigo } = req.body;
 
-    if (!email || !password || !name || !enterprise_id) {
+    if (!email || !senha || !nome || !codigo) {
       return res
         .status(400)
-        .json({ error: "Nome, email, password e enterprise_id são obrigatórios" });
+        .json({ error: "Nome, email, senha e codigo são obrigatórios" });
     }
 
-    if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+    if (!isEmailAndPasswordValid(email, senha)) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const existingUser = await authModel.findByEmail(email);
@@ -89,9 +81,14 @@ async function register(req, res) {
       return res.status(409).json({ error: "Erro ao registrar usuário" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await authModel.create({ name, email, password: hashedPassword, enterprise_id});
-    res.status(201).json({ id: user.id, name: user.name, email: user.email });
+    const empresa = await empresaModel.findByCodigo(codigo);
+    if (!empresa) {
+      return res.status(404).json({ error: "Empresa não encontrada" });
+    }
+
+    const hashedPassword = await bcrypt.hash(senha, 10);
+    const user = await authModel.create({ nome, email, senha: hashedPassword, id_empresa: empresa.id });
+    res.status(201).json({ id: user.id, nome: user.nome, email: user.email, id_empresa: user.id_empresa });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao registrar usuário" });

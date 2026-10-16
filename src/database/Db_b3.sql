@@ -3,24 +3,28 @@ USE finsight;
 
 CREATE TABLE empresa (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    cnpj VARCHAR(18),
-    nome_fantasia VARCHAR(80),
-    dt_cadastro DATE,
-    UNIQUE KEY uk_empresa_cnpj (cnpj)
+    nome VARCHAR(80),
+    cnpj CHAR(14),
+    codigo CHAR(8),
+    dt_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_empresa_cnpj (cnpj),
+    UNIQUE KEY uk_empresa_codigo (codigo)
 );
 
 CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_empresa INT,
     nome VARCHAR(50),
-    email VARCHAR(60),
-    senha VARCHAR(50),
-    perfil_acesso TINYINT,
+    email VARCHAR(255),
+    senha VARCHAR(255),
+    acesso ENUM('leitor', 'editor', 'gestor', 'dono') DEFAULT 'leitor',
+
+    UNIQUE KEY uk_usuario_email(email),
 
     CONSTRAINT fk_usuario_empresa
         FOREIGN KEY (id_empresa)
         REFERENCES empresa(id)
-) ;
+);
 
 CREATE TABLE token (
     id INT AUTO_INCREMENT PRIMARY KEY,

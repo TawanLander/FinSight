@@ -9,6 +9,9 @@ var mySqlConfig = {
     port: process.env.DB_PORT
 };
 
+// Pool criado uma única vez, usado pelas transações
+var pool = mysql.createPool(mySqlConfig);
+
 function executar(instrucao, parametros) {
 
     return new Promise(function (resolve, reject) {
@@ -19,7 +22,6 @@ function executar(instrucao, parametros) {
             if (erro) {
                 return reject(erro);
             }
-            console.log(resultados);
             resolve(resultados);
         });
         conexao.on('error', function (erro) {
@@ -31,11 +33,9 @@ function executar(instrucao, parametros) {
 function executarTransacao(operacoes) {
 
     return new Promise(function (resolve, reject) {
-        var pool = mysql.createPool(mySqlConfig);
 
         pool.getConnection(function (erro, conexao) {
             if (erro) {
-                pool.end();
                 return reject(erro);
             }
 
@@ -52,7 +52,6 @@ function executarTransacao(operacoes) {
 
             function finalizar(erro, resultado) {
                 conexao.release();
-                pool.end();
                 if (erro) {
                     return reject(erro);
                 }
@@ -64,7 +63,10 @@ function executarTransacao(operacoes) {
                     return finalizar(erro);
                 }
 
-                operacoes(query)
+                Promise.resolve()
+                    .then(function () {
+                        return operacoes(query);
+                    })
                     .then(function (resultado) {
                         conexao.commit(function (erro) {
                             if (erro) {
