@@ -15,7 +15,7 @@
 
 <body onload="carregarTela()">
 
-  <main class="estrutura-painel">
+  <div class="estrutura-painel">
 
     <section class="barra-lateral">
       <div>
@@ -84,24 +84,29 @@
       <div class="barra-filtros">
 
         <div class="item-filtro">
-          <label for="ticker" class="rotulo-filtro">Ticker</label>
+          <label for="ticker" class="rotulo-filtro">Ticker / Ativo</label>
           <select id="ticker" class="seletor-filtro">
-            <option value="#">Selecione um ativo...</option>
+            <option value="CARTEIRA" selected>Carteira Consolidada (FinSight)</option>
+            <option value="PETR4">PETR4 - Petrobras PN</option>
+            <option value="VALE3">VALE3 - Vale ON</option>
+            <option value="ITUB4">ITUB4 - Itaú Unibanco PN</option>
+            <option value="WEGE3">WEGE3 - WEG S.A.</option>
+            <option value="B3SA3">B3SA3 - B3 S.A.</option>
           </select>
         </div>
 
         <div class="item-filtro">
           <label for="benchmark" class="rotulo-filtro">Comparar Contra</label>
-          <select id="benchmark" class="seletor-filtro">
-            <option value="NENHUM">Sem Comparativo</option>
+          <select id="benchmark" class="seletor-filtro" onchange="alternarIbov()">
+            <option value="NENHUM" selected>Sem Comparativo</option>
             <option value="IBOV">Ibovespa (^BVSP)</option>
           </select>
         </div>
 
         <div class="item-filtro">
           <label for="escalaGrafico" class="rotulo-filtro">Escala / Visualização</label>
-          <select id="escalaGrafico" class="seletor-filtro">
-            <option value="PERCENTUAL">Variação Percentual (%)</option>
+          <select id="escalaGrafico" class="seletor-filtro" onchange="alternarEscala()">
+            <option value="PERCENTUAL" selected>Variação Percentual (%)</option>
             <option value="VALOR_NOMINAL">Preço Nominal (R$)</option>
           </select>
         </div>
@@ -111,43 +116,29 @@
       <div class="grade-indicadores" id="kpi-grid">
         <div class="cartao-indicador indicador-perigo" data-kpi="maior-risco">
           <div class="titulo-indicador">Maior risco</div>
-          <div class="valor-indicador" data-field="value">—</div>
-          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+          <div class="valor-indicador" data-field="value">PETR4</div>
+          <div class="detalhe-indicador" data-field="delta">Beta 1.42 • Energia / Estatais</div>
         </div>
 
         <div class="cartao-indicador indicador-sucesso" data-kpi="menor-risco">
           <div class="titulo-indicador">Menor risco</div>
-          <div class="valor-indicador" data-field="value">—</div>
-          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+          <div class="valor-indicador" data-field="value">ITUB4</div>
+          <div class="detalhe-indicador" data-field="delta">Beta 0.74 • Setor Bancário</div>
         </div>
 
         <div class="cartao-indicador" data-kpi="volatilidade-media">
           <div class="titulo-indicador">Volatilidade média</div>
-          <div class="valor-indicador" data-field="value">—</div>
-          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+          <div class="valor-indicador" data-field="value">14.8% a.a.</div>
+          <div class="detalhe-indicador" data-field="delta">Inferior ao IBOV (19.5% a.a.)</div>
         </div>
 
         <div class="cartao-indicador" data-kpi="drawdown-maximo">
           <div class="titulo-indicador">Drawdown máximo</div>
-          <div class="valor-indicador" data-field="value">—</div>
-          <div class="detalhe-indicador" data-field="delta">Sem dados carregados</div>
+          <div class="valor-indicador" data-field="value">-5.4%</div>
+          <div class="detalhe-indicador" data-field="delta">Pico em Julho (Recuperado em 18d)</div>
         </div>
       </div>
 
-
-      <div class="painel-conteudo">
-        <div class="cabecalho-painel">
-          <div>
-            <h2 class="titulo-painel">Volume Financeiro Negociado</h2>
-            <p class="subtitulo-painel" style="font-size: 0.82rem; color: var(--texto-suave); margin-top: 4px;">
-              Montante diário transacionado na B3 em conjunto com as alterações de preço para confirmação de tendências e liquidez.
-            </p>
-          </div>
-        </div>
-        <div class="espaco-grafico" id="chart-volume">
-          <canvas id="grafVolumeFinanceiro"></canvas>
-        </div>
-      </div>
 
       <div class="painel-conteudo">
         <div class="cabecalho-painel">
@@ -160,6 +151,20 @@
         </div>
         <div class="espaco-grafico" id="chart-rentabilidade">
           <canvas id="grafRentabilidade"></canvas>
+        </div>
+      </div>
+
+      <div class="painel-conteudo">
+        <div class="cabecalho-painel">
+          <div>
+            <h2 class="titulo-painel">Volume Financeiro Negociado</h2>
+            <p class="subtitulo-painel" style="font-size: 0.82rem; color: var(--texto-suave); margin-top: 4px;">
+              Montante diário transacionado na B3 em conjunto com as alterações de preço para confirmação de tendências e liquidez.
+            </p>
+          </div>
+        </div>
+        <div class="espaco-grafico" id="chart-volume">
+          <canvas id="grafVolumeFinanceiro"></canvas>
         </div>
       </div>
 
