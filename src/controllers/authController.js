@@ -13,24 +13,24 @@ const cookieBase = {
 
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, senha } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email e password são obrigatórios" });
+    if (!email || !senha) {
+      return res.status(400).json({ error: "Email e senha são obrigatórios" });
     }
 
-    if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+    if (!isEmailAndPasswordValid(email, senha)) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "Email ou password incorretos" });
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.senha);
+    const isMatch = await bcrypt.compare(senha, user.senha);
     if (!isMatch) {
-      return res.status(401).json({ error: "Email ou password incorretos" });
+      return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
     const accessToken = signAccessToken(user);
@@ -168,9 +168,9 @@ async function refreshToken(req, res) {
 
 async function forgotPassword(req, res) {
   try {
-    const { email, password, code } = req.body;
-    if (!isEmailAndPasswordValid(email, password)) {
-      return res.status(400).json({ error: "Email ou password inválidos" });
+    const { email, senha, code } = req.body;
+    if (!isEmailAndPasswordValid(email, senha)) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
     const user = await authModel.findByEmail(email);
@@ -182,20 +182,20 @@ async function forgotPassword(req, res) {
       return res.status(400).json({ error: "Código de verificação inválido" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(senha, 10);
 
     const ok = await authModel.resetPasswordAndSessions(
       user.id,
       hashedPassword,
     );
     if (!ok) {
-      return res.status(500).json({ error: "Erro ao redefinir password" });
+      return res.status(500).json({ error: "Erro ao redefinir senha" });
     }
 
     res.status(200).json({ message: "Senha redefinida com sucesso" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao solicitar redefinição de password" });
+    res.status(500).json({ error: "Erro ao solicitar redefinição de senha" });
   }
 }
 

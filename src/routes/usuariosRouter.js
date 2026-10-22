@@ -17,4 +17,8 @@ router.delete('/:id', (req, res) => {
     usuariosControler.delete(req, res);
 });
 
+router.get('/me', autenticarToken, (req, res) => {
+    usuariosControler.me(req, res);
+});
+
 module.exports = router;

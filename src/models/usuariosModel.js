@@ -23,11 +23,21 @@ async function userDelete(id) {
   });
 }
 
+async function me(id) {
+  const instrucaoSql = `
+    SELECT id, nome, email, acesso, id_empresa FROM usuario WHERE id = ?;
+  `;
+
+  const [usuario] = await db.executar(instrucaoSql, [id]);
+  return usuario;
+}
+
 module.exports = {
   list: userList,
   put: userPut,
   delete: userDelete,
   userList,
   userPut,
-  userDelete
+  userDelete,
+  me
 };

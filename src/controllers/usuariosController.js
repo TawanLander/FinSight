@@ -56,8 +56,23 @@ function userDelete(req, res) {
     }
 }
 
+async function me(req, res) {
+    try {
+        const id = req.usuario?.id;
+        const usuario = await usuariosModel.me(id);
+        if (!usuario) {
+            return res.status(404).json({ erro: 'Usuário não encontrado' });
+        }
+        return res.status(200).json(usuario);
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).json({ erro: 'Erro ao buscar usuário' });
+    }
+}
+
 module.exports = {
   list: userList,
   put: userPut,
-  delete: userDelete
+  delete: userDelete,
+  me: me
 };

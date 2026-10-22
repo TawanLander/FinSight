@@ -45,9 +45,16 @@ async function findByCodigo(codigo) {
     return rows[0];
 }
 
+async function deletar(id) {
+    const instrucao = 'DELETE FROM empresa WHERE id = ?';
+    const result = await bd.executar(instrucao, [id]);
+    return result.affectedRows > 0;
+}
+
 module.exports = {
     cadastrar,
     me,
     findByCodigo,
-    findByCnpj
+    findByCnpj,
+    deletar
 };
