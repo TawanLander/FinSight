@@ -75,16 +75,14 @@ async function me(id) {
     SELECT id, nome, email, acesso, id_empresa FROM usuario WHERE id = ?;
   `;
 
-  const [usuario] = await db.executar(instrucaoSql, [id]);
+  const [usuario] = await bd.executar(instrucaoSql, [id]);
   return usuario;
 }
 
 module.exports = {
-  list: userList,
-  put: userPut,
-  delete: userDelete,
-  userList,
-  userPut,
-  userDelete,
+  listar,
+  cadastrar,
+  atualizar,
+  deletar,
   me
 };

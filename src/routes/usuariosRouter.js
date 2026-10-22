@@ -13,11 +13,7 @@ router.get("/perfil", (req, res) => usuariosController.obterPerfil(req, res));
 router.put("/perfil", (req, res) => usuariosController.atualizarPerfil(req, res));
 router.put("/perfil/senha", (req, res) => usuariosController.alterarSenha(req, res));
 router.put("/:id", (req, res) => usuariosController.atualizar(req, res));
-router.delete("/delete/:id", (req, res) => usuariosController.deletar(req, res));
 router.delete("/:id", (req, res) => usuariosController.deletar(req, res));
-
-router.get('/me', autenticarToken, (req, res) => {
-    usuariosControler.me(req, res);
-});
+router.get('/me', autenticarToken, (req, res) => usuariosController.me(req, res));
 
 module.exports = router;
