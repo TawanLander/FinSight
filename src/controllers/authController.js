@@ -1,10 +1,9 @@
 const authModel = require("../models/authModel");
+const empresaModel = require("../models/empresaModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+const { isEmailAndPasswordValid } = require("../utils/verificadores");
 
 const cookieBase = {
   httpOnly: true,
@@ -27,7 +26,7 @@ async function login(req, res) {
       return res.status(400).json({ error: "Email e senha são obrigatórios" });
     }
 
-    if (!isEmailAndsenhaValid(email, senha)) {
+    if (!isEmailAndPasswordValid(email, senha)) {
       return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
@@ -74,16 +73,15 @@ async function login(req, res) {
 
 async function register(req, res) {
   try {
-    const name = req.body.name || req.body.nome;
-    const { email, senha, id_empresa } = req.body;
+    const { nome, email, senha, codigo } = req.body;
 
-    if (!email || !senha || !name) { // removi a validação do "enterprise_id"
+    if (!email || !senha || !nome || !codigo) {
       return res
         .status(400)
-        .json({ error: "Nome, email, senha e enterprise_id são obrigatórios" });
+        .json({ error: "Nome, email, senha e codigo são obrigatórios" });
     }
 
-    if (!isEmailAndsenhaValid(email, senha)) {
+    if (!isEmailAndPasswordValid(email, senha)) {
       return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
@@ -92,14 +90,14 @@ async function register(req, res) {
       return res.status(409).json({ error: "Erro ao registrar usuário" });
     }
 
-    const hashedsenha = await bcrypt.hash(senha, 10);
-    const user = await authModel.create({
-      name,
-      email,
-      senha: hashedsenha,
-      id_empresa,
-    });
-    res.status(201).json({ id: user.id, name: user.name, email: user.email });
+    const empresa = await empresaModel.findByCodigo(codigo);
+    if (!empresa) {
+      return res.status(404).json({ error: "Empresa não encontrada" });
+    }
+
+    const hashedPassword = await bcrypt.hash(senha, 10);
+    const user = await authModel.create({ nome, email, senha: hashedPassword, id_empresa: empresa.id });
+    res.status(201).json({ id: user.id, nome: user.nome, email: user.email, id_empresa: user.id_empresa });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao registrar usuário" });
@@ -180,7 +178,7 @@ async function refreshToken(req, res) {
 async function forgotsenha(req, res) {
   try {
     const { email, senha, code } = req.body;
-    if (!isEmailAndsenhaValid(email, senha)) {
+    if (!isEmailAndPasswordValid(email, senha)) {
       return res.status(400).json({ error: "Email ou senha inválidos" });
     }
 
@@ -193,9 +191,9 @@ async function forgotsenha(req, res) {
       return res.status(400).json({ error: "Código de verificação inválido" });
     }
 
-    const hashedsenha = await bcrypt.hash(senha, 10);
+    const hashedPassword = await bcrypt.hash(senha, 10);
 
-    const ok = await authModel.resetsenhaAndSessions(user.id, hashedsenha);
+    const ok = await authModel.resetsenhaAndSessions(user.id, hashedPassword);
     if (!ok) {
       return res.status(500).json({ error: "Erro ao redefinir senha" });
     }

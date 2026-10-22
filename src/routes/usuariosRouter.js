@@ -16,4 +16,8 @@ router.put("/:id", (req, res) => usuariosController.atualizar(req, res));
 router.delete("/delete/:id", (req, res) => usuariosController.deletar(req, res));
 router.delete("/:id", (req, res) => usuariosController.deletar(req, res));
 
+router.get('/me', autenticarToken, (req, res) => {
+    usuariosControler.me(req, res);
+});
+
 module.exports = router;

@@ -8,13 +8,12 @@ async function findByEmail(email) {
     return rows[0];
 }
 
-async function create(user) {
-    const { name, email, password, enterprise_id, access_profile = null } = user;
+async function create({ nome, email, senha, id_empresa, acesso = 'leitor' }) {
     const result = await db.executar(
-        'INSERT INTO usuario (nome, email, senha, id_empresa, perfil_acesso) VALUES (?, ?, ?, ?, ?)',
-        [name, email, password, enterprise_id, access_profile]
+        'INSERT INTO usuario (nome, email, senha, id_empresa, acesso) VALUES (?, ?, ?, ?, ?)',
+        [nome, email, senha, id_empresa, acesso]
     );
-    return { id: result.insertId, name, email, enterprise_id };
+    return { id: result.insertId, nome, email, id_empresa, acesso };
 }
 
 async function updatesenha(email, newsenha) {

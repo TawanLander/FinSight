@@ -70,75 +70,21 @@ async function deletar(id) {
   });
 }
 
-async function carregar(idUsuario) {
-  const instrucao = `SELECT id, nome, id_empresa, perfil_acesso FROM usuario WHERE id = ?;`;
-  return await bd.executar(instrucao, [idUsuario]);
-}
-
-async function buscarPerfil(id) {
-  const instrucao = `
-        SELECT
-            id,
-            nome,
-            email,
-            DATE_FORMAT(dt_nascimento, '%Y-%m-%d') AS dt_nascimento,
-            celular,
-            cpf,
-            rg,
-            estado_civil,
-            genero
-        FROM usuario
-        WHERE id = ?;
-    `;
-
-  return await bd.executar(instrucao, [id]);
-}
-
-async function atualizarPerfil(id, dados) {
-  const instrucao = `
-        UPDATE usuario
-        SET
-            nome = ?,
-            email = ?,
-            dt_nascimento = ?,
-            celular = ?,
-            cpf = ?,
-            rg = ?,
-            estado_civil = ?,
-            genero = ?
-        WHERE id = ?;
-    `;
-
-  return await bd.executar(instrucao, [
-    dados.nome,
-    dados.email,
-    dados.dt_nascimento,
-    dados.celular,
-    dados.cpf,
-    dados.rg,
-    dados.estado_civil,
-    dados.genero,
-    id,
-  ]);
-}
-
-async function alterarSenha(id, senhaHash) {
-  const instrucao = `
-    UPDATE usuario
-    SET senha = ?
-    WHERE id = ?;
+async function me(id) {
+  const instrucaoSql = `
+    SELECT id, nome, email, acesso, id_empresa FROM usuario WHERE id = ?;
   `;
 
-  return await bd.executar(instrucao, [senhaHash, id]);
+  const [usuario] = await db.executar(instrucaoSql, [id]);
+  return usuario;
 }
 
 module.exports = {
-  listar,
-  cadastrar,
-  atualizar,
-  deletar,
-  carregar,
-  buscarPerfil,
-  atualizarPerfil,
-  alterarSenha,
+  list: userList,
+  put: userPut,
+  delete: userDelete,
+  userList,
+  userPut,
+  userDelete,
+  me
 };
