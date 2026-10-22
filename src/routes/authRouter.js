@@ -19,8 +19,8 @@ router.post('/refresh-token', autenticarRefreshToken, (req, res) => {
     authControler.refreshToken(req, res);
 });
 
-router.post('/forgot-password', (req, res) => {
-    authControler.forgotPassword(req, res);
+router.post('/forgot-senha', (req, res) => {
+    authControler.forgotsenha(req, res);
 });
 
 module.exports = router;

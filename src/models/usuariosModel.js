@@ -1,23 +1,70 @@
-const db = require("../database/config");
+const bd = require("../database/config");
 
-function userList() {
-  const instrucaoSql = `
-    SELECT id, nome, email, perfil_acesso, id_empresa FROM usuario;
-    `;
-
-  return db.executar(instrucaoSql);
+async function listar(idEmpresa) {
+  if (idEmpresa) {
+    const instrucao =
+      "SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular FROM usuario WHERE id_empresa = ?;";
+    return await bd.executar(instrucao, [idEmpresa]);
+  }
+  const instrucao =
+    "SELECT id, nome, email, perfil_acesso AS cargo, cpf, celular, id_empresa FROM usuario;";
+  return await bd.executar(instrucao);
 }
 
-function userPut(id, nome, email, perfil) {
-  const instrucaoSql = `
-    UPDATE usuario SET nome = ?, email = ?, perfil_acesso = ? WHERE id = ?;
+async function cadastrar({
+  nome,
+  email,
+  senha,
+  cargo,
+  cpf,
+  celular,
+  idEmpresa,
+}) {
+  const instrucao = `
+        INSERT INTO usuario (nome, email, senha, perfil_acesso, cpf, celular, id_empresa) 
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
-
-  return db.executar(instrucaoSql, [nome, email, perfil, id]);
+  const resultado = await bd.executar(instrucao, [
+    nome,
+    email,
+    senha,
+    cargo,
+    cpf,
+    celular,
+    idEmpresa,
+  ]);
+  return resultado.insertId;
 }
 
-async function userDelete(id) {
-  return db.executarTransacao(async function (query) {
+async function atualizar(id, dados, email, perfil) {
+  if (typeof dados === "object" && dados !== null) {
+    const { nome, email: emailObj, cargo, cpf, celular } = dados;
+    const instrucao = `
+            UPDATE usuario 
+            SET nome = ?, email = ?, perfil_acesso = ?, cpf = ?, celular = ? = ? 
+            WHERE id = ?;
+        `;
+    const resultado = await bd.executar(instrucao, [
+      nome,
+      emailObj,
+      cargo,
+      cpf,
+      celular,
+      id,
+    ]);
+    return resultado.affectedRows;
+  } else {
+    const nome = dados;
+    const instrucao = `
+            UPDATE usuario SET nome = ?, email = ?, perfil_acesso = ? WHERE id = ?;
+        `;
+    const resultado = await bd.executar(instrucao, [nome, email, perfil, id]);
+    return resultado.affectedRows;
+  }
+}
+
+async function deletar(id) {
+  return bd.executarTransacao(async function (query) {
     await query("DELETE FROM token WHERE id_usuario = ?", [id]);
     return query("DELETE FROM usuario WHERE id = ?", [id]);
   });

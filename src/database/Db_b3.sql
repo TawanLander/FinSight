@@ -67,6 +67,7 @@ CREATE TABLE historico_upload (
     id_usuario INT,
     id_empresa INT,
     nome_arquivo VARCHAR(150),
+    tamanho_arquivo BIGINT,
     data_hora_envio DATETIME,
     status_processamento VARCHAR(50),
     motivo_falha VARCHAR(200),
@@ -108,4 +109,3 @@ CREATE TABLE cotacao_historico (
         FOREIGN KEY (id_tickets)
         REFERENCES tickets(id)
 );
-

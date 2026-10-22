@@ -16,7 +16,7 @@ async function create({ nome, email, senha, id_empresa, acesso = 'leitor' }) {
     return { id: result.insertId, nome, email, id_empresa, acesso };
 }
 
-async function updatePassword(email, newPassword) {
+async function updatesenha(email, newsenha) {
     const result = await db.executar('UPDATE usuario SET senha = ? WHERE email = ?', [newPassword, email]);
     return result.affectedRows > 0;
 }
@@ -43,7 +43,7 @@ async function saveToken(token, userId, expiresAt) {
 
 async function rotateToken(oldToken, newToken, userId, expiresAt) {
     const result = await db.executar(
-        `UPDATE token
+         `UPDATE token
          SET token = ?, data_expiracao = ?
          WHERE token = ? AND id_usuario = ? AND data_expiracao > ?`,
         [newToken, expiresAt, oldToken, userId, new Date()]
@@ -52,14 +52,14 @@ async function rotateToken(oldToken, newToken, userId, expiresAt) {
 }
 
 async function deleteToken(token) {
-    const result = await db.executar('DELETE FROM token WHERE token = ?', [token]);
+     const result = await db.executar('DELETE FROM token WHERE token = ?', [token]);
     return result.affectedRows > 0;
 }
 
-async function resetPasswordAndSessions(userId, hashedPassword) {
+async function resetsenhaAndSessions(userId, hashedsenha) {
     try {
         await db.executarTransacao(async function (query) {
-            var resultado = await query('UPDATE usuario SET senha = ? WHERE id = ?', [hashedPassword, userId]);
+             var resultado = await query('UPDATE usuario SET senha = ? WHERE id = ?', [hashedPassword, userId]);
             if (resultado.affectedRows !== 1) {
                 throw new Error('Usuário não encontrado');
             }
@@ -68,7 +68,7 @@ async function resetPasswordAndSessions(userId, hashedPassword) {
         });
         return true;
     } catch (error) {
-        console.error('Erro ao redefinir password:', error);
+        console.error('Erro ao redefinir senha:', error);
         return false;
     }
 }
@@ -81,14 +81,15 @@ async function findById(id) {
     return rows[0];
 }
 
+
 module.exports = {
     findByEmail,
     findById,
     create,
-    updatePassword,
+    updatesenha,
     verifyToken,
     saveToken,
     rotateToken,
     deleteToken,
-    resetPasswordAndSessions
+    resetsenhaAndSessions
 };

@@ -1,59 +1,211 @@
 const usuariosModel = require("../models/usuariosModel");
+const bcrypt = require("bcrypt");
+const authModel = require("../models/authModel");
 
-function userList(req, res) {
+async function carregar(req, res) {
+  try {
+    const idUsuario = req.usuario.id;
+    const data = await usuariosModel.carregar(idUsuario);
+    const usuario = data[0];
+    return res.status(200).json(usuario);
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({ erro: "Erro ao buscar as informações" });
+  }
+}
 
-  usuariosModel.userList()
-    .then(function (resultado) {
-      res.status(200).json(resultado);
-    })
-    .catch(function (err) {
-      console.log("Erro ao listar os users: ", err.sqlMessage || err.message);
-      res.status(500).json(err.sqlMessage ||  "Erro ao listar usuários");
+async function listar(req, res) {
+  try {
+    const idEmpresa =
+      req.usuario?.enterprise_id || req.usuario?.id_empresa || 1;
+    const colaboradores = await usuariosModel.listar(idEmpresa);
+    return res.status(200).json(colaboradores);
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({ erro: "Erro ao listar colaboradores" });
+  }
+}
+
+async function cadastrar(req, res) {
+  const { nome, email, cargo, cpf, celular, salario } = req.body;
+  const idEmpresa = req.usuario?.enterprise_id || req.usuario?.id_empresa || 1;
+  const senha = req.body.senha;
+
+  if (!nome || !email) {
+    return res.status(400).json({ erro: "Nome e email são obrigatórios" });
+  }
+
+  try {
+    const id = await usuariosModel.cadastrar({
+      nome,
+      email,
+      senha,
+      cargo,
+      cpf,
+      celular,
+      salario,
+      idEmpresa,
+    });
+    return res
+      .status(201)
+      .json({ id, mensagem: "Colaborador cadastrado com sucesso!" });
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({ erro: "Erro ao cadastrar colaborador" });
+  }
+}
+
+async function atualizar(req, res) {
+  const id = req.params.id;
+  const { nome, email, cargo, cpf, celular, salario, perfil } = req.body;
+
+  if (!id || !nome || !email) {
+    return res.status(400).json({ erro: "Dados incompletos para atualização" });
+  }
+
+  try {
+    await usuariosModel.atualizar(id, {
+      nome,
+      email,
+      cargo: cargo || perfil,
+      cpf,
+      celular,
+      salario,
+    });
+    return res
+      .status(200)
+      .json({ mensagem: "Colaborador atualizado com sucesso!" });
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({ erro: "Erro ao atualizar colaborador" });
+  }
+}
+
+async function deletar(req, res) {
+  const id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ erro: "ID não informado" });
+  }
+
+  try {
+    await usuariosModel.deletar(id);
+    return res
+      .status(200)
+      .json({ mensagem: "Colaborador removido com sucesso!" });
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({ erro: "Erro ao deletar colaborador" });
+  }
+}
+
+async function obterPerfil(req, res) {
+  try {
+    const id = req.usuario.id;
+
+    const usuario = await usuariosModel.buscarPerfil(id);
+
+    if (usuario.length === 0) {
+      return res.status(404).json({
+        erro: "Usuário não encontrado",
+      });
+    }
+
+    return res.status(200).json(usuario[0]);
+  } catch (erro) {
+    console.error(erro);
+
+    return res.status(500).json({
+      erro: "Erro ao buscar perfil",
+    });
+  }
+}
+
+async function atualizarPerfil(req, res) {
+  try {
+    const id = req.usuario.id;
+
+    const {
+      nome,
+      email,
+      dt_nascimento,
+      celular,
+      cpf,
+      rg,
+      estado_civil,
+      genero,
+    } = req.body;
+
+    if (!nome || !email) {
+      return res.status(400).json({
+        erro: "Nome e email são obrigatórios",
+      });
+    }
+
+    await usuariosModel.atualizarPerfil(id, {
+      nome,
+      email,
+      dt_nascimento: dt_nascimento || null,
+      celular: celular || null,
+      cpf: cpf || null,
+      rg: rg || null,
+      estado_civil: estado_civil || null,
+      genero: genero || null,
     });
 
+    return res.status(200).json({
+      mensagem: "Perfil atualizado com sucesso!",
+    });
+  } catch (erro) {
+    console.error(erro);
+
+    return res.status(500).json({
+      erro: "Erro ao atualizar perfil",
+    });
+  }
 }
 
-function userPut(req, res) {
-    const id = req.params.id;
-    const nome = req.body.nome;
-    const email = req.body.email;
-    const perfil = req.body.perfil;
+async function alterarSenha(req, res) {
+  try {
+    const idUsuario = req.usuario.id;
+    const { senhaAtual, novaSenha } = req.body;
 
-    if (id == undefined) {
-        res.status(400).send("O ID do usuário está undefined!");
-    } else if (nome == undefined) {
-        res.status(400).send("O nome está undefined!");
-    } else if (email == undefined) {
-        res.status(400).send("O email está undefined!");
-    } else if (perfil == undefined) {
-        res.status(400).send("O perfil está undefined!");
-    } else {
-        usuariosModel.userPut(id, nome, email, perfil)
-            .then(function (x) {
-                res.status(204).send();
-            })
-            .catch(function (err) {
-                console.log("Erro ao tentar atualizar o user: ", err.sqlMessage || err.message);
-                res.status(500).json(err.sqlMessage ||  "Erro ao atualizar usuário");
-            })
+    if (!senhaAtual || !novaSenha) {
+      return res.status(400).json({
+        erro: "Informe a senha atual e a nova senha.",
+      });
     }
-}
 
+    const usuario = await authModel.findById(idUsuario);
 
-function userDelete(req, res) {
-    const id = req.params.id;
-
-    if (id == undefined) {
-        res.status(400).send("O id do user ta undefined");
-    } else {
-        usuariosModel.userDelete(id).then(function (resultado) {
-            res.status(204).send();
-        })
-        .catch (function (err) {
-            console.log("Erro ao deletar o user: ", err.sqlMessage || err.message);
-            res.status(500).json(err.sqlMessage || "Erro ao deletar usuário");
-        })
+    if (!usuario) {
+      return res.status(404).json({
+        erro: "Usuário não encontrado.",
+      });
     }
+
+    const senhaCorreta = await bcrypt.compare(senhaAtual, usuario.senha);
+
+    if (!senhaCorreta) {
+      return res.status(400).json({
+        erro: "A senha atual está incorreta.",
+      });
+    }
+
+    const senhaHash = await bcrypt.hash(novaSenha, 10);
+
+    await usuariosModel.alterarSenha(idUsuario, senhaHash);
+
+    return res.status(200).json({
+      mensagem: "Senha alterada com sucesso!",
+    });
+  } catch (erro) {
+    console.error("Erro ao alterar senha:", erro);
+
+    return res.status(500).json({
+      erro: "Erro ao alterar a senha.",
+    });
+  }
 }
 
 async function me(req, res) {
@@ -71,8 +223,13 @@ async function me(req, res) {
 }
 
 module.exports = {
-  list: userList,
-  put: userPut,
-  delete: userDelete,
-  me: me
+  carregar,
+  listar,
+  cadastrar,
+  atualizar,
+  deletar,
+  obterPerfil,
+  atualizarPerfil,
+  alterarSenha,
+  me
 };

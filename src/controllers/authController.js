@@ -11,6 +11,13 @@ const cookieBase = {
   sameSite: "lax",
 };
 
+function isEmailAndsenhaValid(email, senha) {
+  let emailValido = EMAIL_REGEX.test(email);
+  let senhaValida = SENHA_REGEX.test(senha);
+
+  return emailValido && senhaValida;
+}
+
 async function login(req, res) {
   try {
     const { email, senha } = req.body;
@@ -42,7 +49,9 @@ async function login(req, res) {
       new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     );
     if (!setupToken) {
-      return res.status(500).json({ error: "Erro ao salvar token de atualização" });
+      return res
+        .status(500)
+        .json({ error: "Erro ao salvar token de atualização" });
     }
 
     res.cookie("accessToken", accessToken, {
@@ -166,7 +175,7 @@ async function refreshToken(req, res) {
   }
 }
 
-async function forgotPassword(req, res) {
+async function forgotsenha(req, res) {
   try {
     const { email, senha, code } = req.body;
     if (!isEmailAndPasswordValid(email, senha)) {
@@ -184,10 +193,7 @@ async function forgotPassword(req, res) {
 
     const hashedPassword = await bcrypt.hash(senha, 10);
 
-    const ok = await authModel.resetPasswordAndSessions(
-      user.id,
-      hashedPassword,
-    );
+    const ok = await authModel.resetsenhaAndSessions(user.id, hashedPassword);
     if (!ok) {
       return res.status(500).json({ error: "Erro ao redefinir senha" });
     }
@@ -201,18 +207,22 @@ async function forgotPassword(req, res) {
 
 function signAccessToken(user) {
   return jwt.sign(
-    { id: user.id, name: user.nome, email: user.email, enterprise_id: user.id_empresa },
+    {
+      id: user.id,
+      name: user.nome,
+      email: user.email,
+      id_empresa: user.id_empresa,
+    },
     process.env.JWT_SECRET,
     { expiresIn: "15m" },
   );
 }
 
 function signRefreshToken(user) {
-  return jwt.sign(
-    { id: user.id },
-    process.env.JWT_REFRESH_SECRET,
-    { expiresIn: "7d", jwtid: crypto.randomUUID() },
-  );
+  return jwt.sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: "7d",
+    jwtid: crypto.randomUUID(),
+  });
 }
 
 module.exports = {
@@ -220,5 +230,5 @@ module.exports = {
   register,
   logout,
   refreshToken,
-  forgotPassword,
+  forgotsenha,
 };

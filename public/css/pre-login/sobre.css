@@ -1,5 +1,3 @@
-/* HERO (seção de destaque com foto de fundo) */
-
 .secao-destaque {
   position: relative;
   overflow: hidden;
@@ -7,7 +5,6 @@
   height: 50dvh;
 }
 
-/* caixa que contém a imagem, atrás de tudo (z-index: 0) */
 .fundo-destaque-conteiner {
   position: absolute;
   top: 0;
@@ -104,9 +101,6 @@
   text-shadow: none;
 }
 
-
-/* SEÇÃO "NOSSA MOTIVAÇÃO" (texto em duas colunas) */
-
 .grade-duas-colunas {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -120,8 +114,6 @@
   margin-bottom: 1.75rem;
 }
 
-
-/* CARDS DE MOTIVAÇÃO (grade de 3 colunas) */
 .grade-tres-colunas {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -164,8 +156,6 @@
   margin-bottom: 0;
 }
 
-
-/* CARDS DA EQUIPE (grade de 3 colunas) */
 .grade-equipe {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
