@@ -9,12 +9,12 @@ async function cadastrar({ empresa, dono }) {
         );
         const idEmpresa = resEmpresa.insertId;
 
-        await query(
+        const resDono = await query(
             'INSERT INTO usuario (id_empresa, nome, email, senha, acesso) VALUES (?, ?, ?, ?, ?)',
             [idEmpresa, dono.nome, dono.email, dono.senha, 'dono']
         );
 
-        return idEmpresa;
+        return { idEmpresa, idDono: resDono.insertId };
     });
 }
 

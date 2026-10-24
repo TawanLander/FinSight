@@ -68,3 +68,41 @@
   margin-top: 24px;
   flex-wrap: wrap;
 }
+
+/* ---------- Responsividade ---------- */
+
+@media (max-width: 900px) {
+  .painel-conteudo {
+    padding: 20px 16px;
+  }
+
+  .area-upload {
+    padding: 32px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .painel-conteudo {
+    padding: 16px 12px;
+  }
+
+  .area-upload {
+    padding: 24px 12px;
+  }
+
+  .titulo-upload {
+    font-size: 1.05rem;
+  }
+
+  .descricao-upload {
+    font-size: 0.82rem;
+  }
+
+  .acoes-envio {
+    flex-direction: column-reverse;
+  }
+
+  .acoes-envio .btn {
+    width: 100%;
+  }
+}

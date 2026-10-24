@@ -16,6 +16,10 @@
 
 <body onload="carregarUsuario()">
 
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+
   <div class="estrutura-painel">
 
     <section class="barra-lateral">
@@ -57,7 +61,7 @@
       </div>
 
       <div class="rodape-barra-lateral">
-        <a href="../index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
         <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
           aria-label="Alternar tema claro e escuro">
           <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
@@ -86,7 +90,7 @@
           <div class="avatar-perfil-grande">F</div>
           <div class="detalhes-perfil">
             <h2 class="nome-perfil">Fernanda</h2>
-            <p class="cargo-perfil">Analista</p>
+            <p class="cargo-perfil" id="perfil-cargo"></p>
           </div>
         </div>
 
@@ -194,19 +198,18 @@
 
 
               <div class="grupo-campo">
-                <label for="codVerificacao" class="rotulo-campo">Código de Verificação</label>
+                <label for="codVerificacao" class="rotulo-campo">Código de verificação</label>
                 <input type="text" id="codVerificacao" class="campo-texto" disabled>
               </div>
 
-              <button type="button" id="btn-cod" class="btn btn-primario" onclick="reberCodVer()" disabled>Receber Cód
-                de Verificação</button>
+              <button type="button" id="btn-cod" class="btn btn-primario" onclick="reberCodVer()">Receber código de verificação</button>
 
             </div>
             <div class="acoes-formulario">
               <button type="button" id="btn-editar-senha" class="btn btn-primario" onclick="editarSenha()">Alterar
                 Senha</button>
               <button type="submit" id="btn-salvar-senha" class="btn btn-primario" style="display: none;"
-                disabled>Salvar
+                >Salvar
                 Senha</button>
             </div>
 

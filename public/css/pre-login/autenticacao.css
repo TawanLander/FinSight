@@ -196,3 +196,46 @@
     padding: 32px 24px;
   }
 }
+
+.seletor-tipo-cadastro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.opcao-tipo-cadastro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background-color: var(--fundo-campo);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--arredondamento-pequeno);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  transition: border-color 0.2s ease, color 0.2s ease;
+  text-align: center;
+}
+
+.opcao-tipo-cadastro:hover {
+  border-color: var(--cor-secundaria);
+}
+
+.opcao-tipo-cadastro input[type="radio"] {
+  accent-color: var(--cor-secundaria);
+  cursor: pointer;
+}
+
+.opcao-tipo-cadastro:has(input:checked) {
+  border-color: var(--cor-secundaria);
+  color: var(--texto-principal);
+}
+
+@media (max-width: 480px) {
+  .seletor-tipo-cadastro {
+    grid-template-columns: 1fr;
+  }
+}

@@ -155,3 +155,48 @@
 .link-acao.link-perigo:hover {
   opacity: 0.8;
 }
+/* ---------- Responsividade ---------- */
+
+@media (max-width: 900px) {
+  .barra-filtros {
+    flex-wrap: wrap;
+  }
+
+  .item-filtro-busca {
+    max-width: none;
+    min-width: 100%;
+  }
+
+  .painel-conteudo {
+    padding: 20px 16px;
+  }
+
+  .tabela-dados th,
+  .tabela-dados td {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .painel-conteudo {
+    padding: 16px 12px;
+  }
+
+  .grupo-busca {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item-arquivo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    word-break: break-word;
+  }
+
+  .acoes-linha {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+}

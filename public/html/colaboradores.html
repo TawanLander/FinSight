@@ -16,6 +16,10 @@
 
 <body>
 
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+
   <div class="estrutura-painel">
 
     <section class="barra-lateral">
@@ -57,7 +61,7 @@
       </div>
 
       <div class="rodape-barra-lateral">
-        <a href="../index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
         <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
           aria-label="Alternar tema claro e escuro">
           <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
@@ -98,22 +102,22 @@
               <label for="colab-email" class="rotulo-campo">E-mail</label>
               <input type="email" id="colab-email" class="campo-texto" placeholder="carlos@empresa.com" required>
             </div>
-            <div class="grupo-campo">
-              <label for="colab-cpf" class="rotulo-campo">CPF</label>
-              <input type="text" id="colab-cpf" class="campo-texto" placeholder="000.000.000-00">
+            <div class="grupo-campo" id="grupo-cargo-colaborador" style="display: none;">
+              <label for="colab-cargo" class="rotulo-campo">Nível de Acesso</label>
+              <select id="colab-cargo" class="campo-texto">
+                <option value="leitor">Leitor</option>
+                <option value="editor">Editor</option>
+                <option value="gestor">Gestor</option>
+              </select>
             </div>
-            <div class="grupo-campo">
-              <label for="colab-celular" class="rotulo-campo">Celular</label>
-              <input type="tel" id="colab-celular" class="campo-texto" placeholder="(11) 90000-0000">
-            </div>
-            <div class="grupo-campo">
-              <label for="colab-nascimento" class="rotulo-campo">Data de Nascimento</label>
-              <input type="date" id="colab-nascimento" class="campo-texto">
+            <div class="grupo-campo grupo-campo-inteiro" id="grupo-senha-colaborador">
+              <label for="colab-senha" class="rotulo-campo">Senha de Acesso</label>
+              <input type="password" id="colab-senha" class="campo-texto" placeholder="Mín. 8 caracteres, com maiúscula, minúscula, número e símbolo" required>
             </div>
           </div>
           <div class="acoes-formulario">
             <button type="button" class="btn btn-vazado" onclick="fecharPainelCadastro()">Cancelar</button>
-            <button type="submit" id="btn-submit-colaborador" class="btn btn-primario" onclick="salvarColaborador()">Salvar Colaborador</button>
+            <button type="submit" id="btn-submit-colaborador" class="btn btn-primario">Salvar Colaborador</button>
           </div>
         </form>
       </section>

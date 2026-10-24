@@ -15,6 +15,10 @@
 
 <body onload="carregarTela()">
 
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+
   <div class="estrutura-painel">
 
     <section class="barra-lateral">
@@ -56,7 +60,7 @@
       </div>
 
       <div class="rodape-barra-lateral">
-        <a href="../index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
         <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
           aria-label="Alternar tema claro e escuro">
           <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
@@ -99,7 +103,7 @@
           <label for="benchmark" class="rotulo-filtro">Comparar Contra</label>
           <select id="benchmark" class="seletor-filtro" onchange="alternarIbov()">
             <option value="NENHUM" selected>Sem Comparativo</option>
-            <option value="IBOV">Ibovespa (^BVSP)</option>
+            <option value="IBOV">Ibovespa (BVSP)</option>
           </select>
         </div>
 

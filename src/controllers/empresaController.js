@@ -3,6 +3,7 @@ const authModel = require('../models/authModel');
 const bcrypt = require('bcrypt');
 const { gerarCodigo } = require('../utils/geradores');
 const { isEmailAndPasswordValid } = require('../utils/verificadores');
+const { definirSessao } = require('./authController');
 
 async function cadastrar(req, res) {
     const { nome: nomeEmpresa, cnpj: cnpjEmpresa } = req.body?.empresa ?? {};
@@ -18,12 +19,17 @@ async function cadastrar(req, res) {
         return res.status(400).json({ erro: 'erro ao cadastrar o dono' });
     }
 
-    try {    
-        if(await empresaModel.findByCnpj(cnpjEmpresa)) {
+    const cnpjNumerico = String(cnpjEmpresa).replace(/\D/g, '');
+    if (cnpjNumerico.length !== 14) {
+        return res.status(400).json({ erro: 'CNPJ deve conter 14 dígitos' });
+    }
+
+    try {
+        if(await empresaModel.findByCnpj(cnpjNumerico)) {
             return res.status(409).json({ erro: 'CNPJ já cadastrado' });
         }
         if(await authModel.findByEmail(emailDono)) {
-            return res.status(409).json({ erro: 'erro ao cadastrar o dono' });
+            return res.status(409).json({ erro: 'E-mail já cadastrado' });
         }
 
         const senhaHash = await bcrypt.hash(senhaDono, 10);
@@ -33,10 +39,10 @@ async function cadastrar(req, res) {
             codigo = gerarCodigo();
         }
 
-        const id = await empresaModel.cadastrar({
+        const { idEmpresa, idDono } = await empresaModel.cadastrar({
             empresa: {
                 nome: nomeEmpresa,
-                cnpj: cnpjEmpresa,
+                cnpj: cnpjNumerico,
                 codigo: codigo
             },
             dono: {
@@ -45,10 +51,22 @@ async function cadastrar(req, res) {
                 senha: senhaHash
             }
         });
-        return res.status(201).json({ id, codigo, mensagem: 'Empresa cadastrada com sucesso!' });
+        const dono = await authModel.findById(idDono);
+
+        if (!dono || !(await definirSessao(res, dono))) {
+            return res.status(500).json({ erro: 'Empresa criada, mas não foi possível autenticar o dono. Faça login manualmente.' });
+        }
+
+        return res.status(201).json({ id: idEmpresa, codigo, mensagem: 'Empresa cadastrada com sucesso!' });
     } catch (erro) {
         if (erro.code === 'ER_DUP_ENTRY') {
-            return res.status(409).json({ erro: 'Dados inválidos' });
+            if (erro.sqlMessage && erro.sqlMessage.includes('uk_usuario_email')) {
+                return res.status(409).json({ erro: 'E-mail já cadastrado' });
+            }
+            if (erro.sqlMessage && erro.sqlMessage.includes('uk_empresa_cnpj')) {
+                return res.status(409).json({ erro: 'CNPJ já cadastrado' });
+            }
+            return res.status(409).json({ erro: 'E-mail ou CNPJ já cadastrado' });
         }
         console.error(erro);
         return res.status(500).json({ erro: 'Erro ao cadastrar empresa' });
@@ -57,7 +75,7 @@ async function cadastrar(req, res) {
 
 async function me(req, res) {
     try {
-        const id = req.usuario?.enterprise_id;
+        const id = req.usuario?.id_empresa;
         if (id === null || id === undefined) {
             return res.status(400).json({ erro: 'ID da empresa não encontrado' });
         }

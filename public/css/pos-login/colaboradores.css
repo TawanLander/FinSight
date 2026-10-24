@@ -49,6 +49,10 @@
   gap: 6px;
 }
 
+.grupo-campo-inteiro {
+  grid-column: 1 / -1;
+}
+
 .rotulo-campo {
   font-size: 0.85rem;
   font-weight: 600;
@@ -250,7 +254,8 @@
 }
 
 .btn-remover-card {
-  color: var(--texto-secundario);
+  color: var(--cor-perigo);
+  border-color: var(--cor-perigo);
 }
 
 .btn-remover-card:hover {
@@ -266,4 +271,85 @@
   background-color: var(--fundo-cartao);
   border: 1px dashed var(--cor-borda);
   border-radius: var(--arredondamento-pequeno);
+}
+/* ---------- Responsividade ---------- */
+
+@media (max-width: 900px) {
+  .cartao-colaborador {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .bloco-perfil {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .bloco-informacoes {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+
+  .bloco-acoes {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .painel-conteudo {
+    padding: 18px 14px;
+  }
+
+  .cabecalho-painel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .grade-campos {
+    grid-template-columns: 1fr;
+  }
+
+  .acoes-formulario {
+    flex-direction: column-reverse;
+  }
+
+  .acoes-formulario .btn {
+    width: 100%;
+  }
+
+  .barra-filtros {
+    padding: 12px 14px;
+  }
+
+  .campo-busca-conteiner {
+    max-width: none;
+    width: 100%;
+  }
+
+  .cartao-colaborador {
+    padding: 16px;
+  }
+
+  .bloco-informacoes {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .valor-info {
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .bloco-acoes {
+    justify-content: stretch;
+  }
+
+  .bloco-acoes .btn-editar-card,
+  .bloco-acoes .btn-remover-card {
+    flex: 1;
+  }
 }

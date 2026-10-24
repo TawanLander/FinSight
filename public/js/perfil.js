@@ -23,6 +23,8 @@ async function carregarPerfil() {
 
     document.getElementById("perfil-email").value = usuario.email || "";
 
+    document.getElementById("perfil-cargo").textContent = usuario.acesso || "";
+
     document.getElementById("perfil-nascimento").value = usuario.dt_nascimento
       ? String(usuario.dt_nascimento).substring(0, 10)
       : "";
@@ -41,8 +43,6 @@ async function carregarPerfil() {
       usuario.estado_civil || "";
 
     document.getElementById("perfil-genero").value = usuario.genero || "";
-
-    // document.getElementById("perfil-senha").value = "";
 
     atualizarCabecalho(usuario.nome);
 
