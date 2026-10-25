@@ -91,7 +91,9 @@ async function logar(usuario) {
 
         const dados = await resposta.json();
         mostrarPopup('Login efetuado com sucesso!', true);
-        window.location.href = 'dashboard.html';
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 2000);
         return dados;
     } catch (erro) {
         console.error('Erro na requisição:', erro);

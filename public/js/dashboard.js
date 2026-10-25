@@ -237,7 +237,7 @@ function alternarEscala() {
   if (escalaGrafico.value == "VALOR_NOMINAL") {
     grafRentabilidade.data.datasets[0].data = dadosNominalCarteira;
     grafRentabilidade.data.datasets[1].data = dadosNominalIbov;
-    grafRentabilidade.options.scales.y.ticks = { callback: function (value) { return "R$ " + value; }}
+    grafRentabilidade.options.scales.y.ticks = { callback: function (val) { return "R$ " + val.toFixed(2); } }
   } else {
     grafRentabilidade.data.datasets[0].data = dadosPercentualCarteira;
     grafRentabilidade.data.datasets[1].data = dadosPercentualIbov;
