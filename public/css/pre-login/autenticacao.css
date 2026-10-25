@@ -229,11 +229,6 @@
   cursor: pointer;
 }
 
-.opcao-tipo-cadastro:has(input:checked) {
-  border-color: var(--cor-secundaria);
-  color: var(--texto-principal);
-}
-
 @media (max-width: 480px) {
   .seletor-tipo-cadastro {
     grid-template-columns: 1fr;

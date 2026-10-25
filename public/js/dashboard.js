@@ -211,7 +211,7 @@ if (typeof grafRentabilidade !== "undefined" && grafRentabilidade) {
   grafRentabilidade.data.datasets[0].data = dadosPercentualCarteira;
 
   grafRentabilidade.data.datasets.push({
-    label: "Benchmark (Ibovespa BVSP)",
+    label: "Benchmark (Ibovespa ^BVSP)",
     data: dadosPercentualIbov,
     borderColor: "rgba(245, 158, 11, 1)",
     backgroundColor: "transparent",

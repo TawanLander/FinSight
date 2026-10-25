@@ -581,15 +581,6 @@ small {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
   }
 
-  /* Sombra sobre o conteúdo quando o menu está aberto */
-  body:has(.cabecalho.menu-aberto)::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 90;
-  }
-
   .cabecalho.menu-aberto .menu-navegacao {
     flex-direction: column;
     align-items: flex-start;
@@ -644,15 +635,6 @@ small {
   .barra-lateral.menu-aberto {
     transform: translateX(0);
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-  }
-
-  /* Sombreia o conteúdo quando o menu está aberto */
-  .estrutura-painel:has(.barra-lateral.menu-aberto)::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 90;
   }
 
   .btn-menu-mobile {
