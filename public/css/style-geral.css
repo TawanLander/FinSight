@@ -568,7 +568,7 @@ small {
     z-index: 120;
     width: 280px;
     height: 100vh;
-    padding: 5rem 1.25rem 1.5rem;
+    padding: 5rem 1.25rem 15rem;
     background-color: var(--fundo-principal);
     border-right: 1px solid var(--cor-borda);
     transform: translateX(-100%);
@@ -624,7 +624,7 @@ small {
     height: 100vh;
     flex-direction: column;
     justify-content: space-between;
-    padding: 24px 20px;
+    padding: 84px 20px;
     transform: translateX(-100%);
     transition: transform 0.25s ease;
     border-right: 1px solid var(--cor-borda);
