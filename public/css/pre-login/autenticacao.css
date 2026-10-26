@@ -33,11 +33,9 @@
   justify-content: center;
   gap: 36px;
   padding: 48px 40px;
-  background: linear-gradient(
-    145deg,
-    rgba(15, 30, 58, 0.95),
-    rgba(11, 19, 32, 0.9)
-  );
+  background: linear-gradient(145deg,
+      rgba(15, 30, 58, 0.95),
+      rgba(11, 19, 32, 0.9));
   border-right: 1px solid var(--cor-borda);
   position: relative;
 }
@@ -73,11 +71,9 @@
 }
 
 [data-tema="claro"] .lado-institucional {
-  background: linear-gradient(
-    145deg,
-    rgba(238, 242, 250, 0.95),
-    rgba(244, 246, 251, 0.9)
-  );
+  background: linear-gradient(145deg,
+      rgba(238, 242, 250, 0.95),
+      rgba(244, 246, 251, 0.9));
 }
 
 .lado-formulario {
@@ -188,12 +184,12 @@
     grid-template-columns: 1fr;
   }
 
-  .lado-institucional {
-    display: none;
-  }
-
   .lado-formulario {
     padding: 32px 24px;
+  }
+
+  .frase-destaque-institucional {
+    display: none;
   }
 }
 
