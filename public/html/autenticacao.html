@@ -82,6 +82,17 @@
 
               <form id="formulario-cadastro" class="formulario-autenticacao" onsubmit="event.preventDefault(); cadastrarUsuario();">
 
+                <div class="seletor-tipo-cadastro campo-formulario" role="radiogroup" aria-label="Tipo de cadastro">
+                  <label class="opcao-tipo-cadastro">
+                    <input type="radio" name="tipo-cadastro" value="funcionario" checked onchange="alternarTipoCadastro()">
+                    <span>Sou funcionário</span>
+                  </label>
+                  <label class="opcao-tipo-cadastro">
+                    <input type="radio" name="tipo-cadastro" value="dono" onchange="alternarTipoCadastro()">
+                    <span>Sou dono da empresa</span>
+                  </label>
+                </div>
+
                 <div class="campo-formulario">
                   <label for="nome-cadastro" class="rotulo-campo">Nome Completo</label>
                   <input type="text" id="nome-cadastro" class="campo-texto"
@@ -103,7 +114,45 @@
                   <input type="password" id="confirmar-senha-cadastro" class="campo-texto" placeholder="Repita a senha criada">
                 </div>
 
-                <button type="submit" class="btn btn-primario btn-bloco">Cadastrar Conta</button>
+                <div class="campo-formulario" id="campo-codigo-empresa">
+                  <label for="codigo-empresa-cadastro" class="rotulo-campo">Código da empresa</label>
+                  <input type="text" id="codigo-empresa-cadastro" class="campo-texto" placeholder="Ex: AB12CD34" maxlength="8">
+                </div>
+
+                <button type="submit" id="botao-principal-cadastro" class="btn btn-primario btn-bloco">Cadastrar Conta</button>
+
+                <div class="rodape-formulario">
+                  <small class="texto-alternar">Já possui cadastro?
+                    <button type="button" class="link-alternar" onclick="mostrarLogin()">Faça login</button>
+                  </small>
+                </div>
+
+              </form>
+            </div>
+
+            <div id="caixa-cadastro-empresa" class="caixa-formulario" style="display: none;">
+
+              <div class="cabecalho-formulario">
+                <h2 class="titulo-formulario">Dados da empresa</h2>
+                <p class="subtitulo-formulario">Informe a empresa que você administra para concluir o cadastro.</p>
+              </div>
+
+              <form id="formulario-empresa" class="formulario-autenticacao" onsubmit="event.preventDefault(); cadastrarEmpresa();">
+
+                <div class="campo-formulario">
+                  <label for="nome-empresa-cadastro" class="rotulo-campo">Nome da empresa</label>
+                  <input type="text" id="nome-empresa-cadastro" class="campo-texto"
+                    placeholder="Digite o nome da empresa">
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="cnpj-empresa-cadastro" class="rotulo-campo">CNPJ</label>
+                  <input type="text" id="cnpj-empresa-cadastro" class="campo-texto" inputmode="numeric"
+                    placeholder="00.000.000/0000-00" maxlength="18" oninput="mascaraCnpj(this)">
+                </div>
+
+                <button type="submit" id="botao-finalizar-cadastro" class="btn btn-primario btn-bloco">Finalizar cadastro</button>
+                <button type="button" class="btn btn-vazado btn-bloco" onclick="voltarParaEtapaPessoal()">Voltar</button>
 
                 <div class="rodape-formulario">
                   <small class="texto-alternar">Já possui cadastro?

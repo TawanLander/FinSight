@@ -18,6 +18,12 @@ CREATE TABLE usuario (
     email VARCHAR(255),
     senha VARCHAR(255),
     acesso ENUM('leitor', 'editor', 'gestor', 'dono') DEFAULT 'leitor',
+    dt_nascimento DATE,
+    celular VARCHAR(20),
+    cpf VARCHAR(14),
+    rg VARCHAR(14),
+    estado_civil VARCHAR(20),
+    genero VARCHAR(30),
 
     UNIQUE KEY uk_usuario_email(email),
 

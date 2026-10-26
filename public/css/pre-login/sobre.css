@@ -223,3 +223,100 @@
   height: 0.95rem;
   flex-shrink: 0;
 }
+
+/* ---------- Responsividade da pagina sobre ---------- */
+
+@media (max-width: 992px) {
+  .secao-destaque {
+    height: auto;
+    min-height: 60dvh;
+    padding: 5.5rem 0 3.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .secao-destaque .conteiner {
+    width: 100%;
+  }
+
+  .secao-destaque h1 {
+    font-size: clamp(1.9rem, 6.5vw, 2.6rem);
+  }
+
+  .secao-destaque .texto-destaque {
+    font-size: 1.15rem;
+    line-height: 1.75;
+  }
+
+  .grade-duas-colunas {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .grade-tres-colunas {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .cartao {
+    padding: 1.5rem;
+  }
+
+  .grade-equipe {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .cartao-membro h3 {
+    font-size: 1.25rem;
+  }
+
+  .cartao-membro p {
+    font-size: 1rem;
+  }
+
+  .link-linkedin {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .secao-destaque {
+    min-height: 56dvh;
+    padding: 5rem 0 2.75rem;
+  }
+
+  .secao-destaque h1 {
+    font-size: clamp(1.85rem, 8.5vw, 2.2rem);
+  }
+
+  .secao-destaque .texto-destaque {
+    font-size: 1.2rem;
+  }
+
+  .grade-tres-colunas {
+    gap: 1.1rem;
+  }
+
+  .cartao {
+    padding: 1.35rem;
+  }
+
+  .cartao p {
+    font-size: 1.05rem;
+  }
+
+  .grade-equipe {
+    grid-template-columns: 1fr;
+  }
+
+  .cartao-membro {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .avatar-membro {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.3rem;
+  }
+}

@@ -18,6 +18,31 @@ function isEmailAndsenhaValid(email, senha) {
   return emailValido && senhaValida;
 }
 
+async function definirSessao(res, user) {
+  const accessToken = signAccessToken(user);
+  const refreshToken = signRefreshToken(user);
+
+  const setupToken = await authModel.saveToken(
+    refreshToken,
+    user.id,
+    new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  );
+  if (!setupToken) {
+    return false;
+  }
+
+  res.cookie("accessToken", accessToken, {
+    ...cookieBase,
+    maxAge: 15 * 60 * 1000,
+  });
+  res.cookie("refreshToken", refreshToken, {
+    ...cookieBase,
+    path: "/auth",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+  return true;
+}
+
 async function login(req, res) {
   try {
     const { email, senha } = req.body;
@@ -40,29 +65,11 @@ async function login(req, res) {
       return res.status(401).json({ error: "Email ou senha incorretos" });
     }
 
-    const accessToken = signAccessToken(user);
-    const refreshToken = signRefreshToken(user);
-
-    const setupToken = await authModel.saveToken(
-      refreshToken,
-      user.id,
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    );
-    if (!setupToken) {
+    if (!(await definirSessao(res, user))) {
       return res
         .status(500)
         .json({ error: "Erro ao salvar token de atualização" });
     }
-
-    res.cookie("accessToken", accessToken, {
-      ...cookieBase,
-      maxAge: 15 * 60 * 1000,
-    });
-    res.cookie("refreshToken", refreshToken, {
-      ...cookieBase,
-      path: "/auth",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
 
     res.json({ id: user.id, name: user.nome, email: user.email });
   } catch (error) {
@@ -87,12 +94,16 @@ async function register(req, res) {
 
     const existingUser = await authModel.findByEmail(email);
     if (existingUser) {
-      return res.status(409).json({ error: "Erro ao registrar usuário" });
+      return res.status(409).json({ error: "E-mail já cadastrado" });
     }
 
-    const empresa = await empresaModel.findByCodigo(codigo);
+    if (!/^[A-Za-z0-9]{8}$/.test(String(codigo).trim())) {
+      return res.status(400).json({ error: "Código da empresa inválido: deve conter exatamente 8 caracteres (letras e números)" });
+    }
+
+    const empresa = await empresaModel.findByCodigo(String(codigo).trim());
     if (!empresa) {
-      return res.status(404).json({ error: "Empresa não encontrada" });
+      return res.status(404).json({ error: "Código da empresa incorreto. Verifique com o dono da empresa e tente novamente." });
     }
 
     const hashedPassword = await bcrypt.hash(senha, 10);
@@ -231,4 +242,5 @@ module.exports = {
   logout,
   refreshToken,
   forgotsenha,
+  definirSessao,
 };

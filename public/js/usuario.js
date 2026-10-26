@@ -1,17 +1,20 @@
 async function carregarUsuario() {
     try {
         const res = await fetch('/usuarios/carregar');
+        if (res.status === 401) {
+            window.location.href = 'autenticacao.html';
+            return null;
+        }
         const dados = await res.json();
 
-        const primeiraLetra = dados.nome[0];
+        const primeiraLetra = (dados.nome || 'U')[0];
 
-        console.log(dados)
+        avatarUsuario.innerHTML = `${primeiraLetra.toUpperCase()}`;
+        nomeUsuario.innerHTML = `${dados.nome || 'Usuário'}`;
 
-        avatarUsuario.innerHTML =  `${primeiraLetra.toUpperCase()}`
-        nomeUsuario.innerHTML = `${dados.nome}`;
-        
-        return dados
+        return dados;
     } catch (erro) {
         console.log("Erro ao buscar dados:", erro);
+        return null;
     }
 }

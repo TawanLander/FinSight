@@ -11,9 +11,15 @@
   <script src="../js/tema.js"></script>
   <script src="../js/sessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/popup.js"></script>
+  <link rel="stylesheet" href="../css/popup.css">
 </head>
 
 <body onload="carregarTela()">
+
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
 
   <div class="estrutura-painel">
 
@@ -56,7 +62,7 @@
       </div>
 
       <div class="rodape-barra-lateral">
-        <a href="../index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
         <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
           aria-label="Alternar tema claro e escuro">
           <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
