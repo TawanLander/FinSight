@@ -1,5 +1,5 @@
 const TAMANHO_MAXIMO_ARQUIVO = 10 * 1024 * 1024;
-const EXTENSOES_PERMITIDAS = [".xlsx", ".xls", ".csv"];
+const EXTENSOES_PERMITIDAS = [".xlsx", ".xls"];
 
 function obterElementosEnvio() {
     return {
@@ -17,7 +17,7 @@ function validarArquivo(arquivo) {
         : "";
 
     if (!EXTENSOES_PERMITIDAS.includes(extensao)) {
-        return "Formato inválido. Selecione um arquivo .xlsx, .xls ou .csv.";
+        return "Formato inválido. Selecione um arquivo .xlsx ou .xls";
     }
 
     if (arquivo.size > TAMANHO_MAXIMO_ARQUIVO) {

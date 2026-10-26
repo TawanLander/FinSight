@@ -38,7 +38,7 @@ function mostrarMensagemHistorico(mensagem, mostrarBotaoEnvio) {
 
     const linha = document.createElement("tr");
     const celula = document.createElement("td");
-    celula.colSpan = 3;
+    celula.colSpan = 4;
     celula.className = "mensagem-historico";
 
     const texto = document.createElement("p");
@@ -73,9 +73,28 @@ function exibirArquivos(arquivos) {
         tamanho.textContent = formatarTamanho(arquivo.tamanho_arquivo);
 
         linha.appendChild(nome);
-        linha.appendChild(data);
-        linha.appendChild(tamanho);
-        corpoTabela.appendChild(linha);
+      linha.appendChild(data);
+      linha.appendChild(tamanho);
+
+      const acoes = document.createElement("td");
+      acoes.className = "coluna-acoes";
+      const botaoExcluir = document.createElement("button");
+      botaoExcluir.type = "button";
+      botaoExcluir.className = "btn-excluir-historico";
+      botaoExcluir.title = "Excluir arquivo do histórico";
+      botaoExcluir.setAttribute("aria-label", `Excluir ${arquivo.nome_arquivo || "arquivo"}`);
+      botaoExcluir.innerHTML =
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">' +
+        '<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>' +
+        '<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>' +
+        '</svg>';
+      botaoExcluir.addEventListener("click", function () {
+        confirmarExclusao(arquivo.id, arquivo.nome_arquivo);
+      });
+      acoes.appendChild(botaoExcluir);
+      linha.appendChild(acoes);
+
+      corpoTabela.appendChild(linha);
     });
 }
 
@@ -104,6 +123,36 @@ async function carregarHistorico() {
             false
         );
     }
+}
+
+async function excluirArquivo(id) {
+    try {
+        const resposta = await fetch(`/historico/arquivos/${id}`, { method: "DELETE" });
+        const dados = await resposta.json().catch(function () {
+            return {};
+        });
+
+        if (!resposta.ok) {
+            throw new Error(dados.erro || "Não foi possível excluir o arquivo.");
+        }
+
+        mostrarPopup(dados.mensagem || "Arquivo excluído do histórico com sucesso", true);
+        carregarHistorico();
+    } catch (erro) {
+        console.error("Erro ao excluir arquivo:", erro);
+        mostrarPopup(erro.message || "Não foi possível excluir o arquivo.", false);
+    }
+}
+
+function confirmarExclusao(id, nomeArquivo) {
+    mostrarConfirmacao(
+        "Excluir arquivo",
+        `Tem certeza que deseja excluir "${nomeArquivo || "este arquivo"}" do histórico? Esta ação não pode ser desfeita.`,
+        "Excluir",
+        function () {
+            excluirArquivo(id);
+        }
+    );
 }
 
 document.addEventListener("DOMContentLoaded", carregarHistorico);

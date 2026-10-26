@@ -34,7 +34,18 @@ async function registrar(idUsuario, nomeArquivo, tamanhoArquivo) {
     ]);
 }
 
+async function deletar(id, idUsuario) {
+    const instrucao = `
+        DELETE FROM historico_upload
+        WHERE id = ? AND id_usuario = ?;
+    `;
+
+    const resultado = await bd.executar(instrucao, [id, idUsuario]);
+    return resultado.affectedRows > 0;
+}
+
 module.exports = {
     listar,
-    registrar
+    registrar,
+    deletar
 };
