@@ -39,79 +39,77 @@ function listarColaboradores() {
     })
     .then(function (resposta) {
       listaColaboradores = resposta;
-
-      let container = document.getElementById("lista-colaboradores");
-      let contador = document.getElementById("contador-colaboradores");
-
-      container.innerHTML = "";
-      contador.innerHTML = resposta.length + " colaboradores";
-
-      for (let i = 0; i < resposta.length; i++) {
-        let colab = resposta[i];
-        let primeiraLetra = colab.nome.charAt(0).toUpperCase();
-
-        let botoesAcao = "";
-        let ehProprioUsuario = usuarioAtual && colab.id === usuarioAtual.id;
-        let alvoEhDono = colab.cargo === "dono";
-
-        if (podeEditar() && !ehProprioUsuario && !alvoEhDono) {
-          let btnRemover = ehDono()
-            ? `<button class="btn-remover-card" onclick="remover(${colab.id})">Remover</button>`
-            : "";
-          botoesAcao = `
-                        <div class="bloco-acoes">
-                            <button class="btn-editar-card" onclick="editar(${colab.id})">Editar</button>
-                            ${btnRemover}
-                        </div>
-                    `;
-        }
-
-        container.innerHTML += `
-                    <div class="cartao-colaborador">
-                        <div class="bloco-perfil">
-                            <div class="avatar-colaborador">${primeiraLetra}</div>
-                            <div class="dados-colaborador">
-                                <h3 class="nome-colaborador">${colab.nome}</h3>
-                                <span class="cargo-colaborador">${colab.cargo}</span>
-                            </div>
-                        </div>
-
-                        <div class="bloco-informacoes">
-                            <div class="info-item">
-                                <span class="rotulo-info">E-mail</span>
-                                <span class="valor-info">${colab.email}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="rotulo-info">Celular</span>
-                                <span class="valor-info">${colab.celular || "Não informado"}</span>
-                            </div>
-                        </div>
-
-                        ${botoesAcao}
-                    </div>
-                `;
-      }
+      renderizarLista(listaColaboradores);
     })
     .catch(function (erro) {
       console.log("Erro ao buscar colaboradores:", erro);
     });
 }
 
-function buscarColaborador() {
-  let texto = document.getElementById("campo-busca").value.toLowerCase();
-  let cartoes = document.getElementsByClassName("cartao-colaborador");
+function renderizarLista(colaboradores) {
+  let container = document.getElementById("lista-colaboradores");
+  let contador = document.getElementById("contador-colaboradores");
 
-  for (let i = 0; i < cartoes.length; i++) {
-    let nome = cartoes[i]
-      .querySelector(".nome-colaborador")
-      .innerText.toLowerCase();
+  container.innerHTML = "";
+  contador.innerHTML = colaboradores.length + " colaboradores";
 
-    if (nome.includes(texto)) {
-      cartoes[i].style.display = "";
-    } else {
-      cartoes[i].style.display = "none";
+  for (let i = 0; i < colaboradores.length; i++) {
+    let colab = colaboradores[i];
+    let primeiraLetra = colab.nome.charAt(0).toUpperCase();
+
+    let botoesAcao = "";
+    let ehProprioUsuario = usuarioAtual && colab.id === usuarioAtual.id;
+    let alvoEhDono = colab.cargo === "dono";
+
+    if (podeEditar() && !ehProprioUsuario && !alvoEhDono) {
+      let btnRemover = ehDono()
+        ? `<button class="btn-remover-card" onclick="remover(${colab.id})">Remover</button>`
+        : "";
+      botoesAcao = `
+                    <div class="bloco-acoes">
+                        <button class="btn-editar-card" onclick="editar(${colab.id})">Editar</button>
+                        ${btnRemover}
+                    </div>
+                `;
     }
+
+    container.innerHTML += `
+                <div class="cartao-colaborador">
+                    <div class="bloco-perfil">
+                        <div class="avatar-colaborador">${primeiraLetra}</div>
+                        <div class="dados-colaborador">
+                            <h3 class="nome-colaborador">${colab.nome}</h3>
+                            <span class="cargo-colaborador">${colab.cargo}</span>
+                        </div>
+                    </div>
+
+                    <div class="bloco-informacoes">
+                        <div class="info-item">
+                            <span class="rotulo-info">E-mail</span>
+                            <span class="valor-info">${colab.email}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="rotulo-info">Celular</span>
+                            <span class="valor-info">${colab.celular || "Não informado"}</span>
+                        </div>
+                    </div>
+
+                    ${botoesAcao}
+                </div>
+            `;
   }
+}
+
+function buscarColaborador() {
+  let texto = document.getElementById("campo-busca").value
+    .toLowerCase()
+    .trim();
+
+  let filtrados = listaColaboradores.filter(function (colab) {
+    return colab.nome.toLowerCase().includes(texto);
+  });
+
+  renderizarLista(filtrados);
 }
 
 function abrirCadastro() {
@@ -175,11 +173,11 @@ function salvarColaborador() {
   };
 
   if (!dados.nome) {
-    alert("Informe o nome do colaborador.");
+    mostrarPopup("Informe o nome do colaborador.", false);
     return;
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dados.email)) {
-    alert("Informe um e-mail válido.");
+    mostrarPopup("Informe um e-mail válido.", false);
     return;
   }
 
@@ -187,12 +185,13 @@ function salvarColaborador() {
     let senha = document.getElementById("colab-senha").value;
 
     if (!senha) {
-      alert("Informe a senha do novo colaborador.");
+      mostrarPopup("Informe a senha do novo colaborador.", false);
       return;
     }
     if (!SENHA_REGEX.test(senha)) {
-      alert(
+      mostrarPopup(
         "A senha deve ter no mínimo 8 caracteres, com maiúscula, minúscula, número e caractere especial.",
+        false,
       );
       return;
     }
@@ -206,12 +205,12 @@ function salvarColaborador() {
       body: JSON.stringify(dados),
     }).then(async function (resposta) {
       if (resposta.ok) {
-        alert("Colaborador cadastrado com sucesso!");
+        mostrarPopup("Colaborador cadastrado com sucesso!", true);
         fecharPainelCadastro();
         listarColaboradores();
       } else {
         const erro = await resposta.json().catch(() => ({}));
-        alert(erro.erro || "Erro ao cadastrar colaborador!");
+        mostrarPopup(erro.erro || "Erro ao cadastrar colaborador!", false);
       }
     });
   } else {
@@ -223,31 +222,33 @@ function salvarColaborador() {
       body: JSON.stringify(dados),
     }).then(async function (resposta) {
       if (resposta.ok) {
-        alert("Colaborador atualizado com sucesso!");
+        mostrarPopup("Colaborador atualizado com sucesso!", true);
         fecharPainelCadastro();
         listarColaboradores();
       } else {
         const erro = await resposta.json().catch(() => ({}));
-        alert(erro.erro || "Erro ao atualizar colaborador!");
+        mostrarPopup(erro.erro || "Erro ao atualizar colaborador!", false);
       }
     });
   }
 }
 
 function remover(id) {
-  let confirmou = confirm("Deseja realmente remover este colaborador?");
-  if (!confirmou) {
-    return;
-  }
-
-  fetch("/usuarios/" + id, {
-    method: "DELETE",
-  }).then(function (resposta) {
-    if (resposta.ok) {
-      alert("Colaborador removido com sucesso!");
-      listarColaboradores();
-    } else {
-      alert("Erro ao remover colaborador!");
-    }
-  });
+  mostrarConfirmacao(
+    "Remover colaborador",
+    "Tem certeza que deseja remover este colaborador? Esta ação não pode ser desfeita.",
+    "Remover",
+    function () {
+      fetch("/usuarios/" + id, {
+        method: "DELETE",
+      }).then(function (resposta) {
+        if (resposta.ok) {
+          mostrarPopup("Colaborador removido com sucesso!", true);
+          listarColaboradores();
+        } else {
+          mostrarPopup("Erro ao remover colaborador!", false);
+        }
+      });
+    },
+  );
 }

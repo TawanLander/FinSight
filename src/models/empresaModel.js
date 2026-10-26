@@ -19,7 +19,7 @@ async function cadastrar({ empresa, dono }) {
 }
 
 async function me(id) {
-    const instrucao = 'SELECT id, nome, cnpj, dt_cadastro FROM empresa WHERE id = ?';
+    const instrucao = 'SELECT id, nome, cnpj, codigo, dt_cadastro FROM empresa WHERE id = ?';
     const rows = await bd.executar(instrucao, [id]);
     if (!rows || rows.length === 0) {
         return false;

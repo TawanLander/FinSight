@@ -27,6 +27,25 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function validarSenhaCadastro(senha, confirmarSenha) {
+    if (!senha || senha.length === 0) {
+        informarErro('Informe uma senha para o cadastro.');
+        return false;
+    }
+
+    if (!SENHA_REGEX.test(senha)) {
+        informarErro('A senha não cumpre os requisitos necessários: mínimo de 8 caracteres, com letra maiúscula, letra minúscula, número e caractere especial.');
+        return false;
+    }
+
+    if (senha !== confirmarSenha) {
+        informarErro('A senha e a confirmação de senha não correspondem.');
+        return false;
+    }
+
+    return true;
+}
+
 function analisarDados(json, quantity, modo = 'login') {
     let acertos = 0;
 
@@ -206,8 +225,39 @@ function irParaEtapaEmpresa() {
         confirmarSenha: inputConfirmar.value
     };
 
-    if (!analisarDados(cadastro, 4, 'cadastro')) {
-        informarErro('Verifique nome, email, senha (mín. 8 caracteres, com maiúscula, minúscula, número e caractere especial) e a confirmação de senha.');
+    if (!cadastro.nome) {
+        informarErro('Informe seu nome completo.');
+        return false;
+    }
+
+    if (!EMAIL_REGEX.test(cadastro.email)) {
+        informarErro('Informe um e-mail válido, no formato exemplo@dominio.com.');
+        return false;
+    }
+
+    if (!validarSenhaCadastro(cadastro.senha, cadastro.confirmarSenha)) {
+        return false;
+    }
+
+    return true;
+}
+
+function irParaEtapaEmpresa() {
+    const inputNome = document.getElementById('nome-cadastro');
+    const inputEmail = document.getElementById('email-cadastro');
+    const inputSenha = document.getElementById('senha-cadastro');
+    const inputConfirmar = document.getElementById('confirmar-senha-cadastro');
+
+    if (!inputNome || !inputEmail || !inputSenha || !inputConfirmar) return;
+
+    const cadastro = {
+        nome: inputNome.value.trim(),
+        email: inputEmail.value.trim(),
+        senha: inputSenha.value,
+        confirmarSenha: inputConfirmar.value
+    };
+
+    if (!validarCadastro(cadastro)) {
         return;
     }
 
@@ -281,6 +331,24 @@ async function cadastrarEmpresa() {
     }
 }
 
+function validarCadastro(cadastro) {
+    if (!cadastro.nome) {
+        informarErro('Informe seu nome completo.');
+        return false;
+    }
+
+    if (!EMAIL_REGEX.test(cadastro.email)) {
+        informarErro('Informe um e-mail válido, no formato exemplo@dominio.com.');
+        return false;
+    }
+
+    if (!validarSenhaCadastro(cadastro.senha, cadastro.confirmarSenha)) {
+        return false;
+    }
+
+    return true;
+}
+
 function cadastrarUsuario() {
     const inputNome = document.getElementById('nome-cadastro');
     const inputEmail = document.getElementById('email-cadastro');
@@ -296,8 +364,7 @@ function cadastrarUsuario() {
         confirmarSenha: inputConfirmar.value
     };
 
-    if (!analisarDados(cadastro, 4, 'cadastro')) {
-        informarErro('Verifique nome, email, senha (mín. 8 caracteres, com maiúscula, minúscula, número e caractere especial) e a confirmação de senha.');
+    if (!validarCadastro(cadastro)) {
         return;
     }
 

@@ -83,6 +83,13 @@ async function me(req, res) {
         if (!empresa) {
             return res.status(404).json({ erro: 'Empresa não encontrada' });
         }
+
+        const usuario = await authModel.findById(req.usuario.id);
+
+        if (!usuario || usuario.acesso !== 'dono') {
+            delete empresa.codigo;
+        }
+
         return res.status(200).json(empresa);
     } catch (erro) {
         console.error(erro);

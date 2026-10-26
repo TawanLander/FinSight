@@ -12,6 +12,8 @@
   <script src="../js/sessao.js"></script>
   <script src="../js/perfil.js"></script>
   <script src="../js/usuario.js"></script>
+  <script src="../js/popup.js"></script>
+  <link rel="stylesheet" href="../css/popup.css">
 </head>
 
 <body onload="carregarUsuario()">
@@ -163,6 +165,21 @@
               alterações</button>
           </div>
         </form>
+      </div>
+
+      <div class="painel-conteudo painel-codigo-empresa" id="painel-codigo-empresa" style="display: none;">
+        <h2 class="titulo-painel">Código da empresa</h2>
+        <p class="descricao-codigo-empresa">
+          Compartilhe este código com seus colaboradores. Eles podem se cadastrar
+          na <a href="autenticacao.html#cadastro">tela de cadastro</a> selecionando
+          "Sou funcionário" e informando o código para entrar na sua empresa.
+        </p>
+        <div class="caixa-codigo-empresa">
+          <code class="valor-codigo-empresa" id="valor-codigo-empresa">--------</code>
+          <button type="button" id="btn-copiar-codigo" class="btn btn-primario btn-pequeno" onclick="copiarCodigoEmpresa()">
+            Copiar código
+          </button>
+        </div>
       </div>
 
       <div class="painelSenha">
