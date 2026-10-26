@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinSight | Perfil</title>
+  <link rel="icon" href="../assets/ico/logo-transparente.png">
+  <link rel="stylesheet" href="../css/style-geral.css">
+  <link rel="stylesheet" href="../css/pos-login/perfil.css">
+  <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="../js/perfil.js"></script>
+  <script src="../js/usuario.js"></script>
+  <script src="../js/popup.js"></script>
+  <link rel="stylesheet" href="../css/popup.css">
+</head>
+
+<body onload="carregarUsuario()">
+
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="estrutura-painel">
+
+    <section class="barra-lateral">
+      <div>
+        <a href="../index.html" class="marca-painel">
+          <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
+          <span>FinSight</span>
+        </a>
+
+        <div class="usuario-painel">
+          <div class="avatar-usuario" id="avatarUsuario"></div>
+          <div class="dados-usuario">
+            <div class="nome-usuario" id="nomeUsuario"></div>
+          </div>
+        </div>
+
+        <nav class="navegacao-painel">
+          <a href="dashboard.html" class="link-painel">
+            <span></span>
+            Dashboard
+          </a>
+          <a href="envio.html" class="link-painel">
+            <span></span>
+            Enviar planilhas
+          </a>
+          <a href="historico.html" class="link-painel">
+            <span></span>
+            Histórico
+          </a>
+          <a href="colaboradores.html" class="link-painel">
+            <span></span>
+            Colaboradores
+          </a>
+          <a href="perfil.html" class="link-painel ativo">
+            <span></span>
+            Perfil
+          </a>
+        </nav>
+      </div>
+
+      <div class="rodape-barra-lateral">
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
+        <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
+          aria-label="Alternar tema claro e escuro">
+          <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+          </svg>
+          <svg class="icone-lua bi bi-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <main class="conteudo-principal">
+
+      <div class="barra-superior">
+        <div>
+          <h1 class="titulo-pagina">Perfil</h1>
+          <p class="subtitulo-pagina">Gerencie seus dados de acesso e informações pessoais.</p>
+        </div>
+      </div>
+
+      <div class="painel-conteudo">
+        <div class="cabecalho-perfil">
+          <div class="avatar-perfil-grande">F</div>
+          <div class="detalhes-perfil">
+            <h2 class="nome-perfil">Fernanda</h2>
+            <p class="cargo-perfil" id="perfil-cargo"></p>
+          </div>
+        </div>
+
+        <h2 class="titulo-painel">Dados cadastrais</h2>
+
+        <form id="form-perfil" onsubmit="event.preventDefault(); salvarAlteracoes();">
+          <div class="grade-campos">
+            <div class="grupo-campo">
+              <label for="perfil-nome" class="rotulo-campo">Nome completo</label>
+              <input type="text" id="perfil-nome" class="campo-texto" disabled required>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-nascimento" class="rotulo-campo">Data de nascimento</label>
+              <input type="date" id="perfil-nascimento" class="campo-texto" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-email" class="rotulo-campo">E-mail</label>
+              <input type="email" id="perfil-email" class="campo-texto" disabled required>
+            </div>
+
+            <!-- <div class="grupo-campo">
+              <label for="perfil-senha" class="rotulo-campo">Senha</label>
+              <input type="password" id="perfil-senha" class="campo-texto" value="••••••••" disabled>
+            </div> -->
+
+            <div class="grupo-campo">
+              <label for="perfil-celular" class="rotulo-campo">Celular</label>
+              <input type="tel" id="perfil-celular" class="campo-texto" placeholder="(11) 98765-4321" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-cpf" class="rotulo-campo">CPF</label>
+              <input type="text" id="perfil-cpf" class="campo-texto" placeholder="ex: 123.456.789-00" disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-rg" class="rotulo-campo">RG</label>
+              <input type="text" id="perfil-rg" class="campo-texto" placeholder="ex: 123.456.789-00 ou 12.345.678-9"
+                disabled>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-estado-civil" class="rotulo-campo">Estado civil</label>
+              <select id="perfil-estado-civil" class="campo-texto" disabled>
+                <option value="Solteiro(a)" selected>Solteiro(a)</option>
+                <option value="Casado(a)">Casado(a)</option>
+                <option value="Divorciado(a)">Divorciado(a)</option>
+                <option value="Viúvo(a)">Viúvo(a)</option>
+                <option value="União Estável">União Estável</option>
+              </select>
+            </div>
+
+            <div class="grupo-campo">
+              <label for="perfil-genero" class="rotulo-campo">Gênero</label>
+              <select id="perfil-genero" class="campo-texto" disabled>
+                <option value="Feminino" selected>Feminino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Outro">Outro</option>
+                <option value="Prefiro não informar">Prefiro não informar</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="acoes-formulario">
+            <button type="button" id="btn-editar-perfil" class="btn btn-primario" onclick="editarInformacoes()">Editar
+              informações</button>
+            <button type="submit" id="btn-salvar-perfil" class="btn btn-primario" style="display: none;">Salvar
+              alterações</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="painel-conteudo painel-codigo-empresa" id="painel-codigo-empresa" style="display: none;">
+        <h2 class="titulo-painel">Código da empresa</h2>
+        <p class="descricao-codigo-empresa">
+          Compartilhe este código com seus colaboradores. Eles podem se cadastrar
+          na <a href="autenticacao.html#cadastro">tela de cadastro</a> selecionando
+          "Sou funcionário" e informando o código para entrar na sua empresa.
+        </p>
+        <div class="caixa-codigo-empresa">
+          <code class="valor-codigo-empresa" id="valor-codigo-empresa">--------</code>
+          <button type="button" id="btn-copiar-codigo" class="btn btn-primario btn-pequeno" onclick="copiarCodigoEmpresa()">
+            Copiar código
+          </button>
+        </div>
+      </div>
+
+      <div class="painelSenha">
+        <div class="painel-conteudoSenha">
+
+          <h2 class="titulo-painel">Alterar Senha</h2>
+
+          <form id="form-senha" onsubmit="event.preventDefault(); salvarSenha();">
+
+            <div class="grupo-campo">
+              <label for="senhaAtual" class="rotulo-campo">Senha Atual</label>
+              <input type="password" id="senhaAtual" class="campo-texto" disabled>
+            </div>
+
+            <div class="grade-campos">
+
+
+              <div class="grupo-campo">
+                <label for="novaSenha" class="rotulo-campo">Nova Senha</label>
+                <input type="password" id="novaSenha" class="campo-texto" oninput="verificarSenha()" disabled>
+              </div>
+
+              <div class="grupo-campo">
+                <div class="veriSenha">
+                  <span id="minCar">- mín. 8 caracteres</span>
+                  <span id="maiu">- Caracter maiúsculo</span>
+                  <span id="minu">- Caracter minúsculo</span>
+                  <span id="num">- Número</span>
+                  <span id="carEsp">- Caractere especial (@,#,!,$,%,&)</span>
+                </div>
+              </div>
+
+
+
+              <div class="grupo-campo">
+                <label for="codVerificacao" class="rotulo-campo">Código de verificação</label>
+                <input type="text" id="codVerificacao" class="campo-texto" disabled>
+              </div>
+
+              <button type="button" id="btn-cod" class="btn btn-primario" onclick="reberCodVer()">Receber código de verificação</button>
+
+            </div>
+            <div class="acoes-formulario">
+              <button type="button" id="btn-editar-senha" class="btn btn-primario" onclick="editarSenha()">Alterar
+                Senha</button>
+              <button type="submit" id="btn-salvar-senha" class="btn btn-primario" style="display: none;"
+                >Salvar
+                Senha</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+</body>
+
+</html>

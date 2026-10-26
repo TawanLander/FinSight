@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinSight | Contato</title>
-    <link rel="icon" href="../assets/ico/logo-transparente.png">
+    <link rel="shortcut icon" href="../assets/ico/logo-transparente.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/style-geral.css">
-    <link rel="stylesheet" href="../css/contato.css">
+    <link rel="stylesheet" href="../css/pre-login/contato.css">
     <script src="../js/tema.js"></script>
 </head>
 
@@ -15,15 +16,20 @@
     <header class="cabecalho">
         <div class="conteiner cabecalho-conteudo">
 
-            <a href="index.html" class="marca">
+            <a href="../index.html" class="marca">
                 <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
                 <span>FinSight</span>
             </a>
 
+            <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <div class="menu-mobile" id="menu-mobile">
             <nav class="menu-navegacao">
-                <a href="index.html" class="link-navegacao">Início</a>
-                <a href="sobre.html" class="link-navegacao">Sobre Nós</a>
-                <a href="contato.html" class="link-navegacao ativo">Contato</a>
+                <a href="../index.html" class="link-navegacao">Início</a>
+                <a href="./sobre.html" class="link-navegacao">Sobre Nós</a>
+                <a href="./contato.html" class="link-navegacao ativo">Contato</a>
             </nav>
 
             <div class="acoes-cabecalho">
@@ -42,8 +48,10 @@
                     </svg>
                 </button>
 
-                <a href="contato.html" class="btn btn-vazado btn-pequeno">Fale Conosco</a>
+                <a href="autenticacao.html" class="btn btn-vazado btn-pequeno">Entrar</a>
+                <a href="autenticacao.html#cadastro" class="btn btn-primario btn-pequeno">Criar conta</a>
             </div>
+            </div><!-- /menu-mobile -->
 
         </div>
     </header>
@@ -108,18 +116,10 @@
                         <img src="../assets/ico/logo-transparente.png" alt="FinSight">
                         <span>FinSight</span>
                     </div>
+                    <br>
                     <p>
                         Plataforma institucional de inteligência e diagnóstico para ativos de renda variável da B3.
                     </p>
-                </div>
-
-                <div class="coluna-rodape">
-                    <h4>Navegação</h4>
-                    <ul>
-                        <li><a href="./index.html">Início</a></li>
-                        <li><a href="./sobre.html">Sobre Nós</a></li>
-                        <li><a href="./contato.html">Contato</a></li>
-                    </ul>
                 </div>
 
                 <div class="coluna-rodape">
@@ -145,6 +145,7 @@
         </div>
     </footer>
 
+    <script src="../js/contato.js"></script>
 </body>
 
 </html>

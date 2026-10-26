@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinSight | Dashboard</title>
+  <link rel="icon" href="../assets/ico/logo-transparente.png">
+  <link rel="stylesheet" href="../css/style-geral.css">
+  <link rel="stylesheet" href="../css/pos-login/dashboard.css">
+  <script src="../js/tema.js"></script>
+  <script src="../js/sessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/popup.js"></script>
+  <link rel="stylesheet" href="../css/popup.css">
+</head>
+
+<body onload="carregarTela()">
+
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="estrutura-painel">
+
+    <section class="barra-lateral">
+      <div>
+        <a href="../index.html" class="marca-painel">
+          <img src="../assets/ico/logo-transparente.png" alt="Logotipo FinSight">
+          <span>FinSight</span>
+        </a>
+
+        <div class="usuario-painel">
+          <div class="avatar-usuario" id="avatarUsuario"></div>
+          <div class="dados-usuario">
+            <div class="nome-usuario" id="nomeUsuario"></div>
+          </div>
+        </div>
+
+        <nav class="navegacao-painel">
+          <a href="dashboard.html" class="link-painel ativo">
+            <span></span>
+            Dashboard
+          </a>
+          <a href="envio.html" class="link-painel">
+            <span></span>
+            Enviar planilhas
+          </a>
+          <a href="historico.html" class="link-painel">
+            <span></span>
+            Histórico
+          </a>
+          <a href="colaboradores.html" class="link-painel">
+            <span></span>
+            Colaboradores
+          </a>
+          <a href="perfil.html" class="link-painel">
+            <span></span>
+            Perfil
+          </a>
+        </nav>
+      </div>
+
+      <div class="rodape-barra-lateral">
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
+        <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
+          aria-label="Alternar tema claro e escuro">
+          <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+          </svg>
+          <svg class="icone-lua bi bi-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <main class="conteudo-principal">
+
+      <div class="barra-superior">
+        <div>
+          <h1 class="titulo-pagina">Bem-vindo(a), <span id="userName">Usuário(a)</span></h1>
+          <p class="subtitulo-pagina">Projeções e indicadores da carteira analisada.</p>
+        </div>
+        <a href="envio.html" class="btn btn-primario btn-pequeno">Enviar novo arquivo</a>
+      </div>
+
+      <div class="barra-filtros">
+
+        <div class="item-filtro">
+          <label for="ticker" class="rotulo-filtro">Ticker / Ativo</label>
+          <select id="ticker" class="seletor-filtro">
+            <option value="CARTEIRA" selected>Carteira Consolidada (FinSight)</option>
+            <option value="PETR4">PETR4 - Petrobras PN</option>
+            <option value="VALE3">VALE3 - Vale ON</option>
+            <option value="ITUB4">ITUB4 - Itaú Unibanco PN</option>
+            <option value="WEGE3">WEGE3 - WEG S.A.</option>
+            <option value="B3SA3">B3SA3 - B3 S.A.</option>
+          </select>
+        </div>
+
+        <div class="item-filtro">
+          <label for="benchmark" class="rotulo-filtro">Comparar Contra</label>
+          <select id="benchmark" class="seletor-filtro" onchange="alternarIbov()">
+            <option value="NENHUM" selected>Sem Comparativo</option>
+            <option value="IBOV">Ibovespa (^BVSP)</option>
+          </select>
+        </div>
+
+        <div class="item-filtro">
+          <label for="escalaGrafico" class="rotulo-filtro">Escala / Visualização</label>
+          <select id="escalaGrafico" class="seletor-filtro" onchange="alternarEscala()">
+            <option value="PERCENTUAL" selected>Variação Percentual (%)</option>
+            <option value="VALOR_NOMINAL">Preço Nominal (R$)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="grade-indicadores" id="kpi-grid">
+        <div class="cartao-indicador indicador-perigo" data-kpi="maior-risco">
+          <div class="titulo-indicador">Maior risco</div>
+          <div class="valor-indicador" data-field="value">PETR4</div>
+          <div class="detalhe-indicador" data-field="delta">Beta 1.42 • Energia / Estatais</div>
+        </div>
+
+        <div class="cartao-indicador indicador-sucesso" data-kpi="menor-risco">
+          <div class="titulo-indicador">Menor risco</div>
+          <div class="valor-indicador" data-field="value">ITUB4</div>
+          <div class="detalhe-indicador" data-field="delta">Beta 0.74 • Setor Bancário</div>
+        </div>
+
+        <div class="cartao-indicador" data-kpi="volatilidade-media">
+          <div class="titulo-indicador">Volatilidade média</div>
+          <div class="valor-indicador" data-field="value">14.8% a.a.</div>
+          <div class="detalhe-indicador" data-field="delta">Inferior ao IBOV (19.5% a.a.)</div>
+        </div>
+
+        <div class="cartao-indicador" data-kpi="drawdown-maximo">
+          <div class="titulo-indicador">Drawdown máximo</div>
+          <div class="valor-indicador" data-field="value">-5.4%</div>
+          <div class="detalhe-indicador" data-field="delta">Pico em Julho (Recuperado em 18d)</div>
+        </div>
+      </div>
+
+
+      <div class="painel-conteudo">
+        <div class="cabecalho-painel">
+          <div>
+            <h2 class="titulo-painel">Rentabilidade acumulada</h2>
+            <p class="subtitulo-painel" style="font-size: 0.82rem; color: var(--texto-suave); margin-top: 4px;">
+              Evolução percentual do retorno dos ativos ao longo do tempo em relação ao benchmark de referência.
+            </p>
+          </div>
+        </div>
+        <div class="espaco-grafico" id="chart-rentabilidade">
+          <canvas id="grafRentabilidade"></canvas>
+        </div>
+      </div>
+
+      <div class="painel-conteudo">
+        <div class="cabecalho-painel">
+          <div>
+            <h2 class="titulo-painel">Volume Financeiro Negociado</h2>
+            <p class="subtitulo-painel" style="font-size: 0.82rem; color: var(--texto-suave); margin-top: 4px;">
+              Montante diário transacionado na B3 em conjunto com as alterações de preço para confirmação de tendências e liquidez.
+            </p>
+          </div>
+        </div>
+        <div class="espaco-grafico" id="chart-volume">
+          <canvas id="grafVolumeFinanceiro"></canvas>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="../js/dashboard.js"></script>
+
+</body>
+
+</html>

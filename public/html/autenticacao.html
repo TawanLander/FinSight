@@ -1,18 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinSight | Entrar ou Cadastrar</title>
+  <link rel="icon" href="../assets/ico/logo-transparente.png">
+  <link rel="stylesheet" href="../css/style-geral.css">
+  <link rel="stylesheet" href="../css/pre-login/autenticacao.css">
+  <link rel="stylesheet" href="../css/popup.css">
+  <script src="../js/tema.js"></script>
+  <script src="../js/autenticacao.js"></script>
+  <script src="../js/popup.js" ></script>
 </head>
+
 <body>
-    <label>
-        <input type="text">
-    </label>
-    <label>
-        <input type="text">
-    </label>
-    <button id="login" onclick="pegarDados()">Logar!</button>
+
+  <main>
+    <section class="secao-autenticacao">
+      <div class="conteiner-autenticacao">
+
+        <div class="cartao-autenticacao">
+
+          <div class="lado-institucional">
+            <div class="small-voltar-content">
+              <small class="small-voltar">
+                <a href="../index.html">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                  </svg>
+                  Voltar
+                </a>
+              </small>
+            </div>
+            <h1 class="frase-destaque-institucional">
+              Suba sua planilha, receba o diagnóstico. Sem integrações bancárias burocráticas.
+            </h1>
+          </div>
+
+          <div class="lado-formulario">
+
+            <div id="caixa-login" class="caixa-formulario" style="display: block;">
+
+              <div class="cabecalho-formulario">
+                <h2 class="titulo-formulario">Entre na sua conta</h2>
+                <p class="subtitulo-formulario">Acesse os diagnósticos e indicadores do FinSight.</p>
+              </div>
+
+              <form id="formulario-login" class="formulario-autenticacao" onsubmit="event.preventDefault(); pegarDadosLogin();">
+
+                <div class="campo-formulario">
+                  <label for="email-login" class="rotulo-campo">E-mail</label>
+                  <input type="email" id="email-login" class="campo-texto" placeholder="seu.email@exemplo.com">
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="senha-login" class="rotulo-campo">Senha</label>
+                  <input type="password" id="senha-login" class="campo-texto" placeholder="••••••••"
+                  >
+                </div>
+
+                <button type="submit" class="btn btn-primario btn-bloco">Entrar no FinSight</button>
+
+                <div class="rodape-formulario">
+                  <small class="texto-alternar">Não possui uma conta ainda?
+                    <button type="button" class="link-alternar" onclick="mostrarCadastro()">Cadastre-se</button>
+                  </small>
+                </div>
+
+              </form>
+            </div>
+
+            <div id="caixa-cadastro" class="caixa-formulario" style="display: none;">
+
+              <div class="cabecalho-formulario">
+                <h2 class="titulo-formulario">Crie sua conta</h2>
+                <p class="subtitulo-formulario">Preencha seus dados para começar a utilizar a plataforma.</p>
+              </div>
+
+              <form id="formulario-cadastro" class="formulario-autenticacao" onsubmit="event.preventDefault(); cadastrarUsuario();">
+
+                <div class="seletor-tipo-cadastro campo-formulario" role="radiogroup" aria-label="Tipo de cadastro">
+                  <label class="opcao-tipo-cadastro">
+                    <input type="radio" name="tipo-cadastro" value="funcionario" checked onchange="alternarTipoCadastro()">
+                    <span>Sou funcionário</span>
+                  </label>
+                  <label class="opcao-tipo-cadastro">
+                    <input type="radio" name="tipo-cadastro" value="dono" onchange="alternarTipoCadastro()">
+                    <span>Sou dono da empresa</span>
+                  </label>
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="nome-cadastro" class="rotulo-campo">Nome Completo</label>
+                  <input type="text" id="nome-cadastro" class="campo-texto"
+                    placeholder="Digite seu nome completo">
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="email-cadastro" class="rotulo-campo">E-mail</label>
+                  <input type="email" id="email-cadastro" class="campo-texto" placeholder="seu.email@exemplo.com">
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="senha-cadastro" class="rotulo-campo">Senha</label>
+                  <input type="password" id="senha-cadastro"  class="campo-texto" placeholder="Mínimo de 8 caracteres">
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="confirmar-senha-cadastro" class="rotulo-campo">Confirme sua senha</label>
+                  <input type="password" id="confirmar-senha-cadastro" class="campo-texto" placeholder="Repita a senha criada">
+                </div>
+
+                <div class="campo-formulario" id="campo-codigo-empresa">
+                  <label for="codigo-empresa-cadastro" class="rotulo-campo">Código da empresa</label>
+                  <input type="text" id="codigo-empresa-cadastro" class="campo-texto" placeholder="Ex: AB12CD34" maxlength="8">
+                </div>
+
+                <button type="submit" id="botao-principal-cadastro" class="btn btn-primario btn-bloco">Cadastrar Conta</button>
+
+                <div class="rodape-formulario">
+                  <small class="texto-alternar">Já possui cadastro?
+                    <button type="button" class="link-alternar" onclick="mostrarLogin()">Faça login</button>
+                  </small>
+                </div>
+
+              </form>
+            </div>
+
+            <div id="caixa-cadastro-empresa" class="caixa-formulario" style="display: none;">
+
+              <div class="cabecalho-formulario">
+                <h2 class="titulo-formulario">Dados da empresa</h2>
+                <p class="subtitulo-formulario">Informe a empresa que você administra para concluir o cadastro.</p>
+              </div>
+
+              <form id="formulario-empresa" class="formulario-autenticacao" onsubmit="event.preventDefault(); cadastrarEmpresa();">
+
+                <div class="campo-formulario">
+                  <label for="nome-empresa-cadastro" class="rotulo-campo">Nome da empresa</label>
+                  <input type="text" id="nome-empresa-cadastro" class="campo-texto"
+                    placeholder="Digite o nome da empresa">
+                </div>
+
+                <div class="campo-formulario">
+                  <label for="cnpj-empresa-cadastro" class="rotulo-campo">CNPJ</label>
+                  <input type="text" id="cnpj-empresa-cadastro" class="campo-texto" inputmode="numeric"
+                    placeholder="00.000.000/0000-00" maxlength="18" oninput="mascaraCnpj(this)">
+                </div>
+
+                <button type="submit" id="botao-finalizar-cadastro" class="btn btn-primario btn-bloco">Finalizar cadastro</button>
+                <button type="button" class="btn btn-vazado btn-bloco" onclick="voltarParaEtapaPessoal()">Voltar</button>
+
+                <div class="rodape-formulario">
+                  <small class="texto-alternar">Já possui cadastro?
+                    <button type="button" class="link-alternar" onclick="mostrarLogin()">Faça login</button>
+                  </small>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
 </body>
+
 </html>
-<script src="../js/autenticacao.js"></script>

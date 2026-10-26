@@ -152,6 +152,7 @@ Grupo10/
 2. **Instalar Dependências:**
    ```bash
    npm install
+   npm install nodemailer
    ```
 
 3. **Configurar as Variáveis de Ambiente:**
@@ -170,9 +171,19 @@ Grupo10/
    APP_PORT=8080
    APP_HOST=localhost
 
-   JWT_SECRET=seuJWT
-   JWT_REFRESH_SECRET=seuJWT
+   # Chaves para assinatura dos tokens JWT
+   JWT_SECRET=uma-chave-secreta-de-acesso
+   JWT_REFRESH_SECRET=uma-chave-secreta-de-atualizacao
+
+   # Credenciais do Email
+   EMAIL_HOST=smtp.gmail.com 
+   EMAIL_PORT=465
+   EMAIL_SENHA='sua senha de app aqui'
+   EMAIL_USUARIO="Seu emailaqui."
+
    ```
+
+   Use valores longos e aleatórios para essas chaves, principalmente em produção. Elas são obrigatórias para o login e a renovação dos tokens.
 
 4. **Preparar a Base de Dados:**
    Execute o script SQL disponível em `src/database/script-tabelas.sql` em seu cliente MySQL (Workbench, DBeaver ou terminal) para provisionar as tabelas necessárias.
