@@ -660,3 +660,165 @@ small {
     padding: 60px 10px 16px;
   }
 }
+
+/* ---------- Responsividade das telas pre-login (inicio, sobre, contato) ---------- */
+
+@media (max-width: 992px) {
+  .cabecalho-conteudo {
+    padding-left: 4.25rem;
+    height: 4.25rem;
+  }
+
+  .marca {
+    font-size: 1.35rem;
+  }
+
+  .marca img {
+    height: 2.35rem;
+  }
+
+  .cabecalho .btn-menu-mobile {
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 9px;
+    gap: 5px;
+    top: 8px;
+    left: 12px;
+  }
+
+  .btn-menu-mobile span {
+    height: 3px;
+  }
+
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .cabecalho .menu-mobile {
+    width: min(320px, 85vw);
+    padding: 5.5rem 1.25rem 5rem;
+  }
+
+  .cabecalho.menu-aberto .menu-navegacao {
+    gap: 0.75rem;
+  }
+
+  .cabecalho.menu-aberto .link-navegacao {
+    font-size: 1.2rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .cabecalho.menu-aberto .acoes-cabecalho .btn {
+    width: 100%;
+    padding: 0.8rem 1.25rem;
+    font-size: 1.1rem;
+  }
+
+  /* Tipografia geral mais legível */
+  body {
+    font-size: 1.2rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6.5vw, 2.6rem);
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  h4 {
+    font-size: 1.15rem;
+  }
+
+  .secao {
+    padding: 3.25rem 0;
+  }
+
+  .subtitulo-destaque {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 1.15rem;
+  }
+
+  .grade-rodape {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+
+  .coluna-rodape {
+    width: 100%;
+  }
+
+  .coluna-rodape a,
+  .coluna-rodape span {
+    font-size: 1.1rem;
+  }
+
+  .rodape {
+    padding: 2.5rem 1.25rem;
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 1.25rem;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 7.5vw, 2.2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 5.5vw, 1.8rem);
+  }
+
+  h3 {
+    font-size: 1.45rem;
+  }
+
+  .subtitulo-destaque {
+    font-size: 1.05rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  .secao {
+    padding: 2.5rem 0;
+  }
+
+  .btn {
+    padding: 0.7rem 1.35rem;
+    font-size: 1.05rem;
+  }
+
+  .btn-tema {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .btn-tema svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+@media (min-width: 993px) {
+  .secao {
+    padding: 5rem 4rem;
+  }
+}
