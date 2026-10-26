@@ -11,4 +11,8 @@ router.post("/arquivos", autenticarToken, (req, res) => {
     historicoController.registrar(req, res);
 });
 
+router.delete("/arquivos/:id", autenticarToken, (req, res) => {
+    historicoController.deletar(req, res);
+});
+
 module.exports = router;

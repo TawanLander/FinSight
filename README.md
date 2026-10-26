@@ -54,7 +54,7 @@ O FinSight foi idealizado para eliminar essa complexidade:
 - [x] **Interface Institucional Completa:** Páginas de Início, Sobre Nós e Contato com alternância dinâmica entre tema claro e tema escuro.
 - [x] **API Web Data Viz (Node.js + Express):** Estrutura padronizada de rotas, controladores e modelos para autenticação e consumo de dados.
 - [x] **Persistência Relacional (MySQL):** Modelagem de banco de dados para empresas, usuários e métricas financeiras.
-- [ ] **Ingestão Automatizada de Planilhas:** Leitura e processamento de arquivos `.xlsx` e `.csv` via módulo Java com Apache POI.
+- [ ] **Ingestão Automatizada de Planilhas:** Leitura e processamento de arquivos `.xlsx` e `.xls` via módulo Java com Apache POI.
 - [ ] **Dashboards Interativos:** Visualização gráfica de curvas de rentabilidade e matriz de volatilidade.
 - [ ] **Rankings e Alertas de Risco:** Comparador de papéis com base em métricas calculadas.
 
@@ -67,7 +67,7 @@ O projeto combina uma aplicação web orientada a serviços (atualmente baseada 
 ```mermaid
 flowchart TD
     subgraph Entrada["📥 Ingestão de Dados (Futura)"]
-        Planilha["📁 Planilhas B3 (.xlsx / .csv)"] --> JavaApp["☕ Serviço Java (Apache POI)"]
+        Planilha["📁 Planilhas B3 (.xlsx / .xls)"] --> JavaApp["☕ Serviço Java (Apache POI)"]
         JavaApp -->|"Tratamento, Validação e Carga (ETL)"| DB[(🗄️ Banco de Dados MySQL)]
     end
 
