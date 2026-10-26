@@ -169,6 +169,9 @@ Grupo10/
    # Porta do Servidor Web
    APP_PORT=8080
    APP_HOST=localhost
+
+   JWT_SECRET=seuJWT
+   JWT_REFRESH_SECRET=seuJWT
    ```
 
 4. **Preparar a Base de Dados:**
