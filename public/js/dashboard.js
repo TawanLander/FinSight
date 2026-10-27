@@ -203,7 +203,7 @@ let dadosPercentualCarteira = [];
 function alternarEscala() {
   if (escalaGrafico.value == "VALOR_NOMINAL") {
     grafRentabilidade.data.datasets[0].data = dadosNominalCarteira;
-    grafRentabilidade.data.datasets[1].data = dadosNominalIbov;
+    // grafRentabilidade.data.datasets[1].data = dadosNominalIbov;
     grafRentabilidade.options.scales.y.ticks = {
       callback: function (val) {
         return "R$ " + val.toFixed(2);
@@ -211,12 +211,14 @@ function alternarEscala() {
     };
   } else {
     grafRentabilidade.data.datasets[0].data = dadosPercentualCarteira;
-    grafRentabilidade.data.datasets[1].data = dadosPercentualIbov;
+    // grafRentabilidade.data.datasets[1].data = dadosPercentualIbov;
   }
   grafRentabilidade.update();
 }
 
 function atualizarGraficos(cotacoes) {
+  if (!cotacoes || cotacoes.length === 0) return;
+  
   const datas = [];
   dadosNominalCarteira = [];
   dadosPercentualCarteira = [];
@@ -255,12 +257,54 @@ function calcularEAtualizarKPIs(cotacoes) {
   if (!cotacoes || cotacoes.length === 0) return;
 
   let maiorOscilacao = 0;
-      let maiorTicker = "";
+  let menorOscilacao = 999999;
+  let somaOscilacao = 0;
+
+  let maiorTicker = "";
+  let menorTicker = "";
+
+  let maiorPreco = 0;
+  let menorPreco = 999999;
+
+  for (let i = 0; i < cotacoes.length; i++) {
+    const ticker = cotacoes[i].ticker;
+    const preco = Number(cotacoes[i].preco_adj_close);
+    const max = Number(cotacoes[i].preco_max);
+    const min = Number(cotacoes[i].preco_min);
+
+    // Guarda o maior e o menor preço histórico
+    if (max > maiorPreco) maiorPreco = max;
+    if (min < menorPreco && min > 0) menorPreco = min;
+
+    // Calcula a oscilação do dia (máxima menos a mínima)
+    const oscilacao = max - min; // Amplitude = Preço Máximo - Preço Mínimo
+    somaOscilacao += oscilacao;
+
+    if (oscilacao > maiorOscilacao) {
+      maiorOscilacao = oscilacao;
+      maiorTicker = ticker;
+    }
+
+    if (oscilacao < menorOscilacao && oscilacao > 0) {
+      menorOscilacao = oscilacao;
+      menorTicker = ticker;
+    }
+  }
+
+  // Calcula o drawdown
+  const mediaOscilacao = somaOscilacao / cotacoes.length; // Média = Soma das Oscilações / Quantidade de Dias
+  const drawdown = ((menorPreco - maiorPreco) / maiorPreco) * 100; // Queda % = ((Menor Preço - Maior Preço) / Maior Preço) * 100
     
-      let menorOscilacao = 999999;
-      let menorTicker = "";
+  document.querySelector('[data-kpi="maior-risco"] [data-field="value"]').textContent = maiorTicker;
+  document.querySelector('[data-kpi="maior-risco"] [data-field="delta"]').textContent = "Oscilação: R$ " + maiorOscilacao.toFixed(2);
     
-      let somaOscilacao = 0;
-      let maiorPreco = 0;
-      let menorPreco = 999999;
+  document.querySelector('[data-kpi="menor-risco"] [data-field="value"]').textContent = menorTicker;
+  document.querySelector('[data-kpi="menor-risco"] [data-field="delta"]').textContent = "Oscilação: R$ " + menorOscilacao.toFixed(2);
+    
+  document.querySelector('[data-kpi="volatilidade-media"] [data-field="value"]').textContent = "R$ " + mediaOscilacao.toFixed(2);
+  document.querySelector('[data-kpi="volatilidade-media"] [data-field="delta"]').textContent = "Média da carteira";
+
+  document.querySelector('[data-kpi="drawdown-maximo"] [data-field="value"]').textContent = drawdown.toFixed(2) + "%";
+  document.querySelector('[data-kpi="drawdown-maximo"] [data-field="delta"]').textContent = "Maior queda histórica";
+
 }
