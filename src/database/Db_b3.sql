@@ -115,3 +115,22 @@ CREATE TABLE cotacao_historico (
         FOREIGN KEY (id_tickets)
         REFERENCES tickets(id)
 );
+
+
+CREATE TABLE IF NOT EXISTS carteira (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idEmpresa INT,
+    idTicket INT,
+    dt_inclusao DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_carteira_empresa
+        FOREIGN KEY (idEmpresa)
+        REFERENCES empresa(id),
+
+    CONSTRAINT fk_carteira_ticket
+        FOREIGN KEY (idTicket)
+        REFERENCES tickets(id),
+
+    CONSTRAINT uk_carteira_empresa_ticket
+        UNIQUE (idEmpresa, idTicket)
+);

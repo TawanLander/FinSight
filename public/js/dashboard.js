@@ -187,9 +187,6 @@ const grafRentabilidade = new Chart(ctx, {
   },
 });
 
-
-const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-
 if (typeof grafVolumeFinanceiro !== "undefined" && grafVolumeFinanceiro) {
   grafVolumeFinanceiro.data.labels = meses;
   grafVolumeFinanceiro.data.datasets[0].label = "Volume Negociado (R$ mi)";

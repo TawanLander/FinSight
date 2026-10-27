@@ -3,3 +3,4 @@ assets
 .env
 *.pem
 package-lock.json
+image.png
