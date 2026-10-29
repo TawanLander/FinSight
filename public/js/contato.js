@@ -37,7 +37,7 @@ formulario.addEventListener("submit", async (event) => {
     mostrarPopup(resultado.message);
   } catch (error) {
     console.error("Erro ao enviar mensagem de contato:", error);
-    mostrarPopup(error.message);
+    mostrarPopup(error.message, false);
   } finally {
     botao.disabled = false;
   }
