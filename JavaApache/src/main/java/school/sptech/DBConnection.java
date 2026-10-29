@@ -12,7 +12,7 @@ public class DBConnection {
     Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
     public DBConnection() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://localhost:3306/finsight?rewriteBatchedStatements=true");
+        basicDataSource.setUrl("jdbc:mysql://host.docker.internal:3306/finsight?rewriteBatchedStatements=true");
         basicDataSource.setUsername(dotenv.get("USUARIO_BANCO"));
         basicDataSource.setPassword(dotenv.get("SENHA_BANCO"));
 

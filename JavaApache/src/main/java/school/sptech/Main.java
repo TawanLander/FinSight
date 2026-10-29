@@ -20,7 +20,7 @@ public class Main {
         CotacaoRepository repository = new CotacaoRepository(db.getJdbcTemplate());
         ExcelReader reader = new ExcelReader();
 
-        Path diretorio = Path.of("src/main/java/school/sptech/dados");
+        Path diretorio = Path.of("dados");
 
         List<Path> arquivos;
         try(Stream<Path> stream = Files.list(diretorio)){

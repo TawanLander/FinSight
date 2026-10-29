@@ -1,10 +1,7 @@
 package school.sptech.cotacao.repository;
 
-import org.springframework.cglib.core.Local;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.apache.CotacaoImport;
-import school.sptech.ticket.entity.TicketEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -41,7 +38,6 @@ public class CotacaoRepository {
         jdbcTemplate.update("insert into cotacao_historico (id_tickets, data_fechamento, preco_max, preco_min, preco_adj_close) values (?, ?, ?, ?, ?)",
                 idTicket, dataFechamento, precoMax, precoMin, volatilidade);
 
-        // datas, sobres extrações, insirir no banco.
         System.out.printf("Nova cotação inserida com sucesso!\nData: %s\n", LocalDateTime.now().format(fmt));
     }
 
