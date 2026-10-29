@@ -9,17 +9,17 @@ async function cadastrar({ empresa, dono }) {
         );
         const idEmpresa = resEmpresa.insertId;
 
-        await query(
+        const resDono = await query(
             'INSERT INTO usuario (id_empresa, nome, email, senha, acesso) VALUES (?, ?, ?, ?, ?)',
             [idEmpresa, dono.nome, dono.email, dono.senha, 'dono']
         );
 
-        return idEmpresa;
+        return { idEmpresa, idDono: resDono.insertId };
     });
 }
 
 async function me(id) {
-    const instrucao = 'SELECT id, nome, cnpj, dt_cadastro FROM empresa WHERE id = ?';
+    const instrucao = 'SELECT id, nome, cnpj, codigo, dt_cadastro FROM empresa WHERE id = ?';
     const rows = await bd.executar(instrucao, [id]);
     if (!rows || rows.length === 0) {
         return false;

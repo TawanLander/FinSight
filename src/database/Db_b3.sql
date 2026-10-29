@@ -18,6 +18,12 @@ CREATE TABLE usuario (
     email VARCHAR(255),
     senha VARCHAR(255),
     acesso ENUM('leitor', 'editor', 'gestor', 'dono') DEFAULT 'leitor',
+    dt_nascimento DATE,
+    celular VARCHAR(20),
+    cpf VARCHAR(14),
+    rg VARCHAR(14),
+    estado_civil VARCHAR(20),
+    genero VARCHAR(30),
 
     UNIQUE KEY uk_usuario_email(email),
 
@@ -108,4 +114,23 @@ CREATE TABLE cotacao_historico (
     CONSTRAINT fk_cotacao_historico_ticket
         FOREIGN KEY (id_tickets)
         REFERENCES tickets(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS carteira (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idEmpresa INT,
+    idTicket INT,
+    dt_inclusao DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_carteira_empresa
+        FOREIGN KEY (idEmpresa)
+        REFERENCES empresa(id),
+
+    CONSTRAINT fk_carteira_ticket
+        FOREIGN KEY (idTicket)
+        REFERENCES tickets(id),
+
+    CONSTRAINT uk_carteira_empresa_ticket
+        UNIQUE (idEmpresa, idTicket)
 );

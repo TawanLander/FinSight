@@ -400,7 +400,9 @@ small {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
   height: 4rem;
+  padding-left: 3.4rem;
 }
 
 .marca {
@@ -421,6 +423,12 @@ small {
   display: flex;
   align-items: center;
   gap: 2rem;
+}
+
+.acoes-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .link-navegacao {
@@ -484,4 +492,333 @@ small {
 
 .coluna-rodape a:hover {
   color: var(--cor-secundaria);
+}
+
+.btn-menu-mobile {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 2.3rem;
+  height: 2.3rem;
+  padding: 6px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--arredondamento-pequeno);
+  background-color: var(--fundo-cartao);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-menu-mobile span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--texto-principal);
+  transition: var(--transicao-suave);
+}
+
+.btn-menu-mobile:hover {
+  border-color: var(--cor-secundaria);
+}
+
+.btn-menu-mobile:hover span {
+  background-color: var(--cor-secundaria);
+}
+
+/* ---------- Menu hamburguer do cabecalho (pre-login, apenas mobile) ---------- */
+
+.menu-mobile {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cabecalho .btn-menu-mobile {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .cabecalho .btn-menu-mobile {
+    display: flex;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 130;
+  }
+
+  /* Hamburguer vira X quando o menu esta aberto */
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+  .cabecalho .menu-mobile {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 120;
+    width: 280px;
+    height: 100vh;
+    padding: 5rem 1.25rem 15rem;
+    background-color: var(--fundo-principal);
+    border-right: 1px solid var(--cor-borda);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: none;
+  }
+
+  .cabecalho.menu-aberto .menu-mobile {
+    transform: translateX(0);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .cabecalho.menu-aberto .menu-navegacao {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .cabecalho.menu-aberto .link-navegacao {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: var(--arredondamento-pequeno);
+  }
+
+  .cabecalho.menu-aberto .link-navegacao:hover {
+    background-color: var(--fundo-campo);
+  }
+
+  .cabecalho.menu-aberto .acoes-cabecalho {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: 0;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--cor-borda);
+  }
+}
+
+/* ---------- Responsividade das telas do painel ---------- */
+
+@media (max-width: 900px) {
+  .estrutura-painel {
+    flex-direction: column;
+  }
+
+  .barra-lateral {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 260px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 84px 20px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    border-right: 1px solid var(--cor-borda);
+    border-bottom: none;
+    box-shadow: none;
+  }
+
+  .barra-lateral.menu-aberto {
+    transform: translateX(0);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn-menu-mobile {
+    display: flex;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 110;
+  }
+
+  .conteudo-principal {
+    padding: 64px 16px 20px;
+    max-width: 100%;
+  }
+
+  .titulo-pagina {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .conteudo-principal {
+    padding: 60px 10px 16px;
+  }
+}
+
+/* ---------- Responsividade das telas pre-login (inicio, sobre, contato) ---------- */
+
+@media (max-width: 992px) {
+  .cabecalho-conteudo {
+    padding-left: 4.25rem;
+    height: 4.25rem;
+  }
+
+  .marca {
+    font-size: 1.35rem;
+  }
+
+  .marca img {
+    height: 2.35rem;
+  }
+
+  .cabecalho .btn-menu-mobile {
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 9px;
+    gap: 5px;
+    top: 8px;
+    left: 12px;
+  }
+
+  .btn-menu-mobile span {
+    height: 3px;
+  }
+
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .cabecalho.menu-aberto .btn-menu-mobile span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .cabecalho .menu-mobile {
+    width: min(320px, 85vw);
+    padding: 5.5rem 1.25rem 5rem;
+  }
+
+  .cabecalho.menu-aberto .menu-navegacao {
+    gap: 0.75rem;
+  }
+
+  .cabecalho.menu-aberto .link-navegacao {
+    font-size: 1.2rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .cabecalho.menu-aberto .acoes-cabecalho .btn {
+    width: 100%;
+    padding: 0.8rem 1.25rem;
+    font-size: 1.1rem;
+  }
+
+  /* Tipografia geral mais legível */
+  body {
+    font-size: 1.2rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6.5vw, 2.6rem);
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  h4 {
+    font-size: 1.15rem;
+  }
+
+  .secao {
+    padding: 3.25rem 0;
+  }
+
+  .subtitulo-destaque {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 1.15rem;
+  }
+
+  .grade-rodape {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+
+  .coluna-rodape {
+    width: 100%;
+  }
+
+  .coluna-rodape a,
+  .coluna-rodape span {
+    font-size: 1.1rem;
+  }
+
+  .rodape {
+    padding: 2.5rem 1.25rem;
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 1.25rem;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 7.5vw, 2.2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 5.5vw, 1.8rem);
+  }
+
+  h3 {
+    font-size: 1.45rem;
+  }
+
+  .subtitulo-destaque {
+    font-size: 1.05rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  .secao {
+    padding: 2.5rem 0;
+  }
+
+  .btn {
+    padding: 0.7rem 1.35rem;
+    font-size: 1.05rem;
+  }
+
+  .btn-tema {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .btn-tema svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+@media (min-width: 993px) {
+  .secao {
+    padding: 5rem 4rem;
+  }
 }

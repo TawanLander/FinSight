@@ -6,7 +6,7 @@ async function carregarPerfil() {
     });
 
     if (resposta.status === 401) {
-      alert("Sua sessão expirou. Faça login novamente.");
+      mostrarPopup("Sua sessão expirou. Faça login novamente.", false, "Sessão expirada");
       window.location.href = "autenticacao.html";
       return;
     }
@@ -22,6 +22,8 @@ async function carregarPerfil() {
     document.getElementById("perfil-nome").value = usuario.nome || "";
 
     document.getElementById("perfil-email").value = usuario.email || "";
+
+    document.getElementById("perfil-cargo").textContent = usuario.acesso || "";
 
     document.getElementById("perfil-nascimento").value = usuario.dt_nascimento
       ? String(usuario.dt_nascimento).substring(0, 10)
@@ -42,14 +44,58 @@ async function carregarPerfil() {
 
     document.getElementById("perfil-genero").value = usuario.genero || "";
 
-    // document.getElementById("perfil-senha").value = "";
-
     atualizarCabecalho(usuario.nome);
 
     bloquearCampos();
+
+    await carregarCodigoEmpresa();
   } catch (erro) {
     console.error("Erro ao carregar perfil:", erro);
-    alert(erro.message || "Não foi possível carregar o perfil.");
+    mostrarPopup(erro.message || "Não foi possível carregar o perfil.", false);
+  }
+}
+
+async function carregarCodigoEmpresa() {
+  const painel = document.getElementById("painel-codigo-empresa");
+  if (!painel) {
+    return;
+  }
+
+  try {
+    const resposta = await fetch("/empresa", {
+      method: "GET",
+      credentials: "same-origin",
+    });
+
+    if (!resposta.ok) {
+      return;
+    }
+
+    const empresa = await resposta.json();
+
+    if (!empresa || !empresa.codigo) {
+      return;
+    }
+
+    document.getElementById("valor-codigo-empresa").textContent = empresa.codigo;
+    painel.style.display = "block";
+  } catch (erro) {
+    console.error("Erro ao carregar código da empresa:", erro);
+  }
+}
+
+async function copiarCodigoEmpresa() {
+  const codigo = document.getElementById("valor-codigo-empresa").textContent;
+  if (!codigo) {
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(codigo);
+    mostrarPopup("Código copiado para a área de transferência!", true);
+  } catch (erro) {
+    console.error("Erro ao copiar código:", erro);
+    mostrarPopup("Não foi possível copiar o código.", false);
   }
 }
 
@@ -115,22 +161,22 @@ async function salvarAlteracoes() {
   const celularSemFormatacao = celular.replace(/\D/g, "");
 
   if (!nome || !email) {
-    alert("Nome e e-mail são obrigatórios.");
+    mostrarPopup("Nome e e-mail são obrigatórios.", false);
     return;
   }
 
   if (celular && !validarCelular(celular)) {
-    alert("O Celular deve conter 11 números. Ex (dd) 12345-6789");
+    mostrarPopup("O Celular deve conter 11 números. Ex (dd) 12345-6789", false);
     return;
   }
 
   if (cpf && !validarCPF(cpf)) {
-    alert("O CPF deve conter 11 números.");
+    mostrarPopup("O CPF deve conter 11 números.", false);
     return;
   }
 
   if (rg && !validarRG(rg)) {
-    alert("O RG deve conter 9 ou 11 números.");
+    mostrarPopup("O RG deve conter 9 ou 11 números.", false);
     return;
   }
 
@@ -158,7 +204,7 @@ async function salvarAlteracoes() {
     const resultado = await resposta.json();
 
     if (resposta.status === 401) {
-      alert("Sua sessão expirou. Faça login novamente.");
+      mostrarPopup("Sua sessão expirou. Faça login novamente.", false, "Sessão expirada");
       window.location.href = "autenticacao.html";
       return;
     }
@@ -171,7 +217,7 @@ async function salvarAlteracoes() {
       );
     }
 
-    alert("Perfil atualizado com sucesso!");
+    mostrarPopup("Perfil atualizado com sucesso!", true);
 
     const usuarioAtualizado = resultado.usuario || dadosPerfil;
 
@@ -181,7 +227,7 @@ async function salvarAlteracoes() {
     await carregarPerfil();
   } catch (erro) {
     console.error("Erro ao salvar perfil:", erro);
-    alert(erro.message || "Erro ao salvar as alterações.");
+    mostrarPopup(erro.message || "Erro ao salvar as alterações.", false);
   }
 }
 
@@ -337,7 +383,7 @@ function verificarSenha() {
 }
 
 function reberCodVer() {
-  alert("Código de verificação enviado! - 123456");
+  mostrarPopup("Código de verificação enviado! - 123456", true);
 }
 
 async function salvarSenha() {
@@ -346,17 +392,17 @@ async function salvarSenha() {
   let codigo = document.getElementById("codVerificacao").value;
 
   if (!senhaAtual || !novaSenha) {
-    alert("Preencha a senha atual e a nova senha.");
+    mostrarPopup("Preencha a senha atual e a nova senha.", false);
     return;
   }
 
   if (!verificarSenha()) {
-    alert("A nova senha ainda não atende a todos os requisitos.");
+    mostrarPopup("A nova senha ainda não atende a todos os requisitos.", false);
     return;
   }
 
   if (codigo !== "123456") {
-    alert("Código de verificação inválido.");
+    mostrarPopup("Código de verificação inválido.", false);
     return;
   }
 
@@ -376,7 +422,7 @@ async function salvarSenha() {
     const resultado = await resposta.json();
 
     if (resposta.status === 401) {
-      alert("Sua sessão expirou. Faça login novamente.");
+      mostrarPopup("Sua sessão expirou. Faça login novamente.", false, "Sessão expirada");
       window.location.href = "autenticacao.html";
       return;
     }
@@ -385,7 +431,7 @@ async function salvarSenha() {
       throw new Error(resultado.erro || "Não foi possível alterar a senha.");
     }
 
-    alert("Senha alterada com sucesso!");
+    mostrarPopup("Senha alterada com sucesso!", true);
 
     document.getElementById("senhaAtual").value = "";
     document.getElementById("novaSenha").value = "";
@@ -395,6 +441,6 @@ async function salvarSenha() {
     bloquearCamposSenha();
   } catch (erro) {
     console.error("Erro ao alterar senha:", erro);
-    alert(erro.message || "Erro ao alterar a senha.");
+    mostrarPopup(erro.message || "Erro ao alterar a senha.", false);
   }
 }
