@@ -3,4 +3,5 @@ assets
 .env
 *.pem
 package-lock.json
+.idea
 image.png
