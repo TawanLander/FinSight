@@ -103,10 +103,36 @@
   }
 
   .cabecalho-contato h1 {
-    font-size: 1.9rem;
+    font-size: clamp(1.85rem, 8vw, 1.9rem);
+  }
+
+  .cabecalho-contato .texto-destaque {
+    font-size: 1.15rem;
+  }
+
+  .cabecalho-formulario h3 {
+    font-size: 1.4rem;
+  }
+
+  .cabecalho-formulario p {
+    font-size: 1rem;
   }
 
   .painel-formulario {
     padding: 1.5rem 1.125rem;
+  }
+
+  .rotulo {
+    font-size: 1rem;
+  }
+
+  .campo-texto,
+  .campo-area {
+    font-size: 1rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .campo-area {
+    min-height: 8rem;
   }
 }

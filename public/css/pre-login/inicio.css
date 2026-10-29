@@ -214,3 +214,109 @@
   color: var(--texto-secundario);
   text-shadow: none;
 }
+
+/* ---------- Responsividade da pagina inicial ---------- */
+
+@media (max-width: 992px) {
+  .secao-destaque {
+    padding: 3.5rem 0;
+    min-height: 70dvh;
+    display: flex;
+    align-items: center;
+  }
+
+  .secao-destaque .conteiner {
+    width: 100%;
+  }
+
+  .grade-destaque {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .secao-destaque h1 {
+    font-size: clamp(1.9rem, 6.5vw, 2.6rem);
+  }
+
+  .texto-destaque {
+    font-size: 1.15rem;
+    line-height: 1.75;
+  }
+
+  .acoes-destaque {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .acoes-destaque .btn {
+    width: 100%;
+  }
+
+  .grade-tres-colunas {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .cartao {
+    padding: 1.5rem;
+  }
+
+  .secao-previa-dashboard {
+    padding: 3rem 1.5rem;
+  }
+
+  .conteudo-previa-dashboard h2 {
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
+  }
+
+  .conteudo-previa-dashboard p {
+    font-size: 1.15rem;
+  }
+
+  .cabecalho-secao h2 {
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
+  }
+
+  .cabecalho-secao p {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .secao-destaque {
+    padding: 2.75rem 0;
+    min-height: 62dvh;
+  }
+
+  .secao-destaque h1 {
+    font-size: clamp(1.85rem, 8.5vw, 2.2rem);
+  }
+
+  .texto-destaque {
+    font-size: 1.2rem;
+  }
+
+  .cabecalho-secao p {
+    font-size: 1.2rem;
+  }
+
+  .grade-tres-colunas {
+    gap: 1.1rem;
+  }
+
+  .cartao {
+    padding: 1.35rem;
+  }
+
+  .cartao p {
+    font-size: 1.05rem;
+  }
+
+  .secao-previa-dashboard {
+    padding: 2.5rem 1.25rem;
+  }
+
+  .conteudo-previa-dashboard p {
+    font-size: 1.2rem;
+  }
+}

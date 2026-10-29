@@ -27,6 +27,25 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+function validarSenhaCadastro(senha, confirmarSenha) {
+    if (!senha || senha.length === 0) {
+        informarErro('Informe uma senha para o cadastro.');
+        return false;
+    }
+
+    if (!SENHA_REGEX.test(senha)) {
+        informarErro('A senha não cumpre os requisitos necessários: mínimo de 8 caracteres, com letra maiúscula, letra minúscula, número e caractere especial.');
+        return false;
+    }
+
+    if (senha !== confirmarSenha) {
+        informarErro('A senha e a confirmação de senha não correspondem.');
+        return false;
+    }
+
+    return true;
+}
+
 function analisarDados(json, quantity, modo = 'login') {
     let acertos = 0;
 
@@ -91,7 +110,9 @@ async function logar(usuario) {
 
         const dados = await resposta.json();
         mostrarPopup('Login efetuado com sucesso!', true);
-        window.location.href = 'dashboard.html';
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 2000);
         return dados;
     } catch (erro) {
         console.error('Erro na requisição:', erro);
@@ -124,31 +145,22 @@ function pegarDados() {
 
 async function cadastrar(usuario) {
     try {
-        let resposta = await fetch('/auth/register', {
+        const resposta = await fetch('/auth/register', {
             method: 'post',
             headers: {
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                name: usuario.nome,
+                nome: usuario.nome,
                 email: usuario.email,
-                senha: usuario.senha
+                senha: usuario.senha,
+                codigo: usuario.codigo
             })
         });
 
-        if (resposta.status === 404) {
-            resposta = await fetch('/usuarios/cadastrar', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(usuario)
-            });
-        }
-
         if (!resposta.ok) {
             const erro = await resposta.json().catch(() => ({}));
-            informarErro(erro.error || 'Não foi possível realizar o cadastro.');
+            informarErro(erro.error || erro.erro || 'Não foi possível realizar o cadastro.');
             return false;
         }
 
@@ -161,6 +173,182 @@ async function cadastrar(usuario) {
         informarErro('Erro ao conectar com o servidor.');
         return false;
     }
+}
+
+function obterTipoCadastro() {
+    const selecionado = document.querySelector('input[name="tipo-cadastro"]:checked');
+    return selecionado ? selecionado.value : 'funcionario';
+}
+
+function alternarTipoCadastro() {
+    const tipo = obterTipoCadastro();
+    const grupoCodigo = document.getElementById('campo-codigo-empresa');
+    const etapaEmpresa = document.getElementById('caixa-cadastro-empresa');
+    const etapaPessoal = document.getElementById('formulario-cadastro');
+    const botaoPrincipal = document.getElementById('botao-principal-cadastro');
+
+    if (!grupoCodigo || !botaoPrincipal) return;
+
+    grupoCodigo.style.display = tipo === 'funcionario' ? 'block' : 'none';
+    botaoPrincipal.textContent = tipo === 'funcionario' ? 'Cadastrar Conta' : 'Prosseguir';
+
+    // Se estava na etapa 2, volta para a etapa 1 (dados preservados)
+    if (etapaEmpresa && etapaPessoal && etapaEmpresa.style.display === 'block') {
+        etapaEmpresa.style.display = 'none';
+        etapaPessoal.style.display = 'block';
+    }
+}
+
+function validarCnpj(cnpj) {
+    return /^\d{14}$/.test(String(cnpj).replace(/\D/g, ''));
+}
+
+function mascaraCnpj(input) {
+    let valor = input.value.replace(/\D/g, '').slice(0, 14);
+    valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+    valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+    valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+    valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+    input.value = valor;
+}
+
+function irParaEtapaEmpresa() {
+    const inputNome = document.getElementById('nome-cadastro');
+    const inputEmail = document.getElementById('email-cadastro');
+    const inputSenha = document.getElementById('senha-cadastro');
+    const inputConfirmar = document.getElementById('confirmar-senha-cadastro');
+
+    if (!inputNome || !inputEmail || !inputSenha || !inputConfirmar) return;
+
+    const cadastro = {
+        nome: inputNome.value.trim(),
+        email: inputEmail.value.trim(),
+        senha: inputSenha.value,
+        confirmarSenha: inputConfirmar.value
+    };
+
+    if (!cadastro.nome) {
+        informarErro('Informe seu nome completo.');
+        return false;
+    }
+
+    if (!EMAIL_REGEX.test(cadastro.email)) {
+        informarErro('Informe um e-mail válido, no formato exemplo@dominio.com.');
+        return false;
+    }
+
+    if (!validarSenhaCadastro(cadastro.senha, cadastro.confirmarSenha)) {
+        return false;
+    }
+
+    return true;
+}
+
+function irParaEtapaEmpresa() {
+    const inputNome = document.getElementById('nome-cadastro');
+    const inputEmail = document.getElementById('email-cadastro');
+    const inputSenha = document.getElementById('senha-cadastro');
+    const inputConfirmar = document.getElementById('confirmar-senha-cadastro');
+
+    if (!inputNome || !inputEmail || !inputSenha || !inputConfirmar) return;
+
+    const cadastro = {
+        nome: inputNome.value.trim(),
+        email: inputEmail.value.trim(),
+        senha: inputSenha.value,
+        confirmarSenha: inputConfirmar.value
+    };
+
+    if (!validarCadastro(cadastro)) {
+        return;
+    }
+
+    document.getElementById('formulario-cadastro').style.display = 'none';
+    document.getElementById('caixa-cadastro-empresa').style.display = 'block';
+}
+
+function voltarParaEtapaPessoal() {
+    document.getElementById('caixa-cadastro-empresa').style.display = 'none';
+    document.getElementById('formulario-cadastro').style.display = 'block';
+}
+
+async function cadastrarEmpresa() {
+    const inputNomeEmpresa = document.getElementById('nome-empresa-cadastro');
+    const inputCnpj = document.getElementById('cnpj-empresa-cadastro');
+
+    if (!inputNomeEmpresa || !inputCnpj) return;
+
+    const nomeEmpresa = inputNomeEmpresa.value.trim();
+    const cnpj = inputCnpj.value.replace(/\D/g, '');
+
+    if (!nomeEmpresa) {
+        informarErro('Informe o nome da empresa.');
+        return;
+    }
+    if (!validarCnpj(cnpj)) {
+        informarErro('Informe um CNPJ válido com 14 dígitos.');
+        return;
+    }
+
+    const inputNome = document.getElementById('nome-cadastro');
+    const inputEmail = document.getElementById('email-cadastro');
+    const inputSenha = document.getElementById('senha-cadastro');
+
+    const botao = document.getElementById('botao-finalizar-cadastro');
+    botao.disabled = true;
+
+    try {
+        const resposta = await fetch('/empresa', {
+            method: 'post',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                empresa: {
+                    nome: nomeEmpresa,
+                    cnpj: cnpj
+                },
+                dono: {
+                    nome: inputNome.value.trim(),
+                    email: inputEmail.value.trim(),
+                    senha: inputSenha.value
+                }
+            })
+        });
+
+        if (!resposta.ok) {
+            const erro = await resposta.json().catch(() => ({}));
+            informarErro(erro.erro || 'Não foi possível cadastrar a empresa.');
+            return;
+        }
+
+        const dados = await resposta.json();
+        mostrarPopup(`Empresa cadastrada! Código de convite: ${dados.codigo}. Compartilhe com seus funcionários.`, true, 'Boas-vindas ao FinSight!');
+        window.location.href = 'dashboard.html';
+    } catch (erro) {
+        console.error('Erro ao cadastrar empresa:', erro);
+        informarErro('Erro ao conectar com o servidor.');
+    } finally {
+        botao.disabled = false;
+    }
+}
+
+function validarCadastro(cadastro) {
+    if (!cadastro.nome) {
+        informarErro('Informe seu nome completo.');
+        return false;
+    }
+
+    if (!EMAIL_REGEX.test(cadastro.email)) {
+        informarErro('Informe um e-mail válido, no formato exemplo@dominio.com.');
+        return false;
+    }
+
+    if (!validarSenhaCadastro(cadastro.senha, cadastro.confirmarSenha)) {
+        return false;
+    }
+
+    return true;
 }
 
 function cadastrarUsuario() {
@@ -178,10 +366,27 @@ function cadastrarUsuario() {
         confirmarSenha: inputConfirmar.value
     };
 
-    if (!analisarDados(cadastro, 4, 'cadastro')) {
-        informarErro('Verifique nome, email, senha (mín. 8 caracteres, com maiúscula, minúscula, número e caractere especial) e a confirmação de senha.');
+    if (!validarCadastro(cadastro)) {
         return;
     }
 
-    cadastrar(cadastro);
+    if (obterTipoCadastro() === 'dono') {
+        irParaEtapaEmpresa();
+        return;
+    }
+
+    const inputCodigo = document.getElementById('codigo-empresa-cadastro');
+    const codigo = inputCodigo ? inputCodigo.value.trim() : '';
+
+    if (!codigo) {
+        informarErro('Informe o código da empresa.');
+        return;
+    }
+
+    if (!/^[A-Za-z0-9]{8}$/.test(codigo)) {
+        informarErro('Código da empresa inválido: deve conter exatamente 8 caracteres (letras e números).');
+        return;
+    }
+
+    cadastrar({ ...cadastro, codigo });
 }

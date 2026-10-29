@@ -12,9 +12,15 @@
   <script src="../js/sessao.js"></script>
   <script src="../js/perfil.js"></script>
   <script src="../js/usuario.js"></script>
+  <script src="../js/popup.js"></script>
+  <link rel="stylesheet" href="../css/popup.css">
 </head>
 
 <body onload="carregarUsuario()">
+
+  <button type="button" id="btn-menu-mobile" class="btn-menu-mobile" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
 
   <div class="estrutura-painel">
 
@@ -57,7 +63,7 @@
       </div>
 
       <div class="rodape-barra-lateral">
-        <a href="../index.html" class="btn btn-vazado btn-pequeno">Sair</a>
+        <button type="button" id="btn-sair" class="btn btn-vazado btn-pequeno">Sair</button>
         <button type="button" id="btn-tema" class="btn-tema" title="Alternar tema claro/escuro"
           aria-label="Alternar tema claro e escuro">
           <svg class="icone-sol bi bi-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
@@ -86,7 +92,7 @@
           <div class="avatar-perfil-grande">F</div>
           <div class="detalhes-perfil">
             <h2 class="nome-perfil">Fernanda</h2>
-            <p class="cargo-perfil">Analista</p>
+            <p class="cargo-perfil" id="perfil-cargo"></p>
           </div>
         </div>
 
@@ -161,6 +167,21 @@
         </form>
       </div>
 
+      <div class="painel-conteudo painel-codigo-empresa" id="painel-codigo-empresa" style="display: none;">
+        <h2 class="titulo-painel">Código da empresa</h2>
+        <p class="descricao-codigo-empresa">
+          Compartilhe este código com seus colaboradores. Eles podem se cadastrar
+          na <a href="autenticacao.html#cadastro">tela de cadastro</a> selecionando
+          "Sou funcionário" e informando o código para entrar na sua empresa.
+        </p>
+        <div class="caixa-codigo-empresa">
+          <code class="valor-codigo-empresa" id="valor-codigo-empresa">--------</code>
+          <button type="button" id="btn-copiar-codigo" class="btn btn-primario btn-pequeno" onclick="copiarCodigoEmpresa()">
+            Copiar código
+          </button>
+        </div>
+      </div>
+
       <div class="painelSenha">
         <div class="painel-conteudoSenha">
 
@@ -194,19 +215,18 @@
 
 
               <div class="grupo-campo">
-                <label for="codVerificacao" class="rotulo-campo">Código de Verificação</label>
+                <label for="codVerificacao" class="rotulo-campo">Código de verificação</label>
                 <input type="text" id="codVerificacao" class="campo-texto" disabled>
               </div>
 
-              <button type="button" id="btn-cod" class="btn btn-primario" onclick="reberCodVer()" disabled>Receber Cód
-                de Verificação</button>
+              <button type="button" id="btn-cod" class="btn btn-primario" onclick="reberCodVer()">Receber código de verificação</button>
 
             </div>
             <div class="acoes-formulario">
               <button type="button" id="btn-editar-senha" class="btn btn-primario" onclick="editarSenha()">Alterar
                 Senha</button>
               <button type="submit" id="btn-salvar-senha" class="btn btn-primario" style="display: none;"
-                disabled>Salvar
+                >Salvar
                 Senha</button>
             </div>
 

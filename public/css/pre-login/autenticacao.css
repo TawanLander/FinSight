@@ -33,11 +33,9 @@
   justify-content: center;
   gap: 36px;
   padding: 48px 40px;
-  background: linear-gradient(
-    145deg,
-    rgba(15, 30, 58, 0.95),
-    rgba(11, 19, 32, 0.9)
-  );
+  background: linear-gradient(145deg,
+      rgba(15, 30, 58, 0.95),
+      rgba(11, 19, 32, 0.9));
   border-right: 1px solid var(--cor-borda);
   position: relative;
 }
@@ -73,11 +71,9 @@
 }
 
 [data-tema="claro"] .lado-institucional {
-  background: linear-gradient(
-    145deg,
-    rgba(238, 242, 250, 0.95),
-    rgba(244, 246, 251, 0.9)
-  );
+  background: linear-gradient(145deg,
+      rgba(238, 242, 250, 0.95),
+      rgba(244, 246, 251, 0.9));
 }
 
 .lado-formulario {
@@ -188,11 +184,49 @@
     grid-template-columns: 1fr;
   }
 
-  .lado-institucional {
-    display: none;
-  }
-
   .lado-formulario {
     padding: 32px 24px;
+  }
+
+  .frase-destaque-institucional {
+    display: none;
+  }
+}
+
+.seletor-tipo-cadastro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.opcao-tipo-cadastro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background-color: var(--fundo-campo);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--arredondamento-pequeno);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  transition: border-color 0.2s ease, color 0.2s ease;
+  text-align: center;
+}
+
+.opcao-tipo-cadastro:hover {
+  border-color: var(--cor-secundaria);
+}
+
+.opcao-tipo-cadastro input[type="radio"] {
+  accent-color: var(--cor-secundaria);
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .seletor-tipo-cadastro {
+    grid-template-columns: 1fr;
   }
 }
