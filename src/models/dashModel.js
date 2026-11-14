@@ -25,7 +25,7 @@ async function buscarCotacoes(idEmpresa, idTicket = null) {
       JOIN tickets t ON c.idTicket = t.id
       JOIN cotacao_historico ch ON ch.id_tickets = t.id
       WHERE c.idEmpresa = ? 
-      AND ch.data_fechamento BETWEEN '2018-01-01' AND '2019-12-31'
+      AND ch.data_fechamento BETWEEN '2019-01-01' AND '2019-12-31'
       AND ch.id_tickets = ?
       GROUP BY t.id, t.ticker, ch.data_fechamento
       ORDER BY ch.data_fechamento ASC;
@@ -43,7 +43,7 @@ async function buscarCotacoes(idEmpresa, idTicket = null) {
       FROM carteira c
       JOIN cotacao_historico ch ON ch.id_tickets = c.idTicket
       WHERE c.idEmpresa = ? 
-      AND ch.data_fechamento BETWEEN '2018-01-01' AND '2019-12-31'
+      AND ch.data_fechamento BETWEEN '2019-01-01' AND '2019-12-31'
       GROUP BY ch.data_fechamento
       ORDER BY ch.data_fechamento ASC;
     `;
@@ -61,7 +61,7 @@ async function buscarCotacoesIbov() {
         FROM tickets t
         JOIN cotacao_historico ch ON ch.id_tickets = t.id
         WHERE t.ticker = 'IBOV'
-        AND ch.data_fechamento BETWEEN '2018-01-01' AND '2019-12-31'
+        AND ch.data_fechamento BETWEEN '2019-01-01' AND '2019-12-31'
         ORDER BY ch.data_fechamento ASC;
       `;
       return await bd.executar(instrucao);
