@@ -12,7 +12,8 @@ public class DBConnection {
     Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
     public DBConnection() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://ctr-banco:3306/finsight?rewriteBatchedStatements=true");
+//      basicDataSource.setUrl("jdbc:mysql://ctr-banco:3306/finsight?rewriteBatchedStatements=true");
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/finsight?rewriteBatchedStatements=true"); // precisei testar no front né
         basicDataSource.setUsername(dotenv.get("USUARIO_BANCO"));
         basicDataSource.setPassword(dotenv.get("SENHA_BANCO"));
 
