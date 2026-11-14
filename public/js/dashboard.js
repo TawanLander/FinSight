@@ -5,10 +5,13 @@ async function carregarDadosGraficos() {
     const res = await fetch(
       "/dashboard/carregar-graficos?idTicket=" + idTicket,
     );
-    const cotacoes = await res.json();
+    const dados = await res.json();
+
+    const cotacoes = dados.cotacoes;
+    const ibov = dados.ibov;
 
     calcularEAtualizarKPIs(cotacoes);
-    atualizarGraficos(cotacoes);
+    atualizarGraficos(cotacoes, ibov);
   } catch (erro) {
     console.log("Erro ao buscar cotacoes:", erro);
   }
@@ -152,6 +155,17 @@ const grafRentabilidade = new Chart(ctx, {
         pointRadius: 3,
         pointBackgroundColor: "rgba(75, 192, 192, 1)",
       },
+      {
+        label: "Benchmark (Ibovespa ^BVSP)",
+        data: [],
+        borderColor: "rgba(245, 158, 11, 1)",
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        borderDash: [5, 4],
+        tension: 0.3,
+        pointRadius: 2,
+        hidden: true,
+      },
     ],
   },
   options: {
@@ -184,17 +198,17 @@ const grafRentabilidade = new Chart(ctx, {
 });
 
 // // popular os dados da ibovespa
-// let dadosPercentualIbov = [];
-// let dadosNominalIbov = [];
+let dadosPercentualIbov = [];
+let dadosNominalIbov = [];
 
-// function alternarIbov() {
-//   if (benchmark.value == "IBOV") {
-//     grafRentabilidade.data.datasets[1].hidden = false;
-//   } else {
-//     grafRentabilidade.data.datasets[1].hidden = true;
-//   }
-//   grafRentabilidade.update();
-// }
+function alternarIbov() {
+  const benchmarkSelect = document.getElementById("benchmark");
+  if (grafRentabilidade.data.datasets[1]) {
+    grafRentabilidade.data.datasets[1].hidden =
+      benchmarkSelect.value !== "IBOV";
+    grafRentabilidade.update();
+  }
+}
 
 //popula a dash
 let dadosNominalCarteira = [];
@@ -203,7 +217,7 @@ let dadosPercentualCarteira = [];
 function alternarEscala() {
   if (escalaGrafico.value == "VALOR_NOMINAL") {
     grafRentabilidade.data.datasets[0].data = dadosNominalCarteira;
-    // grafRentabilidade.data.datasets[1].data = dadosNominalIbov;
+    grafRentabilidade.data.datasets[1].data = dadosNominalIbov;
     grafRentabilidade.options.scales.y.ticks = {
       callback: function (val) {
         return "R$ " + val.toFixed(2);
@@ -211,28 +225,68 @@ function alternarEscala() {
     };
   } else {
     grafRentabilidade.data.datasets[0].data = dadosPercentualCarteira;
-    // grafRentabilidade.data.datasets[1].data = dadosPercentualIbov;
+    grafRentabilidade.data.datasets[1].data = dadosPercentualIbov;
   }
   grafRentabilidade.update();
 }
 
-function atualizarGraficos(cotacoes) {
-  if (!cotacoes || cotacoes.length === 0) return;
-  
+function atualizarGraficos(cotacoes, cotacoesIbov) {
+  const temCotacoes = cotacoes && cotacoes.length > 0;
+  const temIbov = cotacoesIbov && cotacoesIbov.length > 0;
+
+  if (!temCotacoes && !temIbov) return;
+
   const datas = [];
   dadosNominalCarteira = [];
   dadosPercentualCarteira = [];
 
-  const precoInicial = cotacoes[0].preco_adj_close;
+  if (temCotacoes) {
+    const precoInicial = Number(cotacoes[0].preco_adj_close);
 
-  for (let i = 0; i < cotacoes.length; i++) {
-    const precoAtual = cotacoes[i].preco_adj_close;
+    for (let i = 0; i < cotacoes.length; i++) {
+      const precoAtual = Number(cotacoes[i].preco_adj_close);
 
-    datas.push(cotacoes[i].data_fechamento);
-    dadosNominalCarteira.push(precoAtual);
+      // Formata a data se for objeto Date ou ISO string
+      const dataStr = typeof cotacoes[i].data_fechamento === "string" 
+        ? cotacoes[i].data_fechamento.substring(0, 10) 
+        : new Date(cotacoes[i].data_fechamento).toISOString().substring(0, 10);
 
-    const variacao = ((precoAtual - precoInicial) / precoInicial) * 100;
-    dadosPercentualCarteira.push(variacao.toFixed(2));
+      datas.push(dataStr);
+      dadosNominalCarteira.push(precoAtual);
+
+      const variacao = ((precoAtual - precoInicial) / precoInicial) * 100;
+      dadosPercentualCarteira.push(variacao.toFixed(2));
+    }
+  }
+
+  // Processa dados do benchmark (IBOV)
+  if (temIbov) {
+    dadosNominalIbov = [];
+    dadosPercentualIbov = [];
+
+    const precoInicialIbov = Number(cotacoesIbov[0].preco_adj_close);
+
+    for (let i = 0; i < cotacoesIbov.length; i++) {
+      const precoAtualIbov = Number(cotacoesIbov[i].preco_adj_close);
+      dadosNominalIbov.push(precoAtualIbov);
+
+      const variacaoIbov = ((precoAtualIbov - precoInicialIbov) / precoInicialIbov) * 100;
+      dadosPercentualIbov.push(variacaoIbov.toFixed(2));
+
+      // Se não tem cotações da carteira, usa as datas do próprio IBOV no eixo X
+      if (!temCotacoes) {
+        const dataStr = typeof cotacoesIbov[i].data_fechamento === "string"
+          ? cotacoesIbov[i].data_fechamento.substring(0, 10)
+          : new Date(cotacoesIbov[i].data_fechamento).toISOString().substring(0, 10);
+        datas.push(dataStr);
+      }
+    }
+
+    if (escalaGrafico && escalaGrafico.value === "VALOR_NOMINAL") {
+      grafRentabilidade.data.datasets[1].data = dadosNominalIbov;
+    } else {
+      grafRentabilidade.data.datasets[1].data = dadosPercentualIbov;
+    }
   }
 
   // Joga em porcentagem no gráfico
@@ -254,7 +308,20 @@ function atualizarGraficos(cotacoes) {
 //   5. Drawdown: A maior queda do período, comparando o menor preço com o maior preço.
 
 function calcularEAtualizarKPIs(cotacoes) {
-  if (!cotacoes || cotacoes.length === 0) return;
+  if (!cotacoes || cotacoes.length === 0) {
+    document.querySelector('[data-kpi="maior-risco"] [data-field="value"]').textContent = "--";
+    document.querySelector('[data-kpi="maior-risco"] [data-field="delta"]').textContent = "Sem dados na carteira";
+
+    document.querySelector('[data-kpi="menor-risco"] [data-field="value"]').textContent = "--";
+    document.querySelector('[data-kpi="menor-risco"] [data-field="delta"]').textContent = "Sem dados na carteira";
+
+    document.querySelector('[data-kpi="volatilidade-media"] [data-field="value"]').textContent = "--";
+    document.querySelector('[data-kpi="volatilidade-media"] [data-field="delta"]').textContent = "Sem dados na carteira";
+
+    document.querySelector('[data-kpi="drawdown-maximo"] [data-field="value"]').textContent = "--";
+    document.querySelector('[data-kpi="drawdown-maximo"] [data-field="delta"]').textContent = "Sem dados na carteira";
+    return;
+  }
 
   let maiorOscilacao = 0;
   let menorOscilacao = 999999;
@@ -294,17 +361,32 @@ function calcularEAtualizarKPIs(cotacoes) {
   // Calcula o drawdown
   const mediaOscilacao = somaOscilacao / cotacoes.length; // Média = Soma das Oscilações / Quantidade de Dias
   const drawdown = ((menorPreco - maiorPreco) / maiorPreco) * 100; // Queda % = ((Menor Preço - Maior Preço) / Maior Preço) * 100
-    
-  document.querySelector('[data-kpi="maior-risco"] [data-field="value"]').textContent = maiorTicker;
-  document.querySelector('[data-kpi="maior-risco"] [data-field="delta"]').textContent = "Oscilação: R$ " + maiorOscilacao.toFixed(2);
-    
-  document.querySelector('[data-kpi="menor-risco"] [data-field="value"]').textContent = menorTicker;
-  document.querySelector('[data-kpi="menor-risco"] [data-field="delta"]').textContent = "Oscilação: R$ " + menorOscilacao.toFixed(2);
-    
-  document.querySelector('[data-kpi="volatilidade-media"] [data-field="value"]').textContent = "R$ " + mediaOscilacao.toFixed(2);
-  document.querySelector('[data-kpi="volatilidade-media"] [data-field="delta"]').textContent = "Média da carteira";
 
-  document.querySelector('[data-kpi="drawdown-maximo"] [data-field="value"]').textContent = drawdown.toFixed(2) + "%";
-  document.querySelector('[data-kpi="drawdown-maximo"] [data-field="delta"]').textContent = "Maior queda histórica";
+  document.querySelector(
+    '[data-kpi="maior-risco"] [data-field="value"]',
+  ).textContent = maiorTicker;
+  document.querySelector(
+    '[data-kpi="maior-risco"] [data-field="delta"]',
+  ).textContent = "Oscilação: R$ " + maiorOscilacao.toFixed(2);
 
+  document.querySelector(
+    '[data-kpi="menor-risco"] [data-field="value"]',
+  ).textContent = menorTicker;
+  document.querySelector(
+    '[data-kpi="menor-risco"] [data-field="delta"]',
+  ).textContent = "Oscilação: R$ " + menorOscilacao.toFixed(2);
+
+  document.querySelector(
+    '[data-kpi="volatilidade-media"] [data-field="value"]',
+  ).textContent = "R$ " + mediaOscilacao.toFixed(2);
+  document.querySelector(
+    '[data-kpi="volatilidade-media"] [data-field="delta"]',
+  ).textContent = "Média da carteira";
+
+  document.querySelector(
+    '[data-kpi="drawdown-maximo"] [data-field="value"]',
+  ).textContent = drawdown.toFixed(2) + "%";
+  document.querySelector(
+    '[data-kpi="drawdown-maximo"] [data-field="delta"]',
+  ).textContent = "Maior queda histórica";
 }

@@ -7,5 +7,6 @@ router.use(autenticarToken);
 
 router.get("/carregar-filtro", (req, res) => dashController.carregar(req, res));
 router.get("/carregar-graficos", (req, res) => dashController.buscarCotacoes(req, res));
+router.get("/carregar-ibov", (req, res) => dashController.buscarIbov(req, res));
 
 module.exports = router;

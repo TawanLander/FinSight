@@ -9,34 +9,66 @@ async function carregar(idEmpresa) {
 }
 
 async function buscarCotacoes(idEmpresa, idTicket = null) {
-  let instrucao = `
-            SELECT 
-                t.id AS idTicket,
-                t.ticker,
-                ch.data_fechamento,
-                ch.preco_adj_close,
-                ch.preco_max,
-                ch.preco_min
-            FROM carteira c
-            JOIN tickets t ON c.idTicket = t.id
-            JOIN cotacao_historico ch ON ch.id_tickets = t.id
-            WHERE c.idEmpresa = ? 
-            AND ch.data_fechamento BETWEEN '2010-01-01' AND '2011-05-12'
-        `;
-
+  let instrucao = "";
   const parametros = [idEmpresa];
 
   if (idTicket && idTicket !== "CARTEIRA") {
-    instrucao += ` AND ch.id_tickets = ?`;
+    instrucao = `
+      SELECT 
+          t.id AS idTicket,
+          t.ticker,
+          ch.data_fechamento,
+          AVG(ch.preco_adj_close) AS preco_adj_close,
+          MAX(ch.preco_max) AS preco_max,
+          MIN(ch.preco_min) AS preco_min
+      FROM carteira c
+      JOIN tickets t ON c.idTicket = t.id
+      JOIN cotacao_historico ch ON ch.id_tickets = t.id
+      WHERE c.idEmpresa = ? 
+      AND ch.data_fechamento BETWEEN '2018-01-01' AND '2019-12-31'
+      AND ch.id_tickets = ?
+      GROUP BY t.id, t.ticker, ch.data_fechamento
+      ORDER BY ch.data_fechamento ASC;
+    `;
     parametros.push(idTicket);
+  } else {
+    // Carteira Consolidada: agrupa por data de fechamento para não duplicar datas no gráfico
+    instrucao = `
+      SELECT 
+          'CARTEIRA' AS ticker,
+          ch.data_fechamento,
+          AVG(ch.preco_adj_close) AS preco_adj_close,
+          MAX(ch.preco_max) AS preco_max,
+          MIN(ch.preco_min) AS preco_min
+      FROM carteira c
+      JOIN cotacao_historico ch ON ch.id_tickets = c.idTicket
+      WHERE c.idEmpresa = ? 
+      AND ch.data_fechamento BETWEEN '2018-01-01' AND '2019-12-31'
+      GROUP BY ch.data_fechamento
+      ORDER BY ch.data_fechamento ASC;
+    `;
   }
-
-  instrucao += ` ORDER BY ch.data_fechamento ASC;`;
 
   return await bd.executar(instrucao, parametros);
 }
 
+async function buscarCotacoesIbov() {
+      const instrucao = `
+        SELECT
+            t.ticker,
+            ch.data_fechamento,
+            ch.preco_adj_close
+        FROM tickets t
+        JOIN cotacao_historico ch ON ch.id_tickets = t.id
+        WHERE t.ticker = 'IBOV'
+        AND ch.data_fechamento BETWEEN '2018-01-01' AND '2019-12-31'
+        ORDER BY ch.data_fechamento ASC;
+      `;
+      return await bd.executar(instrucao);
+    }
+
 module.exports = {
   carregar,
-  buscarCotacoes
+  buscarCotacoes,
+  buscarCotacoesIbov
 };
