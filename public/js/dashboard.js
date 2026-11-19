@@ -1,3 +1,36 @@
+let listaTickers = [
+  { id: "CARTEIRA", nome: "Carteira Consolidada" }
+];
+
+function buscarTicker() {
+  const termo = document.getElementById("campo-ticker").value.toLowerCase();
+  const lista = document.getElementById("lista-tickers");
+
+  lista.style.display = "block";
+  lista.innerHTML = "";
+
+  for (let i = 0; i < listaTickers.length; i++) {
+    const item = listaTickers[i];
+
+    if (item.nome.toLowerCase().includes(termo)) {
+      lista.innerHTML += `<div class="item-sugestao" onmousedown="selecionarTicker('${item.id}', '${item.nome}')">${item.nome}</div>`;
+    }
+  }
+}
+
+// recarrega os grf
+function selecionarTicker(id, nome) {
+  document.getElementById("campo-ticker").value = nome;
+  document.getElementById("ticker").value = id;
+  document.getElementById("lista-tickers").style.display = "none";
+
+  carregarDadosGraficos();
+}
+
+function fecharLista() {
+  document.getElementById("lista-tickers").style.display = "none";
+}
+
 async function carregarDadosGraficos() {
   try {
     const idTicket = document.getElementById("ticker").value;
@@ -22,16 +55,24 @@ async function carregarFiltro() {
     const res = await fetch("/dashboard/carregar-filtro");
     const dados = await res.json();
 
-    // exibe os nome na barra do lado e na tela
+    // Exibe os nomes do usuário
     userName.innerHTML = `${dados.usuario.nome}`;
-
     const primeiraLetra = dados.usuario.nome[0];
     avatarUsuario.innerHTML = `${primeiraLetra.toUpperCase()}`;
     nomeUsuario.innerHTML = `${dados.usuario.nome}`;
 
-    for (let i = 0; i < dados.ticket.length; i++) {
-      ticker.innerHTML += `<option value="${dados.ticket[i].idTicket}">${dados.ticket[i].ticker}</option>`;
-    }
+    // Atualiza a lista de tickers vindos do banco
+    const itensBanco = dados.ticker || dados.ticket || [];
+    itensBanco.forEach((item) => {
+      const id = item.idTicket || item.idTicker || item.id || item.ticker;
+      const codigo = item.ticker || id;
+      if (id && !listaTickers.some((t) => String(t.id) === String(id))) {
+        listaTickers.push({
+          id: String(id),
+          nome: codigo ? `${codigo} - Ativo` : `Ativo #${id}`
+        });
+      }
+    });
   } catch (erro) {
     console.log("Erro ao carregar filtro:", erro);
   }
