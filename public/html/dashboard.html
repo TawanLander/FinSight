@@ -44,7 +44,7 @@
           </a>
           <a href="envio.html" class="link-painel">
             <span></span>
-            Enviar planilhas
+            Enviar arquivos
           </a>
           <a href="historico.html" class="link-painel">
             <span></span>
@@ -90,10 +90,22 @@
       <div class="barra-filtros">
 
         <div class="item-filtro">
-          <label for="ticker" class="rotulo-filtro">Ticker / Ativo</label>
-          <select id="ticker" class="seletor-filtro">
-            <option value="CARTEIRA" selected>Carteira Consolidada (FinSight)</option>
-          </select>
+          <label for="campo-ticker" class="rotulo-filtro">Ticker / Ativo</label>
+          <div class="autocomplete-container">
+            <input
+              type="text"
+              id="campo-ticker"
+              class="seletor-filtro"
+              placeholder="Buscar ticker..."
+              value="Carteira Consolidada"
+              oninput="buscarTicker()"
+              onfocus="buscarTicker()"
+              onblur="fecharLista()"
+              autocomplete="off"
+            />
+            <input type="hidden" id="ticker" value="CARTEIRA" />
+            <div id="lista-tickers" class="dropdown-sugestoes" style="display: none;"></div>
+          </div>
         </div>
 
         <div class="item-filtro">
