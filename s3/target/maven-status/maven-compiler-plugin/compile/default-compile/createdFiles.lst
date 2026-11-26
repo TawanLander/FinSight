@@ -1,0 +1,7 @@
+school\sptech\s3\config\SecurityConfig.class
+school\sptech\s3\bucket\controller\BucketController.class
+school\sptech\s3\bucket\service\BucketService.class
+school\sptech\s3\bucket\service\BucketService$StoredFile.class
+school\sptech\s3\config\S3Provider.class
+school\sptech\s3\bucket\controller\BucketController$UploadResponse.class
+school\sptech\s3\S3Application.class
