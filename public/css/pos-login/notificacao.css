@@ -1,0 +1,291 @@
+
+/* ---------- PAINEL PRINCIPAL ---------- */
+
+.painel-notificacoes {
+    width: 100%;
+    max-width: 1050px;
+    margin: 30px auto;
+}
+
+.cabecalho-notificacoes {
+    margin-bottom: 24px;
+}
+
+.cabecalho-notificacoes h2 {
+    font-size: 1.25rem;
+    margin: 0 0 8px;
+    color: var(--texto-principal);
+}
+
+.cabecalho-notificacoes p {
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+
+/* ---------- CARTÕES ---------- */
+
+.cartao-notificacao,
+.grupo-notificacoes {
+    background-color: var(--fundo-cartao);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--arredondamento-pequeno);
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.notificacao-principal {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px;
+    border-left: 4px solid var(--cor-secundaria);
+}
+
+.informacoes-notificacao {
+    flex: 1;
+}
+
+.informacoes-notificacao h3 {
+    color: var(--texto-principal);
+    font-size: 1rem;
+    margin: 0 0 7px;
+}
+
+.informacoes-notificacao p {
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+/* ---------- ÍCONES ---------- */
+
+.icone-notificacao,
+.icone-grupo {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.icone-slack {
+    background-color: rgba(6, 182, 212, 0.12);
+    color: var(--cor-secundaria);
+}
+
+.icone-grupo {
+    background-color: rgba(6, 182, 212, 0.10);
+    color: var(--cor-secundaria);
+}
+
+.icone-seguranca {
+    background-color: rgba(34, 197, 94, 0.10);
+    color: #22a06b;
+}
+
+
+/* ---------- GRUPOS DE NOTIFICAÇÕES ---------- */
+
+.grupo-notificacoes {
+    padding: 22px;
+}
+
+.cabecalho-grupo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.cabecalho-grupo h3 {
+    color: var(--texto-principal);
+    font-size: 1rem;
+    margin: 0 0 6px;
+}
+
+.cabecalho-grupo p {
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+
+/* ---------- OPÇÕES INDIVIDUAIS ---------- */
+
+.lista-notificacoes {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-notificacao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.item-notificacao:last-child {
+    border-bottom: none;
+    padding-bottom: 2px;
+}
+
+.item-notificacao h4 {
+    color: var(--texto-principal);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.item-notificacao p {
+    color: var(--texto-suave);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+/* ---------- INTERRUPTORES (TOGGLES) ---------- */
+
+.interruptor {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 25px;
+    min-width: 46px;
+    cursor: pointer;
+}
+
+.interruptor input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.trilho {
+    position: absolute;
+    inset: 0;
+    background-color: #a0a0a0;
+    border-radius: 30px;
+    transition: 0.25s ease;
+}
+
+.trilho::before {
+    content: "";
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    left: 3px;
+    top: 3px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Ativado */
+
+.interruptor input:checked + .trilho {
+    background-color: var(--cor-secundaria);
+}
+
+.interruptor input:checked + .trilho::before {
+    transform: translateX(21px);
+}
+
+/* Desabilitado para edição */
+
+.interruptor input:disabled + .trilho {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.interruptor input:focus-visible + .trilho {
+    outline: 3px solid rgba(6, 182, 212, 0.3);
+    outline-offset: 3px;
+}
+
+
+/* ---------- BOTÕES ---------- */
+
+.acoes-formulario {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.acoes-formulario .btn {
+    min-width: 150px;
+}
+
+
+/* ---------- RESPONSIVIDADE ---------- */
+
+@media (max-width: 900px) {
+
+    .painel-notificacoes {
+        margin-top: 20px;
+    }
+
+    .grupo-notificacoes,
+    .notificacao-principal {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .painel-notificacoes {
+        margin-top: 15px;
+    }
+
+    .notificacao-principal {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .notificacao-principal .interruptor {
+        margin-left: auto;
+    }
+
+    .grupo-notificacoes {
+        padding: 16px;
+    }
+
+    .cabecalho-grupo {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .item-notificacao {
+        gap: 12px;
+        padding: 16px 0;
+    }
+
+    .item-notificacao p {
+        max-width: 250px;
+    }
+
+    .acoes-formulario {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .acoes-formulario .btn {
+        width: 100%;
+    }
+}
